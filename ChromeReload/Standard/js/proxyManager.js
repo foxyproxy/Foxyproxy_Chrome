@@ -19,6 +19,8 @@ ProxyManager.profileFromProxy = function (a) {
 	return {
 		proxyMode: a.data.type,
 		proxyHttp: a.data.isSocks ? null : b,
+		proxyHost: a.data.host,
+		proxyPort: a.data.port,
 		proxySocks: a.data.isSocks ? b : "",
 		socksVersion: a.data.socks,
 		proxyConfigUrl: a.data.configUrl,
@@ -28,7 +30,7 @@ ProxyManager.profileFromProxy = function (a) {
 };
 ProxyManager.profileAuto = function () {
 	return {
-		proxyMode: "auto",
+		proxyMode: ProxyManager.ProxyModes.auto,
 		proxyHttp: "",
 		proxySocks: "",
 		socksVersion: "",
@@ -38,81 +40,34 @@ ProxyManager.profileAuto = function () {
 		isAutomaticModeProfile: !0
 	}
 };
-ProxyManager.saveAutoPac = function () {
-	var b = ProxyManager.generatePacAutoScript();
-	try {
-		// Rewrite here
-		ProxyConfig.mode = "pac_script";
-		ProxyConfig.pacScript.data = b;
+ProxyManager.apply = function (a) {
+	if (a.isAutomaticModeProfile) { // profileAuto
+		ProxyConfig.pacScript.data = ProxyManager.generatePacAutoScript();
+		ProxyConfig.mode = a.proxyMode;
 		chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
-	} catch (d) {
-		return !1
-	}
-};
-ProxyManager.getAutoPath = function () {
-	if (ProxyManager.autoPacScriptPath == void 0) {
-		var a = chrome.extension.getBackgroundPage().plugin;
-		try {
-			ProxyManager.autoPacScriptPath = a.autoPacScriptPath
-		} catch (b) {
-			return
+	} else { // profileFromProxy & directConnectionProfile(?)
+		if (a.proxyMode == ProxyManager.ProxyModes.manual && a.proxySocks.trim().length > 0) { // profileFromProxy
+			ProxyConfig.pacScript.data = ProxyManager.generateSocksPacScript(a);
+			ProxyConfig.mode = "pac_script";
+			chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
+			a = $.extend(!0, {}, a);
+			a.proxyMode = ProxyManager.ProxyModes.auto;
 		}
 	}
-	return ProxyManager.autoPacScriptPath;
-};
-ProxyManager.apply = function (a) {
-	var b = chrome.extension.getBackgroundPage().plugin,
-		c = a.proxyMode == ProxyManager.ProxyModes.direct;
-	if (a.isAutomaticModeProfile) {
-		ProxyManager.saveAutoPac(a);
-		a.proxyConfigUrl = ProxyManager.getAutoPath();
-	} else {
-		a = ProxyManager.handleSocks(a);
-	}
 	try {
-		var d;
-		if (c) { // directConnectionProfile
+		if (a.proxyMode == ProxyManager.ProxyModes.direct) { // directConnectionProfile
 			ProxyConfig.mode = a.proxyMode;
 			chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
 		} else { // profileAuto & profileFromProxy
-			var url = a.proxyConfigUrl + "?" + (new Date).getTime();
-			b.setProxy(a.proxyMode, a.proxyHttp, a.proxyExceptions, (a.proxyMode == 'auto_detect') ? url : "", "");
+			//var url = a.proxyConfigUrl + "?" + (new Date).getTime();
+			//b.setProxy(a.proxyMode, a.proxyHttp, a.proxyExceptions, (a.proxyMode == 'auto_detect') ? url : "", "");
 			ProxyConfig.mode = a.proxyMode;
-			ProxyConfig.rules.singleProxy.
+			ProxyConfig.rules.singleProxy.host = proxy.data.host;
+			ProxyConfig.rules.singleProxy.port = proxy.data.port;
+			chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
+			console.log(ProxyConfig);
 		}
 	} catch (f) {}
-};
-ProxyManager.handleSocks = function (a) {
-	if (a.proxyMode == ProxyManager.ProxyModes.manual && a.proxySocks.trim().length > 0) {
-		ProxyManager.saveSocksPacScript(a);
-		a = $.extend(!0, {}, a);
-		a.proxyMode = ProxyManager.ProxyModes.auto;
-		a.proxyConfigUrl = ProxyManager.getSocksPath(!0);
-	}
-	return a;
-};
-ProxyManager.saveSocksPacScript = function (a) {
-	var b = chrome.extension.getBackgroundPage().plugin,
-		a = ProxyManager.generateSocksPacScript(a);
-	try {
-		var c = b.writeSocksPacFile(a);
-		if (c != 0 || c != "0") {
-			throw "Error Code (" + c + ")";
-		}
-	} catch (d) {
-		return !1
-	}
-};
-ProxyManager.getSocksPath = function (a) {
-	if (!ProxyManager.socksPacScriptPath) {
-		var b = chrome.extension.getBackgroundPage().plugin;
-		try {
-			ProxyManager.socksPacScriptPath = b.socksPacScriptPath
-		} catch (c) {
-			return
-		}
-	}
-	return ProxyManager.socksPacScriptPath + (a ? "?" + (new Date).getTime() : "")
 };
 ProxyManager.generateSocksPacScript = function (a) {
 	var b = [];

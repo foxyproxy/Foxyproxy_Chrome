@@ -43,7 +43,7 @@
 		"contextMenus",		// Required if the extension uses the chrome.contextMenus module. 
 		"management",		// Required if the extension uses the chrome.management module. 
 		"proxy", 			// Required if the extension uses the chrome.proxy module. 
-		"background",		// Makes Chrome start up early and and shut down late, so that apps and extensions can have a longer life. 
+		//"background",		// Makes Chrome start up early and and shut down late, so that apps and extensions can have a longer life. 
 		"unlimitedStorage"	// Provides an unlimited quota for storing HTML5 client-side data, such as databases and local storage files. Without this permission, the extension is limited to 5 MB of local storage. 
-	],
+	]
 }

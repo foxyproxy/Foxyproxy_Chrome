@@ -50,8 +50,8 @@ function copyIp()
 
 function getIpsList()
 {
-	chrome.extension.getBackgroundPage().foxyProxy.updateLocalIps();
-	return chrome.extension.getBackgroundPage().foxyProxy.localIps
+	/*chrome.extension.getBackgroundPage().foxyProxy.updateLocalIps();
+	return chrome.extension.getBackgroundPage().foxyProxy.localIps*/
 }
 
 function updateIpsList()
