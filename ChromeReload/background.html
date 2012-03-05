@@ -1,6 +1,7 @@
 <html>
 	<head>
 		<script src="js/jquery-1.4.4.min.js"></script>
+		<script src="js/proxyconfig.js"></script>
 		<script src="js/proxy.js"></script>
 		<script src="js/proxylog.js"></script>
 		<script src="js/webdbwrapper.js"></script>
@@ -10,8 +11,35 @@
 		<script> 
 
 		
-		if (!localStorage.getItem('proxyList')){
-			localStorage.setItem('proxyList', JSON.stringify([	{"data":{"id":"default", "readonly":true,"enabled":true,"color":"#45fa89","name":"Default","notes":"These are the settings that are used when no patterns match an URL","host":"","port":"","isSocks":false,"socks":"v4/4a","pac":"","dns":"","type":"direct","cycle":false,"useDns":false,"reloadPAC":false,"reloadPACInterval":60,"configUrl":"","notifOnLoad":false,"notifOnError":false,"patterns":[],"ipPatterns":[],"login":"","pass":""}}]));
+		if (!localStorage.getItem('proxyList')) {
+			localStorage.setItem('proxyList', JSON.stringify([{
+				"data": {
+					"id": "default",
+					"readonly": true,
+					"enabled": true,
+					"color": "#45fa89",
+					"name": "Default",
+					"notes": "These are the settings that are used when no patterns match an URL",
+					"host": "",
+					"port": "",
+					"isSocks": false,
+					"socks": "v4/4a",
+					"pac": "",
+					"dns": "",
+					"type": "direct",
+					"cycle": false,
+					"useDns": false,
+					"reloadPAC": false,
+					"reloadPACInterval": 60,
+					"configUrl": "",
+					"notifOnLoad": false,
+					"notifOnError": false,
+					"patterns": [],
+					"ipPatterns": [],
+					"login": "",
+					"pass": ""
+				}
+			}]));
 		}
 		if (!localStorage.getItem('settings')){
 			localStorage.setItem('settings', JSON.stringify({
@@ -64,10 +92,6 @@
 	</head>
 	<body>
 	<textarea id="hbnaclhngkhpmpgmfakaghgjbblokeeh" value="" ></textarea>
-	<embed id="plugin" type="application/foxy-proxy-plugin" height="0" width="0" />
-	<script>
-		plugin = document.getElementById("plugin");
-	</script>
 	<canvas id="canvas" width="19" height="19" />
 	<img id="customImage" />
 	<img id="image" src="images/logo.png"/>

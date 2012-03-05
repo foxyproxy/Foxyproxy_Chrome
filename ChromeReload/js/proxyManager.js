@@ -4,7 +4,7 @@ var ProxyManager = {
 	ProxyModes: {
 		direct: "direct",
 		manual: "manual",
-		auto: "auto"
+		auto: "auto_detect"
 	}
 };
 ProxyManager.directConnectionProfile = {
@@ -13,6 +13,7 @@ ProxyManager.directConnectionProfile = {
 	proxyMode: ProxyManager.ProxyModes.direct,
 	color: "inactive"
 };
+// These are not really used anymore
 ProxyManager.profileFromProxy = function (a) {
 	var b = a.data.host + ":" + a.data.port;
 	return {
@@ -38,15 +39,12 @@ ProxyManager.profileAuto = function () {
 	}
 };
 ProxyManager.saveAutoPac = function () {
-	var a = chrome.extension.getBackgroundPage().plugin,
-		b = ProxyManager.generatePacAutoScript();
+	var b = ProxyManager.generatePacAutoScript();
 	try {
 		// Rewrite here
-		
-		var c = a.writeAutoPacFile(b);
-		if (c != 0 || c != "0") {
-			throw "Error Code (" + c + ")";
-		}
+		ProxyConfig.mode = "pac_script";
+		ProxyConfig.pacScript.data = b;
+		chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
 	} catch (d) {
 		return !1
 	}
@@ -73,10 +71,14 @@ ProxyManager.apply = function (a) {
 	}
 	try {
 		var d;
-		if (c) b.setDirect("");
-		else {
+		if (c) { // directConnectionProfile
+			ProxyConfig.mode = a.proxyMode;
+			chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
+		} else { // profileAuto & profileFromProxy
 			var url = a.proxyConfigUrl + "?" + (new Date).getTime();
-			b.setProxy(a.proxyMode, a.proxyHttp, a.proxyExceptions, (a.proxyMode == 'auto') ? url : "", "");
+			b.setProxy(a.proxyMode, a.proxyHttp, a.proxyExceptions, (a.proxyMode == 'auto_detect') ? url : "", "");
+			ProxyConfig.mode = a.proxyMode;
+			ProxyConfig.rules.singleProxy.
 		}
 	} catch (f) {}
 };

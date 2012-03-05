@@ -1,3 +1,4 @@
+// A giant object. Basically change mode to change between which parts of the object is used
 var ProxyConfig = {
 	/* mode: 
 	 * direct
@@ -18,30 +19,40 @@ var ProxyConfig = {
 		//url: ( 
 			//optional string 
 		//)
-		data: "function FindProxyForURL(url, host) {\n" +
-			"  if (host == 'foobar.com')\n" +
-			"    return 'PROXY blackhole:80';\n" +
-			"  return 'DIRECT';\n" +
-			"}";
+		//data: "function FindProxyForURL(url, host) {\n" +
+		//	"  if (host == 'foobar.com')\n" +
+		//	"    return 'PROXY blackhole:80';\n" +
+		//	"  return 'DIRECT';\n" +
+		//	"}" // As tempting it might be, there's no missing ; here
 	},
 	// Mode: fixed_servers (optional)
 	rules : {
 		/* An object encapsulating the set of proxy rules for all protocols. Use either 'singleProxy' or (a subset of) 'proxyForHttp', 'proxyForHttps', 'proxyForFtp' and 'fallbackProxy'.
-		 * singleProxy ( optional ProxyServer )
+		 * singleProxy ( optional ProxyServer ) -- http://code.google.com/chrome/extensions/proxy.html#type-ProxyServer
 			The proxy server to be used for all per-URL requests (that is http, https, and ftp).
-		 * proxyForHttp ( optional ProxyServer )
+		 * proxyForHttp ( optional ProxyServer ) -- http://code.google.com/chrome/extensions/proxy.html#type-ProxyServer
 			The proxy server to be used for HTTP requests.
-		 * proxyForHttps ( optional ProxyServer )
+		 * proxyForHttps ( optional ProxyServer ) -- http://code.google.com/chrome/extensions/proxy.html#type-ProxyServer
 			The proxy server to be used for HTTPS requests.
-		 * proxyForFtp ( optional ProxyServer )
+		 * proxyForFtp ( optional ProxyServer ) -- http://code.google.com/chrome/extensions/proxy.html#type-ProxyServer
 			The proxy server to be used for FTP requests.
-		 * fallbackProxy ( optional ProxyServer )
+		 * fallbackProxy ( optional ProxyServer ) -- http://code.google.com/chrome/extensions/proxy.html#type-ProxyServer
 			The proxy server to be used for everthing else or if any of the specific proxyFor... is not specified.
 		 * bypassList ( optional array of string )
 			List of servers to connect to without a proxy server.
-		*/
+		 */
+		singleProxy : {
+			/* singleProxy
+			 * scheme ( optional enumerated string ["http", "https", "socks4", "socks5"] ) 
+				The scheme (protocol) of the proxy server itself. Defaults to 'http'.
+			 * host ( string ) 
+				The URI of the proxy server. This must be an ASCII hostname (in Punycode format). IDNA is not supported, yet.
+			 * port ( optional integer ) 
+				The port of the proxy server. Defaults to a port that depends on the scheme.
+			 */
+			 scheme : ["http","https"]
+		}
 	}
-
 };
 
 // chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
@@ -55,4 +66,3 @@ var ProxyConfig = {
 			 * incognito_persistent: 	setting for incognito profile that survives browser restarts (overrides regular preferences),
 			 * incognito_session_only: 	setting for incognito profile that can only be set during an incognito session and is deleted when the incognito session ends (overrides regular and incognito_persistent preferences). */
     /* function() {} is the callback function */
-	
