@@ -3,8 +3,8 @@ var ProxyManager = {
 	socksPacScriptPath: null,
 	ProxyModes: {
 		direct: "direct",
-		manual: "manual",
-		auto: "auto_detect"
+		manual: "fixed_servers",
+		auto: "pac_script"
 	}
 };
 ProxyManager.directConnectionProfile = {
@@ -13,7 +13,6 @@ ProxyManager.directConnectionProfile = {
 	proxyMode: ProxyManager.ProxyModes.direct,
 	color: "inactive"
 };
-// These are not really used anymore
 ProxyManager.profileFromProxy = function (a) {
 	var b = a.data.host + ":" + a.data.port;
 	return {
@@ -41,33 +40,26 @@ ProxyManager.profileAuto = function () {
 	}
 };
 ProxyManager.apply = function (a) {
-	if (a.isAutomaticModeProfile) { // profileAuto
+	if (a.isAutomaticModeProfile) { // profileAuto - Detect proxy used by filter - pac_script
 		ProxyConfig.pacScript.data = ProxyManager.generatePacAutoScript();
 		ProxyConfig.mode = a.proxyMode;
 		chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
-	} else { // profileFromProxy & directConnectionProfile(?)
-		if (a.proxyMode == ProxyManager.ProxyModes.manual && a.proxySocks.trim().length > 0) { // profileFromProxy
-			ProxyConfig.pacScript.data = ProxyManager.generateSocksPacScript(a);
-			ProxyConfig.mode = "pac_script";
-			chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
-			a = $.extend(!0, {}, a);
-			a.proxyMode = ProxyManager.ProxyModes.auto;
-		}
+		return;
+	} else if (a.proxyMode == ProxyManager.ProxyModes.manual && a.proxySocks.trim().length > 0) { // profileFromProxy & directConnectionProfile(?)
+		ProxyConfig.rule.singleProxy.host = a.proxyHost;
+		ProxyConfig.rule.singleProxy.port = a.proxyPort;
+		ProxyConfig.mode = a.proxyMode;
+		chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
+		return;
+	} else { // profileFromProxy
+		//var url = a.proxyConfigUrl + "?" + (new Date).getTime();
+		//b.setProxy(a.proxyMode, a.proxyHttp, a.proxyExceptions, (a.proxyMode == 'auto_detect') ? url : "", "");
+		ProxyConfig.mode = a.proxyMode;
+		ProxyConfig.rules.singleProxy.host = proxy.data.host;
+		ProxyConfig.rules.singleProxy.port = proxy.data.port;
+		chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
+		console.log(ProxyConfig);
 	}
-	try {
-		if (a.proxyMode == ProxyManager.ProxyModes.direct) { // directConnectionProfile
-			ProxyConfig.mode = a.proxyMode;
-			chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
-		} else { // profileAuto & profileFromProxy
-			//var url = a.proxyConfigUrl + "?" + (new Date).getTime();
-			//b.setProxy(a.proxyMode, a.proxyHttp, a.proxyExceptions, (a.proxyMode == 'auto_detect') ? url : "", "");
-			ProxyConfig.mode = a.proxyMode;
-			ProxyConfig.rules.singleProxy.host = proxy.data.host;
-			ProxyConfig.rules.singleProxy.port = proxy.data.port;
-			chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
-			console.log(ProxyConfig);
-		}
-	} catch (f) {}
 };
 ProxyManager.generateSocksPacScript = function (a) {
 	var b = [];

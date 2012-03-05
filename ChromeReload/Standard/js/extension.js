@@ -85,7 +85,7 @@ function Extension() {
 				path: 'images/logo-disabled.png'
 			});
 			break;
-		case "auto":
+		case "auto": 
 			ProxyManager.apply(ProxyManager.profileAuto());
 			chrome.browserAction.setIcon({
 				path: 'images/logo.png'
