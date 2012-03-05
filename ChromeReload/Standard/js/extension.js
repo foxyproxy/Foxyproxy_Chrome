@@ -388,18 +388,18 @@ function Extension() {
 		return (new XMLSerializer()).serializeToString(xmlDoc);
 	}
 	self.saveToFile = function (content) {
-		plugin.saveToFile(content);
+		//plugin.saveToFile(content);
 	}
 
 	function updateLocalIps() {
-		if (!plugin.updateLocalIps) {
+		/*if (!plugin.updateLocalIps) {
 			self.localIps = [];
 			return;
 		}
 		plugin.updateLocalIps();
-		self.localIps = eval(plugin.localIps);
+		self.localIps = eval(plugin.localIps);*/
 	}
-	self.updateLocalIps = updateLocalIps;
-	updateLocalIps();
+	/*self.updateLocalIps = updateLocalIps;
+	updateLocalIps();*/
 	checkFirst() || checkVersion();
 }

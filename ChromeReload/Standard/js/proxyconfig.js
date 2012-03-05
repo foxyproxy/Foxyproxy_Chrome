@@ -50,7 +50,7 @@ var ProxyConfig = {
 			 * port ( optional integer ) 
 				The port of the proxy server. Defaults to a port that depends on the scheme.
 			 */
-			 scheme : ["http","https"]
+			 scheme : "http"
 		}
 	}
 };
