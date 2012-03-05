@@ -8,7 +8,7 @@ function Proxy(_data){
 		name: "", 
 		notes: "",
 		host: "" , 
-		port: "", 
+		port: 0, 
 		isSocks: false, 
 		socks: "", 
 		pac: "", 
