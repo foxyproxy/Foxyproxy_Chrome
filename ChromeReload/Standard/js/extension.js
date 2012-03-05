@@ -77,21 +77,21 @@ function Extension() {
 		localStorage.setItem("state", _state);
 	});
 	this.applys = function () {
-		console.log(this.state);
+		console.log("State change: " + this.state);
 		switch (this.state) {
-		case "disabled":
-			ProxyManager.apply(ProxyManager.directConnectionProfile);
+		case "disabled": // foxyproxy is disabled
+			ProxyManager.applyDisable(ProxyManager.directConnectionProfile);
 			chrome.browserAction.setIcon({
 				path: 'images/logo-disabled.png'
 			});
 			break;
-		case "auto": 
-			ProxyManager.apply(ProxyManager.profileAuto());
+		case "auto": // foxyproxy is set to by pattern proxy - auto
+			ProxyManager.applyAuto(ProxyManager.profileAuto());
 			chrome.browserAction.setIcon({
 				path: 'images/logo.png'
 			});
 			break;
-		default:
+		default: // single proxy selected
 			var proxy = null;
 			for (var i = 0; i < proxyList.length; i++)
 			if (proxyList[i].data.id == this.state) proxy = proxyList[i];
@@ -100,7 +100,7 @@ function Extension() {
 				chrome.browserAction.setIcon({
 					imageData: IconCreator.paintIcon(self.icon, proxy.data.color)
 				});
-				ProxyManager.apply(ProxyManager.profileFromProxy(proxy));
+				ProxyManager.applyProxy(ProxyManager.profileFromProxy(proxy));
 			}
 		}
 	}

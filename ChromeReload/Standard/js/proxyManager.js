@@ -3,8 +3,8 @@ var ProxyManager = {
 	socksPacScriptPath: null,
 	ProxyModes: {
 		direct: "direct",
-		manual: "fixed_servers",
-		auto: "pac_script"
+		manual: "manual",
+		auto: "auto"
 	}
 };
 ProxyManager.directConnectionProfile = {
@@ -39,26 +39,43 @@ ProxyManager.profileAuto = function () {
 		isAutomaticModeProfile: !0
 	}
 };
-ProxyManager.apply = function (a) {
-	if (a.isAutomaticModeProfile) { // profileAuto - Detect proxy used by filter - pac_script
-		ProxyConfig.pacScript.data = ProxyManager.generatePacAutoScript();
-		ProxyConfig.mode = a.proxyMode;
-		chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
-		return;
-	} else if (a.proxyMode == ProxyManager.ProxyModes.manual && a.proxySocks.trim().length > 0) { // profileFromProxy & directConnectionProfile(?)
-		ProxyConfig.rule.singleProxy.host = a.proxyHost;
-		ProxyConfig.rule.singleProxy.port = a.proxyPort;
-		ProxyConfig.mode = a.proxyMode;
-		chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
-		return;
-	} else { // profileFromProxy
-		//var url = a.proxyConfigUrl + "?" + (new Date).getTime();
-		//b.setProxy(a.proxyMode, a.proxyHttp, a.proxyExceptions, (a.proxyMode == 'auto_detect') ? url : "", "");
-		ProxyConfig.mode = a.proxyMode;
-		ProxyConfig.rules.singleProxy.host = proxy.data.host;
-		ProxyConfig.rules.singleProxy.port = proxy.data.port;
-		chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
+ProxyManager.applyDisable = function (a) {
+	ProxyConfig.mode = "system";
+	chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
+	console.log("Proxy is disabled: applyDisable");
+	console.log(ProxyConfig);
+};
+ProxyManager.applyAuto = function (a) {
+	ProxyConfig.pacScript.url = "";
+	ProxyConfig.pacScript.data = ProxyManager.generatePacAutoScript();
+	ProxyConfig.mode = "pac_script";
+	console.log(ProxyConfig);
+	chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
+	console.log("Proxy is auto: applyAuto");
+};
+ProxyManager.applyProxy = function (a) {
+	console.log(a);
+	if (a.proxyMode == ProxyManager.ProxyModes.auto) { // Auto = Pac Script URL
+		ProxyConfig.mode = "pac_script";
+		ProxyConfig.data = "";
+		ProxyConfig.pacScript = a.proxyConfigUrl;
 		console.log(ProxyConfig);
+		chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
+		console.log("Proxy is auto: applyProxy");
+	} else if (a.proxyMode == ProxyManager.ProxyModes.manual) { // Manually set URL/HOST
+		ProxyConfig.mode = "fixed_servers";
+		ProxyConfig.rules.singleProxy.host = a.proxyHost;
+		ProxyConfig.rules.singleProxy.port = parseInt(a.proxyPort);
+		console.log(ProxyConfig);
+		chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
+		console.log("Proxy is manual: applyProxy");
+	} else if (a.proxyMode == ProxyManager.ProxyModes.direct) { // profileFromProxy
+		ProxyConfig.mode = "direct";
+		console.log(ProxyConfig);
+		chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
+		console.log("Proxy is direct: applyProxy");
+	} else {
+		console.log("Proxy is ... something else! INVALID STATE");
 	}
 };
 ProxyManager.generateSocksPacScript = function (a) {
