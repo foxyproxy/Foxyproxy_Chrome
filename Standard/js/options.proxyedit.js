@@ -1,5 +1,5 @@
 var oPatternTable = null;
-var oIpPatternTable = null;
+//var oIpPatternTable = null;
 var sProxyColor = null;
 var selectedPattern = -1;
 
@@ -49,11 +49,11 @@ var selectedPattern = -1;
 		$('#proxyColor').ColorPickerSetColor(sProxyColor);//.attr('disabled', proxy.data.readonly ? 'disabled': '');
 		$('#proxyColor div').css('backgroundColor',sProxyColor);
 		oPatternTable.fnClearTable();
-		oIpPatternTable.fnClearTable();
+		//oIpPatternTable.fnClearTable();
 		if(proxy.data.patterns && proxy.data.patterns.length)
 			oPatternTable.fnAddData(proxy.data.patterns);
-		if(proxy.data.ipPatterns && proxy.data.ipPatterns.length)
-			oIpPatternTable.fnAddData(proxy.data.ipPatterns);
+		//if(proxy.data.ipPatterns && proxy.data.ipPatterns.length)
+			//oIpPatternTable.fnAddData(proxy.data.ipPatterns);
 		if(proxy.data.readonly && ( $("#tabs").tabs('option', 'selected') == 2 || $("#tabs").tabs('option', 'selected') == 3 ) ){
 			$("#tabs").tabs( "select" , 1 );
 		}
@@ -188,7 +188,7 @@ var selectedPattern = -1;
 					{ "sTitle": localize("Temporary"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}}
 				]
 			} );
-		oIpPatternTable = $("#ipPatternList").dataTable( {
+		/*oIpPatternTable = $("#ipPatternList").dataTable( {
 				"bPaginate": false,
 				"bLengthChange": false,
 				"bFilter": false,
@@ -208,14 +208,14 @@ var selectedPattern = -1;
 					{ "sTitle": localize("Whitelist (Inclusive) or Blacklist (Exclusive)")},
 					{ "sTitle": localize("Temporary"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}}
 				]
-			} );
+			} );*/
 		
 			$("#patternList tbody tr").live('click', function () {
 					oPatternTable.fnSelect(this);
 			} );
-			$("#ipPatternList tbody tr").live('click', function () {
+			/*$("#ipPatternList tbody tr").live('click', function () {
 					oIpPatternTable.fnSelect(this);
-			} );
+			} );*/
 			$('#proxyColor').ColorPicker({
 				color: "#000",
 				onShow: function (colpkr) {
@@ -328,7 +328,7 @@ var selectedPattern = -1;
 					});
 			}
 		}
-		
+/*		
 		function addNewIpPattern() {
 			list[selectedProxy].data.ipPatterns.push(new ProxyPattern());
 			selectedIpPattern = list[selectedProxy].data.ipPatterns.length - 1;
@@ -363,3 +363,4 @@ var selectedPattern = -1;
 				updateIpPatternTable(selectedIpPattern);
 			}
 		}		
+*/

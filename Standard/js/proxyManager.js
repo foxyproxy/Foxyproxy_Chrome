@@ -58,7 +58,7 @@ ProxyManager.applyAuto = function (a) {
 	ProxyConfig.pacScript.url = "";
 	ProxyConfig.pacScript.data = ProxyManager.generatePacAutoScript();
   // debug: dump the pac
-console.log("pac is " + ProxyConfig.pacScript.data);
+  console.log("pac is " + ProxyConfig.pacScript.data);
 	ProxyConfig.mode = "pac_script";
 	console.log(ProxyConfig);
 	chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
@@ -142,7 +142,7 @@ for (var i=0, sz=patterns.length; i<sz; i++) {\n\
     var p = patterns[i];\n\
     if (p.enabled) {\n\
       if (p.url.regex.test(url)) {\n\
-        if (p.whitelist == \"Inclusive\") {\n\
+        if (p.whitelist != \"Inclusive\") {\n\
           // Black takes priority over white -- skip this pattern\n\
           continue;\n\
         }\n\
@@ -165,20 +165,29 @@ ProxyManager.proxyToScript = function (proxy) {
 		  proxyStr = '"' + (proxy.data.isSocks ? "SOCKS " : "PROXY ") + proxy.data.host + ":" + proxy.data.port + '"';
 		  break;
 	  case "auto": // PAC
-      // 13 May 2012 EHJ: does this work? Check the generated script for accuracy then change code and remove this comment so we don't keep checking.
-		  c += " function getProxy(url, host){ " + proxy.data.pac + " return FindProxyForURL(url, host); }", proxyStr = "getProxy(url, host)"
+      if (!proxy.data.pac || proxy.data.pac.length == 0)
+        proxyStr = '"' + "PROXY badpac:6666" + '"';
+		  else
+        c += " function wrapper(url, host){ " + proxy.data.pac + " return FindProxyForURL(url, host); }", proxyStr = "wrapper(url, host)"
+      break;
+    default:
+      console.log("Error: unknown proxy.data.type");
+      break;
 	}
 	if (proxy.data.id == "default") {
-		c += "return " + proxyStr + ";";
+		c += "  return " + proxyStr + ";";
 		return c;
 	}
 
   // Non-default proxies
-  c += ProxyManager.template.replace("{patterns}|{proxyStr}", function(s) {
+  // Handle patterns, if any
+  if (proxy.data.patterns.length == 0) return "";
+  c += ProxyManager.template.replace(/{patterns}|{proxyStr}/g, function(s) {
       switch(s) {
         case "{patterns}":
-          for (var k=0, ret="", sz=proxy.patterns.length; k<sz; k++) {
-            ret += proxy.patterns[k].data.toSource();
+          var ret = ""
+          for (var k=0, sz=proxy.data.patterns.length; k<sz; k++) {
+            ret += JSON.stringify(proxy.data.patterns[k].data);
             if (k+1<sz) ret += ", ";
           }
           return ret;
