@@ -80,12 +80,14 @@ function Extension() {
 		console.log("State change: " + this.state);
 		switch (this.state) {
 		case "disabled": // foxyproxy is disabled
+      console.log("disabled");
 			ProxyManager.applyDisable(ProxyManager.directConnectionProfile);
 			chrome.browserAction.setIcon({
 				path: 'images/logo-disabled.png'
 			});
 			break;
 		case "auto": // foxyproxy is set to by pattern proxy - auto
+      console.log("patterns mode is selected");
 			ProxyManager.applyAuto(ProxyManager.profileAuto());
 			chrome.browserAction.setIcon({
 				path: 'images/logo.png'
@@ -96,7 +98,7 @@ function Extension() {
 			for (var i = 0; i < proxyList.length; i++)
 			if (proxyList[i].data.id == this.state) proxy = proxyList[i];
 			if (proxy) {
-				console.log(proxy);
+				console.log("manual mode selected and proxy is " + proxy);
 				chrome.browserAction.setIcon({
 					imageData: IconCreator.paintIcon(self.icon, proxy.data.color)
 				});
