@@ -50,6 +50,14 @@
 				oTable.fnSelect(this);
 				toggleselectedProxy();
 		} ).first().click();
+    $("#proxyList tbody tr").live('dblclick', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+		    oTable.fnSelect(this);
+		    toggleselectedProxy();
+        editProxy();
+        return false;
+    });
 	}
 	
 	function toggleselectedProxy(){

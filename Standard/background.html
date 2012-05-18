@@ -1,3 +1,5 @@
+<!-- entry point into the extension. http://code.google.com/chrome/extensions/background_pages.html -->
+
 <html>
 	<head>
 		<script src="js/jquery-1.4.4.min.js"></script>
@@ -10,7 +12,7 @@
 		<script src="js/proxyManager.js"></script>
 		<script> 
 
-		
+		const SOCKS4 = "4", SOCKS5 = "5";
 		if (!localStorage.getItem('proxyList')) {
 			localStorage.setItem('proxyList', JSON.stringify([{
 				"data": {
@@ -23,10 +25,10 @@
 					"host": "",
 					"port": "",
 					"isSocks": false,
-					"socks": "v4/4a",
+					"socks": SOCKS5,
 					"pac": "",
 					"dns": "",
-					"type": "direct",
+					"type": "direct", // proxyMode
 					"cycle": false,
 					"useDns": false,
 					"reloadPAC": false,

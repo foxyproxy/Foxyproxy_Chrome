@@ -13,7 +13,7 @@ function Proxy(_data){
 		socks: "", 
 		pac: "", 
 		//dns: "",
-		type: "manual",
+		type: "manual", // direct, manual, or "auto" for pac (TODO: change that)
 		cycle: false,
 		useDns: false,
 		reloadPAC: true,
@@ -21,7 +21,7 @@ function Proxy(_data){
 		configUrl: "",
 		notifOnLoad: true,
 		notifOnError: true,
-		patterns: new Array(),
+		patterns: [],
 		ipPatterns : []
 	}
 	if(_data && _data.data){
@@ -87,7 +87,7 @@ function ProxyPattern(_data){
 		url: "", 
 		whitelist: 'Inclusive', 
 		type: "wildcard"
-	}
+	};
 	if(_data && _data.data){
 		$.extend(this.data, _data.data);
 	}else{

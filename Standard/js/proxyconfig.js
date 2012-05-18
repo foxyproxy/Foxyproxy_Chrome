@@ -1,4 +1,5 @@
-// A giant object. Basically change mode to change between which parts of the object is used
+// A giant object. Basically change mode to change between which parts of the object is used.
+// See http://code.google.com/chrome/extensions/proxy.html and  http://code.google.com/chrome/extensions/types.html#ChromeSetting
 var ProxyConfig = {
 	/* mode: 
 	 * direct
@@ -16,6 +17,7 @@ var ProxyConfig = {
 	mode: "system",
 	// Mode: pac_script (optional) 
 	pacScript: { 
+    mandatory : true /* If true, an invalid PAC script will prevent the network stack from falling back to direct connections. Defaults to false. */
 		//url: ( 
 			//optional string 
 		//)
@@ -52,7 +54,17 @@ var ProxyConfig = {
 			 */
 			 host : "",
 			 scheme : "http"
-		}
+		},
+
+    // N.B.: "If no fallbackProxy is specified, traffic is sent directly without a proxy server."
+    // as stated at http://code.google.com/chrome/extensions/proxy.html#overview-examples. In order
+    // to prevent leaks of non-HTTP(S)/FTP protocols, we *must always set something here*, even if it's just
+    // a black hole. By default, just set this to the same as |singleProxy| at runtime.
+/*    fallbackProxy : {
+      scheme : null,
+      host : null,
+      port : null
+    }*/
 	}
 };
 
