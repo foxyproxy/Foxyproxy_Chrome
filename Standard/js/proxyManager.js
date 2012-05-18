@@ -184,7 +184,8 @@ ProxyManager.proxyToScript = function (proxy) {
           return ret;
         case "{proxyStr}":
           return proxyStr;
-    });
+      }
+  });
 
   // TODO: handle IP patterns
   return c;
