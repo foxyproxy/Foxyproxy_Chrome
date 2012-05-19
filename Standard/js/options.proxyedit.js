@@ -37,6 +37,7 @@ var selectedPattern = -1;
 		$("#proxyNotifLoad").setChecked(proxy.data.notifOnLoad).attr('disabled', proxy.data.readonly ? 'disabled': '');
 		$("#proxyNotifError").setChecked(proxy.data.notifOnError).attr('disabled', proxy.data.readonly ? 'disabled': '');
 		$("#proxyPACReload").setChecked(proxy.data.reloadPAC).attr('disabled', proxy.data.readonly ? 'disabled': '');
+		$("#bypassFPForPAC").setChecked(proxy.data.bypassFPForPAC).attr('disabled', proxy.data.readonly ? 'disabled': '');
 		$("#proxyPACInterval").val(proxy.data.reloadPACInterval).attr('disabled', proxy.data.readonly ? 'disabled': '');
 		$("#proxyPatterns * input[type='button']");//.button("option", "disabled", proxy.data.readonly);
 		$("#configUrlPanel input[type='button']");//.button("option", "disabled", proxy.data.readonly);
@@ -126,6 +127,7 @@ var selectedPattern = -1;
 							list[selectedProxy].data.notifOnLoad = $("#proxyNotifLoad").is(":checked");
 							list[selectedProxy].data.notifOnError = $("#proxyNotifError").is(":checked");
 							list[selectedProxy].data.reloadPAC = $("#proxyPACReload").is(":checked");
+							list[selectedProxy].data.bypassFPForPAC = $("#bypassFPForPAC").is(":checked");
 							list[selectedProxy].data.name = $("#proxyName").val();
 							list[selectedProxy].data.notes = $("#proxyNotes").val();
 							list[selectedProxy].data.type = $("input[name='proxyType']:checked").val();
@@ -213,6 +215,13 @@ var selectedPattern = -1;
 			$("#patternList tbody tr").live('click', function () {
 					oPatternTable.fnSelect(this);
 			} );
+                        $("#patternList tbody tr").live('dblclick', function (e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                                        oPatternTable.fnSelect(this);
+                            editPattern();
+                            return false;
+                        });
 			/*$("#ipPatternList tbody tr").live('click', function () {
 					oIpPatternTable.fnSelect(this);
 			} );*/
@@ -269,17 +278,13 @@ var selectedPattern = -1;
 		}
 		
 		function openPacViewDlg(){
-			console.log($("#proxyConfigUrl").val());
 			if($("#proxyConfigUrl").val()){
 					$.ajax({
 						url: $("#proxyConfigUrl").val(),
-						xhr:  function(){ 
-							if(XMLHttpRequest){
-								return new XMLHttpRequest();
-							} else {
-								return null;
-							}
-						},
+                                                cache: false,
+                                                error: function(xhr, textStatus, httpError) {
+                                                    alert(localize("PAC file error") + " " + textStatus + (httpError ? httpError : "")); // httpError can be null
+                                                },
 						success: function(data){
 								console.log(data)
 							$("#pacViewDlgText").val(data);
@@ -293,35 +298,30 @@ var selectedPattern = -1;
 			}
 		}
 		
-		function testPac()
-		{
-
+		function testPac() {
 			if($("#proxyConfigUrl").val()){
 				$.ajax({
-					url: $("#proxyConfigUrl").val(),
-					xhr:  function(){ 
-							if(XMLHttpRequest){
-								return new XMLHttpRequest();
-							} else {
-								return null;
-							}
-					},
+					url: $("#proxyConfigUrl").val() + "?rnd=" + Math.random(),
+                                        cache: false,
+                                        error: function(xhr, textStatus, httpError) {
+                                            alert(localize("PAC file error") + " " + textStatus + (httpError ? httpError : "")); // httpError can be null
+                                        },
 					success: function(data){
-						console.log(data);
 							var worker = new Worker("js/testpac.js");
 							var timer = setTimeout(function(){
 									worker.terminate();
 									alert(localize("PAC execution timeout."));
-								},1000);
+								},5000);
 							worker.onmessage = function(e)
 							{
 								clearTimeout(timer);
-								alert(localize("PAC file sucsessful loaded!"));
+                                                                alert(e.data);
+								alert(localize("PAC file sucsessful loaded"));
 							}
 							worker.onerror = function(e)
 							{
 								clearTimeout(timer);
-								alert(localize("PAC file error!")+"\r\n"+e.data);
+								alert(localize("PAC file error")+"\r\n"+e.data);
 							}
 							worker.postMessage(data);
 						}

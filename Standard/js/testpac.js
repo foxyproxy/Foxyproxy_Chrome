@@ -1,4 +1,10 @@
-onmessage = function(script) {	
+onmessage = function(script) {
+    try{
 	eval(script);
-	postMessage("ok");
+        postMessage(script);
+    }
+    catch (e) {
+        postMessage(e);
+    }
+	
 };

@@ -15,8 +15,9 @@ function Proxy(_data){
 		//dns: "",
 		type: "manual", // direct, manual, or "auto" for pac (TODO: change that)
 		cycle: false,
-		useDns: false,
-		reloadPAC: true,
+		useDns: true,
+		reloadPAC: false,
+    bypassFPForPAC: true,
 		reloadPACInterval: 60,
 		configUrl: "",
 		notifOnLoad: true,
@@ -73,10 +74,6 @@ Proxy.prototype = {
 		}
 	}
 }
-
-
-
-
 
 function ProxyPattern(_data){
 	this.className = "ProxyPattern";
