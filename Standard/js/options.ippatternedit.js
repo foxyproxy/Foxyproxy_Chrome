@@ -1,4 +1,4 @@
-function ipPatternLoad(pattern, edit){
+/*function ipPatternLoad(pattern, edit){
 		$("#ipPatternEnabled").setChecked(pattern.data.enabled);
 		$("#ipPatternTemporary").setChecked(pattern.data.temp);
 		$("#ipPatternName").val(pattern.data.name);
@@ -61,4 +61,4 @@ function updateIpsList()
 	$.map(getIpsList(),function(ip){
 		$("#ipPatternCurrentIPs").append("<OPTION>"+ip+"</OPTION>");
 	});
-}
+}*/

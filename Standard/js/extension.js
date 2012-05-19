@@ -365,6 +365,7 @@ function Extension() {
 			var autoconfNode = xmlDoc.createElement('autoconf');
 			autoconfNode.setAttribute('url', proxy.data.configUrl);
 			autoconfNode.setAttribute('autoReload', proxy.data.reloadPAC);
+			autoconfNode.setAttribute('bypassFPForPAC', proxy.data.bypassFPForPAC);
 			autoconfNode.setAttribute('reloadFreqMins', proxy.data.reloadPACInterval);
 			proxyNode.appendChild(autoconfNode);
 			var manualconfNode = xmlDoc.createElement('manualconf');

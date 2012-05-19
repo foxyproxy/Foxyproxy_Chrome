@@ -6,7 +6,7 @@
 		<link type="text/css" href="css/table.css" rel="stylesheet" />	
 		<link type="text/css" href="css/options.css" rel="stylesheet" />
 		<link rel="stylesheet" href="css/colorpicker.css" type="text/css" />		
-		<script src="js/jquery-1.4.4.min.js"></script>
+		<script src="js/jquery-1.7.2.min.js"></script>
 		<script src="js/jquery-ui-1.8.10.custom.min.js"></script>
 		<script src="js/jquery.combobox.js"></script>
 		<script type="text/javascript" src="js/jquery.dataTables.min.js"></script> 
@@ -19,7 +19,7 @@
 		<script type="text/javascript" src="js/jquery.copy.js"></script> 
 		<script type="text/javascript" src="js/options.proxylist.js"></script> 
 		<script type="text/javascript" src="js/options.proxyedit.js"></script> 
-		<!-- <script type="text/javascript" src="js/options.patternedit.js"></script> -->
+		<script type="text/javascript" src="js/options.patternedit.js"></script>
 		<script type="text/javascript" src="js/options.proxyselection.js"></script> 
 		<script type="text/javascript" src="js/options.globalsettings.js"></script> 
 		<script type="text/javascript" src="js/options.log.js"></script> 
@@ -427,15 +427,16 @@
 						</tr>
 						<tr class="proxyTypeAutoGroup">
 							<td id="configUrlPanel" class="marged">
-								<input type="text" id="proxyConfigUrl" size="75">
-								<button id="pacViewButton" onclick="openPacViewDlg()" >View</button>
-								<button onclick="testPac();" >Test</button>
+								<input type="text" id="proxyConfigUrl" size="45">
+								<button id="pacViewButton" onclick="openPacViewDlg()">View</button>
+								<button onclick="testPac()">Test</button>
 								<a id="hint_pac" class="help">&nbsp;</a>
 							</td>
 						</tr>
 						<tr class="proxyTypeAutoGroup">
 							<td class="marged">
 								<input type="checkbox" id="proxyPACReload"><span>Reload PAC every</span> <input type="text" size=3  id="proxyPACInterval"/ > <span>minutes</span>
+								<input type="checkbox" id="bypassFPForPAC"><span>Bypass FoxyProxy when loading PAC</span>
 							</td>
 						</tr>
 						<tr class="proxyTypeAutoGroup"><td>

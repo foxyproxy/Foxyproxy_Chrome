@@ -2,7 +2,7 @@
 	// manifest following http://code.google.com/chrome/extensions/manifest.html for easier reading
 	// Required
 	"name": "FoxyProxy Standard",
-	"version": "1.1.0",
+	"version": "2.0",
 
 	// Recommended
 	"description": "FoxyProxy simplifies configuring browsers to access proxy-servers, offering more features than other proxy-plugins",
@@ -26,7 +26,7 @@
 	"content_scripts": [ 
 		{
 		"all_frames": false,
-		"js": [ "js/jquery-1.4.4.min.js", "js/content.js"],
+		"js": [ "js/jquery-1.7.2.min.js", "js/content.js"],
 		"matches": [ "<all_urls>" ],
 		"run_at": "document_idle"
 		},{
