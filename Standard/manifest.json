@@ -22,7 +22,7 @@
 	},
 
 	// Add any of these that you need
-	"background_page": "background.html",
+	"background": "background.html",
 	// Figure out why the addon depends on these this day
 	"content_scripts": [ 
 		{
