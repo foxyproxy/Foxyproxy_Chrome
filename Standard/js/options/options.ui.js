@@ -6,7 +6,7 @@ if(typeof console == 'undefined'){
     };
 }
 
-function localize(txt){
+var localize = function (txt){
     if(!window.locale){
 	window.locale = JSON.parse(localStorage.getItem('en-en'));
     }
@@ -15,9 +15,9 @@ function localize(txt){
     } else {
 	return txt;
     }
-}
+};
 
-function simple_tooltip(target_items, name){
+var simple_tooltip = function (target_items, name){
     $(target_items).each(function(i){
 	$("body").append("<div class='"+name+"' id='"+name+i+"'><p>"+localize($(this).attr('id'))+"</p></div>");
 	var my_tooltip = $("#"+name+i);
@@ -32,12 +32,8 @@ function simple_tooltip(target_items, name){
 	});
 
     });
-}
-/*
- var loc = document.createElement("script");
- loc.src = "locale/en-en.js";
- document.getElementsByTagName("head")[0].appendChild(loc);
- */
+};
+
 $(document).ready(function(){
     $("#proxyPort").keypress(function(event){
 	newVal = $(this).val()+String.fromCharCode(event.which);
