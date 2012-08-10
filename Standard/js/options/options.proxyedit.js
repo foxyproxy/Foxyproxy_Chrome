@@ -28,17 +28,17 @@ var selectedPattern = -1;
 		
 
 		
-		$("#proxyEnabled").setChecked(proxy.data.enabled).attr('disabled', proxy.data.readonly ? 'disabled': '');
-		$("#proxyName").val(proxy.data.name).attr('disabled', proxy.data.readonly ? 'disabled': '');
-		$("#proxyNotes").val(proxy.data.notes).attr('disabled', proxy.data.readonly ? 'disabled': '');
+		$("#proxyEnabled").setChecked(proxy.data.enabled).prop('disabled', proxy.data.readonly ? true: false);
+		$("#proxyName").val(proxy.data.name).prop('disabled', proxy.data.readonly ? true: false);
+		$("#proxyNotes").val(proxy.data.notes).prop('disabled', proxy.data.readonly ? true: false);
 		$("#proxyCycle").setChecked(proxy.data.cycle);//.attr('disabled', proxy.data.readonly);
 		$("#proxyDNS").setChecked(proxy.data.useDns);//.attr('disabled', proxy.data.readonly);		
-		$("#proxyConfigUrl").val(proxy.data.configUrl).attr('disabled', proxy.data.readonly ? 'disabled': '');
-		$("#proxyNotifLoad").setChecked(proxy.data.notifOnLoad).attr('disabled', proxy.data.readonly ? 'disabled': '');
-		$("#proxyNotifError").setChecked(proxy.data.notifOnError).attr('disabled', proxy.data.readonly ? 'disabled': '');
-		$("#proxyPACReload").setChecked(proxy.data.reloadPAC).attr('disabled', proxy.data.readonly ? 'disabled': '');
-		$("#bypassFPForPAC").setChecked(proxy.data.bypassFPForPAC).attr('disabled', proxy.data.readonly ? 'disabled': '');
-		$("#proxyPACInterval").val(proxy.data.reloadPACInterval).attr('disabled', proxy.data.readonly ? 'disabled': '');
+		$("#proxyConfigUrl").val(proxy.data.configUrl).prop('disabled', proxy.data.readonly ? true: false);
+		$("#proxyNotifLoad").setChecked(proxy.data.notifOnLoad).prop('disabled', proxy.data.readonly ? true: false);
+		$("#proxyNotifError").setChecked(proxy.data.notifOnError).prop('disabled', proxy.data.readonly ? true: false);
+		$("#proxyPACReload").setChecked(proxy.data.reloadPAC).prop('disabled', proxy.data.readonly ? true: false);
+		$("#bypassFPForPAC").setChecked(proxy.data.bypassFPForPAC).prop('disabled', proxy.data.readonly ? true: false);
+		$("#proxyPACInterval").val(proxy.data.reloadPACInterval).prop('disabled', proxy.data.readonly ? true: false);
 		$("#proxyPatterns * input[type='button']");//.button("option", "disabled", proxy.data.readonly);
 		$("#configUrlPanel input[type='button']");//.button("option", "disabled", proxy.data.readonly);
 		$("#proxyLogin").val(list[selectedProxy].data.login);
@@ -47,7 +47,7 @@ var selectedPattern = -1;
 		$("input[name='proxyType']:checked").click();
 		
 		sProxyColor = proxy.data.color;
-		$('#proxyColor').ColorPickerSetColor(sProxyColor);//.attr('disabled', proxy.data.readonly ? 'disabled': '');
+		$('#proxyColor').ColorPickerSetColor(sProxyColor);//.prop('disabled', proxy.data.readonly ? true: false);
 		$('#proxyColor div').css('backgroundColor',sProxyColor);
 		oPatternTable.fnClearTable();
 		//oIpPatternTable.fnClearTable();
