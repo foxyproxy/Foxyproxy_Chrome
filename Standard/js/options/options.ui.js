@@ -127,11 +127,11 @@ $(document).ready(function(){
 	case "copySelectedPattern":
 	    copySelectedPattern();
 	    break;
-	
-	case "deleteSelectedProxy":
-	    deleteSelectedProxy();
-	    break;
 
+	case "deleteSelectedPattern":
+	    deleteSelectedPattern();
+	    break;
+	
         }
         
     });
