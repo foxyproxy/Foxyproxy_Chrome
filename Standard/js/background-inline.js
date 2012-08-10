@@ -5,7 +5,7 @@ if (!localStorage.getItem('proxyList')) {
 	    "id": "default",
 	    "readonly": true,
 	    "enabled": true,
-	    "color": "#45fa89",
+	    "color": "#0000ff",
 	    "name": "Default",
 	    "notes": "These are the settings that are used when no patterns match an URL",
 	    "host": "",
