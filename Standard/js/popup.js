@@ -1,21 +1,22 @@
-function localize(txt){
+var localize = function (txt){
     if(!window.locale){
 	window.locale = JSON.parse(localStorage.getItem('en-en'));
     }
     if(txt && window.locale[txt]){
-	console.log(window.locale[txt])
+	console.log(window.locale[txt]);
 	return window.locale[txt];
     } else {
-	console.log(txt)
+	console.log(txt);
 	return txt;
     }
 }
 
-function options(data){
+var options = function (data){
     chrome.extension.getBackgroundPage().foxyProxy.options(data);
+    
 }
 
-function toogleRadioButton(id){
+var toggleRadioButton = function (id){
     $("li").removeClass("navbar-checked");
     $("#state-"+id).addClass("navbar-checked");
     chrome.extension.getBackgroundPage().foxyProxy.state = id;
@@ -27,8 +28,9 @@ $(document).ready(function(){
 
     $("#navbar").on("click", "li", function (e) {
         e.preventDefault();
-        
+
         var elemId = $(this).attr("id");
+
         switch (elemId) {
             case "state-auto":
             toggleRadioButton('auto');
