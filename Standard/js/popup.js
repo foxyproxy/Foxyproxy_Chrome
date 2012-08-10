@@ -71,7 +71,7 @@ $(document).ready(function(){
 		})
 	    )
 		.click(function(){
-		    toggleRadioButton($(this).attr("proxyid"))
+		    toggleRadioButton($(this).attr("proxyid"));
 		})
 		.insertBefore("li#state-disabled");
 	}
