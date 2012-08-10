@@ -38,7 +38,7 @@ $(document).ready(function(){
     
     /* listen for all button clicks and load
        the appropriate function accordingly */
-    $("#mainview-content").on("click", "button", function (e) {
+    $("body").on("click", "button", function (e) {
 
         var buttonId = $(this).attr("id");
         
@@ -70,6 +70,11 @@ $(document).ready(function(){
             break;
 
         /* global settings */
+	case "btnExport":
+	    exportConfig();
+	    break;
+
+	/* log */
         case "logClear":
             logClear();
             break;
@@ -102,6 +107,31 @@ $(document).ready(function(){
             logPatternsForAll();
             break;
             
+	case "pacViewButton":
+	    openPackViewDlg();
+	    break;
+	    
+	case "testPac":
+	    testPac();
+	    break;
+
+	/* patterns */
+	case "addNewPattern":
+	    addNewPattern();
+	    break;
+	    
+	case "editPattern":
+	    editPattern();
+	    break;
+	    
+	case "copySelectedPattern":
+	    copySelectedPattern();
+	    break;
+	
+	case "deleteSelectedProxy":
+	    deleteSelectedProxy();
+	    break;
+
         }
         
     });

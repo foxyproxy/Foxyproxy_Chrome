@@ -80,7 +80,7 @@
 				<p>
 					<input type="checkbox" id="settingsContextmenu" /><span id="settingsContextmenuLabel">Show icon in the context menu</span>
 				</p>
-				<button id="btnExport" onclick="exportConfig();">Export Settings</button>
+				<button id="btnExport">Export Settings</button>
 		</div>		
 		<!-- End of Proxies list page ---------------------------------------------------------------------------------------------------->
 				
@@ -328,8 +328,8 @@
 						<tr class="proxyTypeAutoGroup">
 							<td id="configUrlPanel" class="marged">
 								<input type="text" id="proxyConfigUrl" size="45">
-								<button id="pacViewButton" onclick="openPacViewDlg()">View</button>
-								<button id="testPac" onclick="testPac()">Test</button>
+								<button id="pacViewButton">View</button>
+								<button id="testPac">Test</button>
 								<a id="hint_pac" class="help">&nbsp;</a>
 							</td>
 						</tr>
@@ -361,10 +361,10 @@
 			<div id="proxyPatterns">
 				<div style="text-align: left;"><span>Here you can specify when this proxy is and is not used.</span>
 					<p>
-						<button id="addNewPattern" onclick="addNewPattern();">Add new pattern</button>
-						<button id="editPattern" onclick="editPattern();">Edit selection</button>
-						<button id="copySelectedPattern" onclick="copySelectedPattern();">Copy selection</button>
-						<button id="deleteSelectedPattern" onclick="deleteSelectedPattern();">Delete selection</button>
+						<button id="addNewPattern">Add new pattern</button>
+						<button id="editPattern">Edit selection</button>
+						<button id="copySelectedPattern">Copy selection</button>
+						<button id="deleteSelectedPattern">Delete selection</button>
 						<!--button>Help contents</button-->
 					</p>
 					<table id="patternList" class="proxyList">

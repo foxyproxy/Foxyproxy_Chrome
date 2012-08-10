@@ -1,5 +1,4 @@
 function patternLoad(pattern, edit){
-		//console.log()
 		$(".modeAdd").show();
 		$(".modeQuickAdd").hide();
 		$("#patternEnabled").setChecked(pattern.data.enabled);
