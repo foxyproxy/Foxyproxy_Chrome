@@ -53,17 +53,6 @@ $(document).ready(function(){
 
     });
 
-    $("#navbar").on("click", "#state-disabled a", function (e) {
-        e.preventDefault();
-        toogleRadioButton('disabled');
-    });
-
-    $("#navbar").on("click", "#state-disabled a", function (e) {
-        e.preventDefault();
-        toogleRadioButton('disabled');
-    });
-
-
     $("a").each(function(){
 	if(this.childNodes.length == 0 || (this.childNodes.length == 1 && this.childNodes[0].nodeName == "#text")){
 	    this.innerText = localize(this.innerText);
@@ -82,7 +71,7 @@ $(document).ready(function(){
 		})
 	    )
 		.click(function(){
-		    toogleRadioButton($(this).attr("proxyid"))
+		    toggleRadioButton($(this).attr("proxyid"))
 		})
 		.insertBefore("li#state-disabled");
 	}
