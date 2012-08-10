@@ -200,6 +200,7 @@ ProxyManager.proxyToScript = function (proxy) {
   return c;
 };
 ProxyManager.getPatternForUrl = function (a) {
+    console.log("Looking for pattern");
 	var b = {
 		proxy: null,
 		pattern: null
