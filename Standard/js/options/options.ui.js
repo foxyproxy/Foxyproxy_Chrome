@@ -18,8 +18,15 @@ var localize = function (txt){
 };
 
 var simple_tooltip = function (target_items, name){
+
     $(target_items).each(function(i){
-	$("body").append("<div class='"+name+"' id='"+name+i+"'><p>"+localize($(this).attr('id'))+"</p></div>");
+
+	var div = $("<div/>").attr({"class": name, "id": name + i});
+	var p = $("<p/>").text(localize($(this).attr('id')));
+	div.append(p);
+
+	$("body").append(div);
+
 	var my_tooltip = $("#"+name+i);
 	
 
@@ -56,7 +63,7 @@ $(document).ready(function(){
         case "addNewProxy":
             addNewProxy();
             break;
-            
+	    
         case "proxylistEdit":
             editProxy();
             break;
