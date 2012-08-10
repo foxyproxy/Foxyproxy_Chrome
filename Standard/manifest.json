@@ -22,7 +22,7 @@
 	},
 
 	// Add any of these that you need
-	"background": "background.html",
+	"background": {"page": "background.html"},
 	// Figure out why the addon depends on these this day
 	"content_scripts": [ 
 		{
@@ -39,6 +39,7 @@
 	],
 	"options_page": "options.html",
 	"permissions": [
+                "background",
 		"tabs",				// Required if the extension uses the chrome.tabs or chrome.windows module. 
 		"<all_urls>",		// Gives access to all websites being accessed by chrome
 		"contextMenus",		// Required if the extension uses the chrome.contextMenus module. 
