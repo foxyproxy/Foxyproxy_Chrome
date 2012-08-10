@@ -9,19 +9,19 @@ var localize = function (txt){
 	console.log(txt);
 	return txt;
     }
-}
+};
 
 var options = function (data){
     chrome.extension.getBackgroundPage().foxyProxy.options(data);
     
-}
+};
 
 var toggleRadioButton = function (id){
     $("li").removeClass("navbar-checked");
     $("#state-"+id).addClass("navbar-checked");
     chrome.extension.getBackgroundPage().foxyProxy.state = id;
     window.close();
-}
+};
 
 
 $(document).ready(function(){
@@ -63,17 +63,19 @@ $(document).ready(function(){
     console.log(list);
 
     $.each(list, function(i, proxy){
+        var a;
 	console.log(proxy.data.type);
 	if(proxy.data.enabled){
-	    $("<li />").attr("id", "state-"+proxy.data.id).attr("proxyid", proxy.data.id).append(
-		$("<a href='#'/>").text(localize("Use proxy") +" \"" + proxy.data.name + "\" "+localize("for all URLs")).css({
-		    "color": proxy.data.color
-		})
-	    )
-		.click(function(){
-		    toggleRadioButton($(this).attr("proxyid"));
-		})
-		.insertBefore("li#state-disabled");
+
+	    a = $("<a href='#'/>").text(localize("Use proxy") +" \"" + proxy.data.name + "\" "+localize("for all URLs")).css({
+		"color": proxy.data.color
+	    });
+
+	$("<li />").attr("id", "state-"+proxy.data.id).attr("proxyid", proxy.data.id).append(a).click(function(){
+		toggleRadioButton($(this).attr("proxyid"));
+	    }).insertBefore("li#state-disabled");
+
+
 	}
     });
 
