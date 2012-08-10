@@ -4,7 +4,7 @@ function Proxy(_data){
 		id: this.randomId(),
 		readonly: false,
 		enabled: true,
-		color: "#0000c4", 
+		color: "#0055E5", 
 		name: "", 
 		notes: "",
 		host: "" , 
