@@ -55,7 +55,7 @@ function onTabShow(tabName)
 			$("#enabledQA").setChecked(settings.enabledQA);
 			$("#patternTemporaryQA").setChecked(settings.patternTemporaryQA);
 			if(settings.enabledQA)
-				$('#QASettingsContainer *').each(function(){ $(this).attr('disabled',''); });
+				$('#QASettingsContainer *').each(function(){ $(this).prop('disabled', false); });
 			else
 				$('#QASettingsContainer *').each(function(){  $(this).attr('disabled','disabled'); });
 			$("#patternTemplateQA").val(settings.patternTemplateQA);
@@ -97,7 +97,7 @@ $(document).ready(function() {
 		
 		chrome.extension.getBackgroundPage().foxyProxy.settings = settings;
 		if(settings.enabledQA)
-			$('#QASettingsContainer *').each(function(){ $(this).attr('disabled',''); });
+			$('#QASettingsContainer *').each(function(){ $(this).prop('disabled', false); });
 		else
 			$('#QASettingsContainer *').each(function(){  $(this).attr('disabled','disabled'); });
 	});
@@ -146,17 +146,17 @@ $(document).ready(function() {
 	$("#proxyTypeManual").click(function(){
 		if($(this).is(":checked"))
 		{
-			$(".proxyTypeManualGroup *").attr('disabled','');
+			$(".proxyTypeManualGroup *").prop('disabled', false);
 			$(".proxyTypeAutoGroup *").attr('disabled','disabled');
-			$("#proxyDNS").attr('disabled','');
+			$("#proxyDNS").prop('disabled', false);
 		}
 	});
 	$("#proxyTypeAuto").click(function(){
 		if($(this).is(":checked"))
 		{
 			$(".proxyTypeManualGroup *").attr('disabled','disabled');
-			$(".proxyTypeAutoGroup *").attr('disabled','');
-			$("#proxyDNS").attr('disabled','');
+			$(".proxyTypeAutoGroup *").prop('disabled', false);
+			$("#proxyDNS").prop('disabled', false);
 		}
 	});
 	
