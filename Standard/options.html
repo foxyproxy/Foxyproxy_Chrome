@@ -66,7 +66,7 @@
 						<td valign="top" class="listManupualtionButtons" style="padding:10px;">
 							<button id="proxylistMoveUp" onclick="moveSelectedProxyUp();">Move Up</button><br/>
 							<button id="proxylistMoveDown" onclick="moveSelectedProxyDown();">Move Down</button><br/><br/>
-							<button onclick="addNewProxy();">Add New Proxy</button><br/>
+							<button id="addNewProxy" onclick="addNewProxy();">Add New Proxy</button><br/>
 							<button id="proxylistEdit" onclick="editProxy();">Edit Selection</button><br/>
 							<button id="proxylistCopy" onclick="copySelectedProxy();">Copy Selection</button><br/>
 							<button id="proxylistDelete" onclick="deleteSelectedProxy();">Delete Selection</button><br/>
@@ -91,8 +91,8 @@
 					<table width="100%"><tr>
 						<td>
 							<input type="checkbox" id="logEnabled" ><span>Enabled</span></input>
-							<button onclick="logClear();"><span>Clear</span></button>
-							<button onclick="logRefresh();"><span>Refresh</span></button>
+							<button id="logClear" onclick="logClear();"><span>Clear</span></button>
+							<button id="logRefresh" onclick="logRefresh();"><span>Refresh</span></button>
 						</td>
 						<td align=right>
 							<span>Maximum size before log wraps</span>
@@ -105,12 +105,12 @@
 					<table style="border:2px solid #ddd;background-color: #fff;width:100%;">
 						<tr>
 							<td valign="top" >
-								<button onclick="logOpen();"><span>Open URL in New Tab</span></button>
+								<button id="logOpen" onclick="logOpen();"><span>Open URL in New Tab</span></button>
 								<button id="logCopy" onclick="logCopy();"><span>Copy URL to Clipboard</span></button>
-								<button onclick="logDelete();"><span>Delete Selection</span></button>
-								<button onclick="logSaveToFile();"><span>Save</span></button>								
-								<button onclick="logPatternsForSelected();"><span>Create Patterns for Selected</span></button>
-								<button onclick="logPatternsForAll();"><span>Create Patterns for All</span></button>
+								<button id="logDelete" onclick="logDelete();"><span>Delete Selection</span></button>
+								<button id="logSaveToFile" onclick="logSaveToFile();"><span>Save</span></button>								
+								<button id="logPatternsForSelected" onclick="logPatternsForSelected();"><span>Create Patterns for Selected</span></button>
+								<button id="logPatternsForAll" onclick="logPatternsForAll();"><span>Create Patterns for All</span></button>
 							</td>
 						</tr>
 						<tr>
@@ -329,7 +329,7 @@
 							<td id="configUrlPanel" class="marged">
 								<input type="text" id="proxyConfigUrl" size="45">
 								<button id="pacViewButton" onclick="openPacViewDlg()">View</button>
-								<button onclick="testPac()">Test</button>
+								<button id="testPac" onclick="testPac()">Test</button>
 								<a id="hint_pac" class="help">&nbsp;</a>
 							</td>
 						</tr>
@@ -361,10 +361,10 @@
 			<div id="proxyPatterns">
 				<div style="text-align: left;"><span>Here you can specify when this proxy is and is not used.</span>
 					<p>
-						<button onclick="addNewPattern();">Add new pattern</button>
-						<button onclick="editPattern();">Edit selection</button>
-						<button onclick="copySelectedPattern();">Copy selection</button>
-						<button onclick="deleteSelectedPattern();">Delete selection</button>
+						<button id="addNewPattern" onclick="addNewPattern();">Add new pattern</button>
+						<button id="editPattern" onclick="editPattern();">Edit selection</button>
+						<button id="copySelectedPattern" onclick="copySelectedPattern();">Copy selection</button>
+						<button id="deleteSelectedPattern" onclick="deleteSelectedPattern();">Delete selection</button>
 						<!--button>Help contents</button-->
 					</p>
 					<table id="patternList" class="proxyList">
