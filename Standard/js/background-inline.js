@@ -48,7 +48,7 @@ $(document).ready(function(){
     $.ajax({
 	url: chrome.extension.getURL("locale/en-en.json"),
 	complete: function(xhr, status,data){
-	    console.log(xhr, status, data)
+	    console.log(xhr, status, data);
 	    localStorage.setItem('en-en', xhr.responseText);
 	    foxyProxy = new Extension();
 	    foxyProxy.log.clear();
