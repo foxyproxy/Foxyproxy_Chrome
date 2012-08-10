@@ -47,8 +47,6 @@ $(document).ready(function(){
             case "tabProxies":
             options('tabProxies');
             break;
-            
-            
         }
 
     });
