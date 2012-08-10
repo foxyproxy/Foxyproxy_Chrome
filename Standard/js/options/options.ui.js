@@ -35,6 +35,79 @@ var simple_tooltip = function (target_items, name){
 };
 
 $(document).ready(function(){
+    
+    /* listen for all button clicks and load
+       the appropriate function accordingly */
+    $("#mainview-content").on("click", "button", function (e) {
+
+        var buttonId = $(this).attr("id");
+        
+        switch (buttonId) {
+
+        /* Proxy List panel */    
+        case "proxylistMoveUp":
+            moveSelectedProxyUp();
+            break;
+        
+        case "moveSelectedProxyDown":
+            moveSelectedProxyDown();
+            break;
+
+        case "addNewProxy":
+            addNewProxy();
+            break;
+            
+        case "proxylistEdit":
+            editProxy();
+            break;
+            
+        case "proxylistCopy":
+            copySelectedProxy();
+            break;
+            
+        case "proxylistDelete":
+            deleteSelectedProxy();
+            break;
+
+        /* global settings */
+        case "logClear":
+            logClear();
+            break;
+
+        case "logRefresh":
+            logRefresh();
+            break;
+
+        case "logOpen":
+            logOpen();
+            break;
+            
+        case "logCopy":
+            logCopy();
+            break;
+            
+        case "logDelete":
+            logDelete();
+            break;
+
+        case "logSaveToFile":
+            logSaveToFile();
+            break;
+            
+        case "logPatternsForSelected":
+            logPatternsForSelected();
+            break;
+            
+        case "logPatternsForAll":
+            logPatternsForAll();
+            break;
+            
+        }
+        
+    });
+
+
+
     $("#proxyPort").keypress(function(event){
 	newVal = $(this).val()+String.fromCharCode(event.which);
 	if((newVal>65535) || (newVal==='0'))event.preventDefault();
