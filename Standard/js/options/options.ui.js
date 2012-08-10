@@ -3,7 +3,7 @@ if(typeof console == 'undefined'){
 	log: function(txt){ 
 	    //alert(txt);
 	}
-    }
+    };
 }
 
 function localize(txt){
@@ -59,7 +59,8 @@ $(document).ready(function(){
     initProxyList();
     
     
-    console.log('ready')
+    console.log('ready');
+
     $(".navbar-item:not(diabled='true')").click(function(){
 	$(".navbar-item").removeClass("navbar-item-selected");
 	var tab = $(this);
@@ -67,15 +68,15 @@ $(document).ready(function(){
 	tab.addClass("navbar-item-selected");
 	var tabId = $(document.getElementById(tab.attr("pagename"))).show().attr('id');
 	onTabShow(tabId);
-    })
+    });
     
     
 
     
     if(window.location.hash){
-	console.log(window.location.hash)
+	console.log(window.location.hash);
 	if (window.location.hash.indexOf("#tab") == 0){
-	    $(window.location.hash).click()
+	    $(window.location.hash).click();
 	} else if(window.location.hash.indexOf("#quickadd#") == 0){
 	    $("#tabtabProxies").click();
 	    proxySelection(unescape(window.location.hash.replace("#quickadd#", "")));
@@ -88,7 +89,7 @@ $(document).ready(function(){
     chrome.management.get(id, function(info)
 			  {
 			      $('#appString').text(info.name+" "+info.version);
-			  })
+			  });
     
     
     simple_tooltip(".help","tooltip");
