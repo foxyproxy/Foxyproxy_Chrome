@@ -187,6 +187,7 @@ ProxyManager.proxyToScript = function (proxy) {
         case "{patterns}":
           var ret = ""
           for (var k=0, sz=proxy.data.patterns.length; k<sz; k++) {
+              proxy.data.patterns[k].data.regex = proxy.data.patterns[k].convertWildcardToRegexString();
             ret += JSON.stringify(proxy.data.patterns[k].data);
             if (k+1<sz) ret += ", ";
           }
