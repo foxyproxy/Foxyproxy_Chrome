@@ -32,6 +32,7 @@ function Proxy(_data){
     else{
 	$.extend(this.data, _data);
     }
+
     if (this.data.patterns && this.data.patterns.length){
 	this.data.patterns = $.map(this.data.patterns, function(obj){
 	    return new ProxyPattern(obj);
@@ -94,7 +95,7 @@ function ProxyPattern(_data){
     }else{
 	$.extend(this.data, _data);
     }
-    this.data.regex = this.convertWildcardToRegexString();
+    //this.data.regex = this.convertWildcardToRegexString();
 }
 
 ProxyPattern.prototype = {
