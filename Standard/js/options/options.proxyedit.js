@@ -17,7 +17,7 @@ var selectedPattern = -1;
 
 	function proxyLoad(proxy, edit){
 		
-		console.log(proxy.data);
+		//console.log(proxy.data);
 		
 		$("input[name='proxyType'][value='"+proxy.data.type+"']").setChecked(true).click();
 		
@@ -33,12 +33,15 @@ var selectedPattern = -1;
 		$("#proxyNotes").val(proxy.data.notes).prop('disabled', proxy.data.readonly ? true: false);
 		$("#proxyCycle").setChecked(proxy.data.cycle);//.attr('disabled', proxy.data.readonly);
 		$("#proxyDNS").setChecked(proxy.data.useDns);//.attr('disabled', proxy.data.readonly);		
+/*
+                remote url removed from version 2.0. Will be introduced in version 2.1
 		$("#proxyConfigUrl").val(proxy.data.configUrl).prop('disabled', proxy.data.readonly ? true: false);
 		$("#proxyNotifLoad").setChecked(proxy.data.notifOnLoad).prop('disabled', proxy.data.readonly ? true: false);
 		$("#proxyNotifError").setChecked(proxy.data.notifOnError).prop('disabled', proxy.data.readonly ? true: false);
 		$("#proxyPACReload").setChecked(proxy.data.reloadPAC).prop('disabled', proxy.data.readonly ? true: false);
 		$("#bypassFPForPAC").setChecked(proxy.data.bypassFPForPAC).prop('disabled', proxy.data.readonly ? true: false);
 		$("#proxyPACInterval").val(proxy.data.reloadPACInterval).prop('disabled', proxy.data.readonly ? true: false);
+*/
 		$("#proxyPatterns * input[type='button']");//.button("option", "disabled", proxy.data.readonly);
 		$("#configUrlPanel input[type='button']");//.button("option", "disabled", proxy.data.readonly);
 		$("#proxyLogin").val(list[selectedProxy].data.login);
@@ -124,25 +127,29 @@ var selectedPattern = -1;
 							list[selectedProxy].data.cycle = $("#proxyCycle").is(":checked");
 							list[selectedProxy].data.useDns = $("#proxyDNS").is(":checked");
 							list[selectedProxy].data.isSocks = $("#proxyIsSocks").is(":checked");
-							list[selectedProxy].data.notifOnLoad = $("#proxyNotifLoad").is(":checked");
+							/*
+                                                        list[selectedProxy].data.notifOnLoad = $("#proxyNotifLoad").is(":checked");
 							list[selectedProxy].data.notifOnError = $("#proxyNotifError").is(":checked");
 							list[selectedProxy].data.reloadPAC = $("#proxyPACReload").is(":checked");
 							list[selectedProxy].data.bypassFPForPAC = $("#bypassFPForPAC").is(":checked");
+                                                        */
 							list[selectedProxy].data.name = $("#proxyName").val();
 							list[selectedProxy].data.notes = $("#proxyNotes").val();
 							list[selectedProxy].data.type = $("input[name='proxyType']:checked").val();
 							list[selectedProxy].data.socks = $("input[name='proxySocks']:checked").val();
 							list[selectedProxy].data.host = $("#proxyHost").val();
 							list[selectedProxy].data.port = $("#proxyPort").val();
+                                                    /*
 							list[selectedProxy].data.configUrl = $("#proxyConfigUrl").val();
 							list[selectedProxy].data.reloadPACInterval = $("#proxyPACInterval").val();
+                                                    */
 							list[selectedProxy].data.color = sProxyColor;
-							
+							/*
 							if($("input[name='proxyType']:checked").val()=="auto")
 							{
 								list[selectedProxy].updatePAC();
 							}
-							
+							*/
 							updateProxyTable();
 							//oTable.fnSelectRow(selectedProxy);
 							saveProxies();
@@ -270,7 +277,7 @@ var selectedPattern = -1;
 		function copySelectedPattern(){
 			console.log(selectedPattern);
 			selectedPattern = oPatternTable.fnGetSelectedPosition();
-			console.log(selectedPattern)
+			console.log(selectedPattern);
 			if(typeof selectedPattern=='number' && selectedPattern>=0){
 				list[selectedProxy].data.patterns.splice(selectedPattern, 0, new ProxyPattern(list[selectedProxy].data.patterns[selectedPattern]));
 				updatePatternTable(selectedPattern);
@@ -278,7 +285,7 @@ var selectedPattern = -1;
 		}
 		
 		function openPacViewDlg(){
-			if($("#proxyConfigUrl").val()){
+/*			if($("#proxyConfigUrl").val()){
 					$.ajax({
 						url: $("#proxyConfigUrl").val(),
                                                 cache: false,
@@ -296,10 +303,11 @@ var selectedPattern = -1;
 						}
 					});
 			}
+*/
 		}
 		
 		function testPac() {
-			if($("#proxyConfigUrl").val()){
+/*			if($("#proxyConfigUrl").val()){
 				$.ajax({
 					url: $("#proxyConfigUrl").val() + "?rnd=" + Math.random(),
                                         cache: false,
@@ -326,7 +334,9 @@ var selectedPattern = -1;
 							worker.postMessage(data);
 						}
 					});
+
 			}
+*/
 		}
 /*		
 		function addNewIpPattern() {
