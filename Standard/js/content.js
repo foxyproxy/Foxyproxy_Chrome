@@ -9,6 +9,7 @@ function getSelectedText(){
 }
 
 $(document.body).keydown(function (e) {
+    alert("run");
 	if(e.altKey && e.keyCode == 114 && !e.ctrlKey){
 		var selection = getSelectedText();
 		if(selection){
