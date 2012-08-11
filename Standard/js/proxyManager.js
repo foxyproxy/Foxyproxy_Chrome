@@ -141,7 +141,7 @@ for (var i=0, sz=patterns.length; i<sz; i++) {\n\
     // ProxyPattern instances\n\
     var p = patterns[i];\n\
     if (p.enabled) {\n\
-      if (p.url.regex.test(url)) {\n\
+      if (RegExp(p.regex).test(url)) {\n\
         if (p.whitelist != \"Inclusive\") {\n\
           // Black takes priority over white -- skip this pattern\n\
           continue;\n\
@@ -199,6 +199,7 @@ ProxyManager.proxyToScript = function (proxy) {
   // TODO: handle IP patterns
   return c;
 };
+
 ProxyManager.getPatternForUrl = function (a) {
     console.log("Looking for pattern");
 	var b = {

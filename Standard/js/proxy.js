@@ -75,7 +75,7 @@ Proxy.prototype = {
 	    this.data.pac = "";
 	}
     }
-}
+};
 
 function ProxyPattern(_data){
     this.className = "ProxyPattern";
@@ -85,7 +85,8 @@ function ProxyPattern(_data){
 	name: "Untitled pattern", 
 	url: "", 
 	whitelist: 'Inclusive', 
-	type: "wildcard"
+	type: "wildcard",
+        regex: ""
     };
 
     if(_data && _data.data){
@@ -93,22 +94,29 @@ function ProxyPattern(_data){
     }else{
 	$.extend(this.data, _data);
     }
+    this.data.regex = this.convertWildcardToRegexString();
 }
 
 ProxyPattern.prototype = {
     toArray: function(){
 	return	[this.data.enabled, this.data.name, this.data.url, this.data.type, this.data.whitelist, this.data.temp];
     }
-}
+};
 
-ProxyPattern.prototype.test = function(txt){
+
+ProxyPattern.prototype.convertWildcardToRegexString = function(){
     var rx = null;
     if(this.data.type == "wildcard"){
 	var result = this.data.url.replace(/([\/\(\)\[\]\.\?])/g,'\\$1');
-	result = result.replace('*','.*');
-	rx = RegExp(result);
+	result = result.replace(/\*/g,'.*');
+	rx = result;
     } else {
-	rx = RegExp(this.data.url);
+	rx = this.data.url;
     }
+    return rx;
+};
+
+ProxyPattern.prototype.test = function(txt){
+    var rx = RegExp(this.convertWildcardToRegexString());
     return rx.test(txt);
-}
+};
