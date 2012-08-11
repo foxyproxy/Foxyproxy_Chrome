@@ -18,23 +18,13 @@
 	},
 
 	"background": {"page": "background.html"},
-	"content_scripts": [ 
-		{
-		"all_frames": false,
-		"js": [ "js/jquery-1.7.2.min.js"],
-		"matches": [ "<all_urls>" ],
-		"run_at": "document_idle"
-		}
-	],
+	"content_scripts": [],
 	"options_page": "options.html",
 	"permissions": [
                 "background",
 		"tabs",			
-		"<all_urls>",		
 		"contextMenus",		
 		"management",		
-		"proxy", 		
-		"background",		
-		"unlimitedStorage"	
+		"proxy"
 	]
 }
