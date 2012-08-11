@@ -151,9 +151,9 @@ for (var i=0, sz=patterns.length; i<sz; i++) {\n\
         }\n\
       }\n\
     }\n\
-  }\n\
-  if (white != -1) return /*this.matches[white]*/ {proxyStr};\n\
-}";
+}\n\
+if (white != -1) return /*this.matches[white]*/ {proxyStr};\n\
+";
 
 ProxyManager.proxyToScript = function (proxy) {
 	var c = "", proxyStr;
@@ -175,7 +175,7 @@ ProxyManager.proxyToScript = function (proxy) {
       break;
 	}
 	if (proxy.data.id == "default") {
-		c += "  return " + proxyStr + ";";
+		c += "return " + proxyStr + ";";
 		return c;
 	}
 
