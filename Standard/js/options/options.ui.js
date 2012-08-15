@@ -60,10 +60,6 @@ $(document).ready(function(){
             moveSelectedProxyDown();
             break;
          
-        case "moveSelectedProxyDown":
-            moveSelectedProxyDown();
-            break;
-
         case "addNewProxy":
             addNewProxy();
             break;
