@@ -16,7 +16,7 @@ var selectedPattern = -1;
 }(jQuery));
 
 	function proxyLoad(proxy, edit){
-		
+	    
 		//console.log(proxy.data);
 		
 		$("input[name='proxyType'][value='"+proxy.data.type+"']").setChecked(true).click();
@@ -74,6 +74,7 @@ var selectedPattern = -1;
 				{
 					text: localize("Save"),
 					click: function(){
+                                            var regexp, mode, index, found, name;
 						if($("input[name='proxyType']:checked").val() == 'manual' && ($("#proxyHost").val()=='' || $("#proxyPort").val()=='')){
 							alert(localize("Hostname/IP address and port must be specified"));
 							return;
@@ -82,11 +83,9 @@ var selectedPattern = -1;
 							alert(localize("Interval should be integer"));
 							return;
 						}
-						if($("input[name='proxyType']:checked").val()=="auto")
-						{
-							var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
-							if(!regexp.test($("#proxyConfigUrl").val()))
-							{
+						if($("input[name='proxyType']:checked").val()=="auto") {
+							regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+							if(!regexp.test($("#proxyConfigUrl").val())){
 								alert(localize("Proxy config URL is not valid"));
 								return;
 							}
@@ -96,24 +95,21 @@ var selectedPattern = -1;
 						{
 							
 							if($("#proxyName").val() == ''){
-								var mode = $("input[name='proxyType']:checked").val();
-								if(mode == 'manual')
-									$("#proxyName").val($("#proxyHost").val() +":"+$("#proxyPort").val())
-								else
-								{
+								mode = $("input[name='proxyType']:checked").val();
+								if(mode == 'manual') {
+									$("#proxyName").val($("#proxyHost").val() +":"+$("#proxyPort").val());
+                                                                }
+								else {
 									
-									var index = 0;
-									var found = true;
-									while(found)
-									{
+									index = 0;
+									found = true;
+									while(found) {
 										index++;
-										var name = "New Proxy";
+										name = "New Proxy";
 										if(index>1)name+=" ("+index+")";
 										found = false;
-										for(i in list)
-										{
-											if(list[i].data.name == name)
-											{
+										for(i in list) {
+											if(list[i].data.name == name) {
 												found = true;
 												break;												
 											}
@@ -161,7 +157,7 @@ var selectedPattern = -1;
 					text: localize("Cancel"),
 					click: function(){
 						if(!edit)
-							deleteProxy(selectedProxy)
+							deleteProxy(selectedProxy);
 						else
 							updateProxyTable();
 						
