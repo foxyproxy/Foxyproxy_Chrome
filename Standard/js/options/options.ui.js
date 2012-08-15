@@ -55,7 +55,11 @@ $(document).ready(function(){
         case "proxylistMoveUp":
             moveSelectedProxyUp();
             break;
-        
+
+        case "proxylistMoveDown":
+            moveSelectedProxyDown();
+            break;
+         
         case "moveSelectedProxyDown":
             moveSelectedProxyDown();
             break;
