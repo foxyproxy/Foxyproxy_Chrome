@@ -29,6 +29,7 @@ ProxyManager.profileFromProxy = function (a) {
 		proxySocks: a.data.isSocks ? b : null,
 		socksVersion: a.data.socks,
 		proxyConfigUrl: a.data.configUrl
+
 	}
 };
 ProxyManager.profileAuto = function () {
@@ -128,7 +129,7 @@ ProxyManager.generatePacAutoScript = function () {
 		b = foxyProxy.proxyList;
 	a.push("function FindProxyForURL(url, host) {");
 	for (var c = 0, sz=b.length; c < sz; c++) {
-		a.push(ProxyManager.proxyToScript(b[c]))
+		a.push(ProxyManager.proxyToScript(b[c]));
 	}
 	a.push("}");
 	return a.join("\r\n");
@@ -168,7 +169,7 @@ ProxyManager.proxyToScript = function (proxy) {
       if (!proxy.data.pac || proxy.data.pac.length == 0)
         proxyStr = '"' + "PROXY badpac:6666" + '"';
 		  else
-        c += " function wrapper(url, host){ " + proxy.data.pac + " return FindProxyForURL(url, host); }", proxyStr = "wrapper(url, host)"
+        c += " function wrapper(url, host){ " + proxy.data.pac + " return FindProxyForURL(url, host); }", proxyStr = "wrapper(url, host)";
       break;
     default:
       console.log("Error: unknown proxy.data.type");
@@ -185,7 +186,7 @@ ProxyManager.proxyToScript = function (proxy) {
   c += ProxyManager.template.replace(/{patterns}|{proxyStr}/g, function(s) {
       switch(s) {
         case "{patterns}":
-          var ret = ""
+          var ret = "";
           for (var k=0, sz=proxy.data.patterns.length; k<sz; k++) {
               proxy.data.patterns[k].data.regex = proxy.data.patterns[k].convertWildcardToRegexString();
             ret += JSON.stringify(proxy.data.patterns[k].data);
