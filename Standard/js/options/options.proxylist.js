@@ -2,11 +2,12 @@ var selectedProxy =  -1;
 var oTable;
 var list = null;
 var bg = null;
+
 function resetProxies(){
     bg = chrome.extension.getBackgroundPage();
-    console.log("List of Proxies", bg.foxyProxy.proxyList);
     list = $.map(bg.foxyProxy.proxyList, function (p){ return new Proxy(p);} );
 }
+
 function saveProxies(){
     bg.foxyProxy.proxyList = list;
     bg.foxyProxy.state = bg.foxyProxy.state;
@@ -32,7 +33,7 @@ function initProxyList() {
 	"aoColumns": [
 	    {"bVisible": false},
 	    {"sTitle": localize( "Enabled"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}},
-	    {"sTitle": localize( "Color"), "bUseRendered":false, "fnRender": function(obj) { var c = obj.aData[ obj.iDataColumn ]; return "<span class='colorbox' style='background-color: "+c+"'></span>";;}},
+	    {"sTitle": localize( "Color"), "bUseRendered":false, "fnRender": function(obj) { var c = obj.aData[ obj.iDataColumn ]; return "<span class='colorbox' style='background-color: "+c+"'></span>";}},
 	    
 	    {"sTitle": localize( "Proxy Name") },
 	    {"sTitle": localize( "Proxy Notes") },
@@ -41,10 +42,10 @@ function initProxyList() {
 	    {"sTitle": localize( "SOCKS proxy?"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}},
 	    {"sTitle": localize( "SOCKS Version")},
 
-             // Will need to remove and reintroduce columns when functionality is working.
+/*             // Will need to remove and reintroduce columns when functionality is working.
 	     {"sTitle": localize( "Auto PAC URL")},
 	     {"sTitle": localize( "Proxy DNS")}
-
+*/
 	]
     } );
     
