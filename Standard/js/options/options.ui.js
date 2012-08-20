@@ -151,11 +151,31 @@ $(document).ready(function(){
 	$(this).val(str);
     });
 
+    /**
+     * If the user enters the port as part of the hostname, parse it and put it into the port field automatically.
+     * Thanks, Sebastian Lisken <Sebastian dot Lisken at gmx dot net>
+     */
+    $('#proxyHost').change(function() {
+	var portInput = document.getElementById("proxyPort");
+	this.value = this.value.replace(/^\s*(.*?)\s*$/, "$1");
+	var match = this.value.match(/^(.*?)(?:\s*:\s*|\s+)([0-9]+)$/);
+	if (match) {
+	    var port = match[2] - 0;
+	    if (port < 0x10000) {
+		this.value = match[1];
+		portInput.value = port;
+	    }
+	}
+    });
+
     $("#proxyPort").keypress(function(event){
 	var newVal = $(this).val()+String.fromCharCode(event.which);
 	if((newVal>65535) || (newVal==='0'))event.preventDefault();
 	if(event.shiftKey)event.preventDefault();
     });
+
+
+
     $("#logSize").keypress(function(event){
 	if(event.shiftKey)event.preventDefault();
     });
