@@ -143,20 +143,26 @@ $(document).ready(function(){
         
     });
 
+    
 
+    $('#proxyHost').keyup(function(){
+	var str = $(this).val();
+	str = str.replace(/\s/g,'');
+	$(this).val(str);
+    });
 
     $("#proxyPort").keypress(function(event){
-	newVal = $(this).val()+String.fromCharCode(event.which);
+	var newVal = $(this).val()+String.fromCharCode(event.which);
 	if((newVal>65535) || (newVal==='0'))event.preventDefault();
 	if(event.shiftKey)event.preventDefault();
     });
-    $("#logSize").keypress(function(e){
-	if(e.shiftKey)event.preventDefault();
+    $("#logSize").keypress(function(event){
+	if(event.shiftKey)event.preventDefault();
     });
     $("#proxyPort").numeric();
     $("#logSize").numeric();
     $("#proxyPACInterval").numeric();
-    
+
     $("span, th, a, button, h1").each(function(){
 	if(this.childNodes.length == 0 || (this.childNodes.length == 1 && this.childNodes[0].nodeName == "#text")){
 	    this.innerText = localize(this.innerText);
