@@ -11,6 +11,7 @@ function resetProxies(){
 function saveProxies(){
     bg.foxyProxy.proxyList = list;
     bg.foxyProxy.state = bg.foxyProxy.state;
+    onTabShow("");
 }
 
 resetProxies();
