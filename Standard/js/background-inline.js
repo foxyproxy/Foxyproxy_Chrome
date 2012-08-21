@@ -42,7 +42,7 @@ if (!localStorage.getItem('settings')){
     }));
 }
 if (!localStorage.getItem('state')){
-    localStorage.setItem('state', 'default');
+    localStorage.setItem('state', 'disabled');
 }
 $(document).ready(function(){
     $.ajax({
