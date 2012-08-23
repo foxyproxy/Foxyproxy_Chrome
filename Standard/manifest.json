@@ -25,6 +25,7 @@
 		"tabs",			
 		"contextMenus",		
 		"management",		
-		"proxy"
+		"proxy",
+                "<all_urls>"
 	]
 }
