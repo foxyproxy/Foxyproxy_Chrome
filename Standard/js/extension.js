@@ -255,7 +255,7 @@ function Extension() {
 	    self.drawIconAtRotation();
 	    if (rotation <= 1) {
 		setTimeout(function () {
-		    self.animateFlip(1)
+		    self.animateFlip(1);
 		}, animationSpeed);
 	    } else {
 		rotation = 0;
