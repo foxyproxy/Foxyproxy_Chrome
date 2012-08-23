@@ -15,7 +15,7 @@ function LogEntry(_data){
 		'whitelist': '', 
 		'pac': '', 
 		'error': ''
-	}
+	};
 	if(_data && _data.data){
 		$.extend(this.data, _data.data);
 	}else{
@@ -27,7 +27,7 @@ LogEntry.prototype = {
 	toArray: function(){
 		return	[this.data.timestamp, this.data.color, this.data.url, this.data.proxyName, this.data.proxyNotes, this.data.patternName, this.data.pattern, '', this.data.patternType, this.data.whitelist, this.data.pac, this.data.error];
 	}
-}
+};
 
 
 function FoxyLog(){
@@ -37,7 +37,7 @@ function FoxyLog(){
        return enabled;
     });
 	this.__defineSetter__("enabled", function(_enabled){
-		enabled = _enabled
+		enabled = _enabled;
 		localStorage.setItem("loggingEnabled", _enabled);
     });
 
@@ -46,7 +46,7 @@ function FoxyLog(){
        return maxLength;
     });
 	this.__defineSetter__("maxLength", function(_maxLength){
-		maxLength = _maxLength
+		maxLength = _maxLength;
 		localStorage.setItem("maxLength", _maxLength);
     });
 	
@@ -68,9 +68,10 @@ function FoxyLog(){
 					fnCallback( $.map(data.rows, function(row, i){
 						return new LogEntry(data.rows.item(i));
 					}));
+                                 
 			});
 		});
-	}
+	};
 	
 	this.addLog = function(url, proxy, pattern){
 		if(enabled){
@@ -102,21 +103,21 @@ function FoxyLog(){
 						]
 			});
 		}
-	}
+	};
 	
 	this.truncate = function(callback){
 		db.truncateTable({table: 'log', size: maxLength}, callback);
-	}
+	};
 	
 	this.removeLog = function(params, callback){
 		db.removeRow({
 			table: 'log',
 			params: params
 		}, callback);
-	}
+	};
 	
 	this.clear = function(callback){
 		db.clearTable('log', callback);
-	}
+	};
 
 }

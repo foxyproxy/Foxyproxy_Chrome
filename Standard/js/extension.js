@@ -301,6 +301,7 @@ function Extension() {
 	}
     };
     chrome.extension.onRequest.addListener(function (request, sender, callback) {
+
 	var tab = sender.tab;
 	if (state == 'disabled') return;
 	if (request.action == 'quickadd') {
@@ -308,7 +309,9 @@ function Extension() {
 	} else if (request.action == 'proxylist') {
 	    self.options('tabProxies');
 	} else if (request.action == 'log') {
+
 	    self.getProxyForUrl(request.url, function (url, proxy, pattern) {
+
 		console.log(proxy, IconCreator.paintIcon(self.icon, proxy.data.color));
 		if (proxy) {
 		    self.currentImageData = IconCreator.paintIcon(self.icon, proxy.data.color);
