@@ -67,7 +67,7 @@ var selectedPattern = -1;
 		$("#proxyEditDlg").dialog({
 			title: localize("FoxyProxy - Proxy settings"),
 			modal: true,
-			width:"700px",
+			width:"800px",
 	//		height: 460,
 			resizable: false,
 			buttons: [
