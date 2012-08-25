@@ -30,7 +30,7 @@ ProxyManager.profileFromProxy = function (a) {
 		socksVersion: a.data.socks,
 		proxyConfigUrl: a.data.configUrl
 
-	}
+	};
 };
 ProxyManager.profileAuto = function () {
 	return {
@@ -39,7 +39,7 @@ ProxyManager.profileAuto = function () {
 		proxySocks: "",
 		socksVersion: "",
 		proxyConfigUrl: ""
-	}
+	};
 };
 
 /**
@@ -145,7 +145,7 @@ for (var i=0, sz=patterns.length; i<sz; i++) {\n\
       if (RegExp(p.regex).test(url)) {\n\
         if (p.whitelist != \"Inclusive\") {\n\
           // Black takes priority over white -- skip this pattern\n\
-          continue;\n\
+          return \"DIRECT\";\n\
         }\n\
         else if (white == -1) {\n\
           white = i; // store first matched index and continue checking for blacklist matches!\n\
