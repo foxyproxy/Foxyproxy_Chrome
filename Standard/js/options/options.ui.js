@@ -114,14 +114,14 @@ $(document).ready(function(){
             logPatternsForAll();
             break;
             
-/*	case "pacViewButton":
+	case "pacViewButton":
 	    openPackViewDlg();
 	    break;
 	    
 	case "testPac":
 	    testPac();
 	    break;
-*/
+
 	/* patterns */
 	case "addNewPattern":
 	    addNewPattern();
