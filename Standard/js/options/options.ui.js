@@ -115,7 +115,7 @@ $(document).ready(function(){
             break;
             
 	case "pacViewButton":
-	    openPackViewDlg();
+	    openPacViewDlg();
 	    break;
 	    
 	case "testPac":
