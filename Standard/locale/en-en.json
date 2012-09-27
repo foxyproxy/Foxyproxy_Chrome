@@ -62,7 +62,7 @@
 "Cancel":"Cancel",
 "Whitelist (Inclusive) or Blacklist (Exclusive)":"Whitelist (Inclusive) or Blacklist (Exclusive)",
 "PAC execution timeout.":"PAC execution timeout.",
-"PAC file sucsessful loaded":"PAC file sucsessful loaded",
+"PAC file successfully loaded":"PAC file successfully loaded",
 "PAC file error":"PAC file error",
 "FoxyProxy - Add/Edit pattern":"FoxyProxy - Add/Edit pattern",
 "host:port can not be determined from selected text":"host:port can not be determined from selected text",
