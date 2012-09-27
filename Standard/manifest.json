@@ -35,7 +35,7 @@
 
     "sandbox": {
         "pages": ["pac-sandbox.html"]
-    }
+    },
 
     "options_page": "options.html",
     "permissions": [
