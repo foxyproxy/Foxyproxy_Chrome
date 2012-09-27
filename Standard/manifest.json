@@ -32,6 +32,11 @@
 	    "run_at": "document_start"
 	}
     ],
+
+    "sandbox": {
+        "pages": ["pac-sandbox.html"]
+    }
+
     "options_page": "options.html",
     "permissions": [
         "background",
