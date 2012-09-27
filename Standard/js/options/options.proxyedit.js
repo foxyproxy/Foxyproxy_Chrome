@@ -311,27 +311,26 @@ function testPac() {
 		alert(localize("PAC file error") + " " + textStatus + (httpError ? httpError : "")); // httpError can be null
 	    },
 	    success: function(data){
-		var worker = new Worker("js/testpac.js");
-		var timer = setTimeout(function(){
-		    worker.terminate();
-		    alert(localize("PAC execution timeout."));
-		},5000);
-		worker.onmessage = function(e) {
-		    clearTimeout(timer);
-		    alert(e.data);
-		    alert(localize("PAC file sucsessful loaded"));
-		};
-		worker.onerror = function(e) {
-		    clearTimeout(timer);
-		    alert(localize("PAC file error")+"\r\n"+e.data);
-		};
-		worker.postMessage(data);
+                var iframe = document.getElementById("testPacFrame");
+                var message = {
+                    command: 'test',
+                    script: data
+                };
+                iframe.contentWindow.postMessage(message, '*');
 	    }
 	});
 
     }
 
 }
+
+/* Add window listener for testPac function */
+window.addEventListener('message', function (event) {
+    if (event.data) {
+        alert(localize(event.data.name));
+    }
+});
+
 /*		
  function addNewIpPattern() {
  list[selectedProxy].data.ipPatterns.push(new ProxyPattern());
