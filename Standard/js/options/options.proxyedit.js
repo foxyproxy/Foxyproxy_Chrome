@@ -286,7 +286,7 @@ function openPacViewDlg(){
 	    url: $("#proxyConfigUrl").val(),
             cache: false,
             error: function(xhr, textStatus, httpError) {
-                alert(localize("PAC file error") + " " + textStatus + (httpError ? httpError : "")); // httpError can be null
+		alert(localize("PAC file error") + ": " + textStatus + " " + (httpError ? httpError : "")); // httpError can be null
             },
 	    success: function(data){
 		console.log(data);
@@ -308,7 +308,7 @@ function testPac() {
 	    url: $("#proxyConfigUrl").val() + "?rnd=" + Math.random(),
 	    cache: false,
 	    error: function(xhr, textStatus, httpError) {
-		alert(localize("PAC file error") + " " + textStatus + (httpError ? httpError : "")); // httpError can be null
+		alert(localize("PAC file error") + ": " + textStatus + " " + (httpError ? httpError : "")); // httpError can be null
 	    },
 	    success: function(data){
                 var iframe = document.getElementById("testPacFrame");
