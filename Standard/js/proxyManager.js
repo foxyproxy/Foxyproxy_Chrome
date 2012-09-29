@@ -153,32 +153,38 @@ for (var i=0, sz=patterns.length; i<sz; i++) {\n\
       }\n\
     }\n\
 }\n\
-if (white != -1) return /*this.matches[white]*/ {proxyStr};\n\
+if (white != -1) return {proxyStr};\n\
 ";
 
 ProxyManager.proxyToScript = function (proxy) {
-	var c = "", proxyStr;
-	switch (proxy.data.type) {
-	  case "direct":
-		  proxyStr = '"DIRECT"';
-		  break;
-	  case "manual":
-		  proxyStr = '"' + (proxy.data.isSocks ? "SOCKS " : "PROXY ") + proxy.data.host + ":" + proxy.data.port + '"';
-		  break;
-	  case "auto": // PAC
-      if (!proxy.data.pac || proxy.data.pac.length == 0)
-        proxyStr = '"' + "PROXY badpac:6666" + '"';
-		  else
-        c += " function wrapper(url, host){ " + proxy.data.pac + " return FindProxyForURL(url, host); }", proxyStr = "wrapper(url, host)";
-      break;
+    var c = "", proxyStr;
+    switch (proxy.data.type) {
+    case "direct":
+	proxyStr = '"DIRECT"';
+	break;
+    case "manual":
+	proxyStr = '"' + (proxy.data.isSocks ? "SOCKS " : "PROXY ") + proxy.data.host + ":" + proxy.data.port + '"';
+	break;
+    case "auto": // PAC
+        if (!proxy.data.pac || proxy.data.pac.length == 0) {
+            proxyStr = '"' + "PROXY badpac:6666" + '"';
+        }
+	else {
+            
+            c += " function wrapper(url, host){ " + proxy.data.pac + " return FindProxyForURL(url, host); }", proxyStr = "wrapper(url, host)";
+            console.log("Auto remote PAC triggered, YAY: ", c, "\n\nends here.---");
+        }
+        break;
     default:
       console.log("Error: unknown proxy.data.type");
-      break;
-	}
-	if (proxy.data.id == "default") {
-		c += "return " + proxyStr + ";";
-		return c;
-	}
+        break;
+    }
+    if (proxy.data.id == "default") {
+        console.log("proxy.data.id is indeed default");
+        c += "/* Default FoxyProxy PAC */\n";
+	c += "return " + proxyStr + ";";
+	return c;
+    }
 
   // Non-default proxies
   // Handle patterns, if any
