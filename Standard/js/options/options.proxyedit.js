@@ -33,15 +33,14 @@ function proxyLoad(proxy, edit){
     $("#proxyNotes").val(proxy.data.notes).prop('disabled', proxy.data.readonly ? true: false);
     $("#proxyCycle").setChecked(proxy.data.cycle);//.attr('disabled', proxy.data.readonly);
     $("#proxyDNS").setChecked(proxy.data.useDns);//.attr('disabled', proxy.data.readonly);		
-    /*
-     remote url removed from version 2.0. Will be introduced in version 2.1
+    
      $("#proxyConfigUrl").val(proxy.data.configUrl).prop('disabled', proxy.data.readonly ? true: false);
      $("#proxyNotifLoad").setChecked(proxy.data.notifOnLoad).prop('disabled', proxy.data.readonly ? true: false);
      $("#proxyNotifError").setChecked(proxy.data.notifOnError).prop('disabled', proxy.data.readonly ? true: false);
      $("#proxyPACReload").setChecked(proxy.data.reloadPAC).prop('disabled', proxy.data.readonly ? true: false);
-     $("#bypassFPForPAC").setChecked(proxy.data.bypassFPForPAC).prop('disabled', proxy.data.readonly ? true: false);
+    /*$("#bypassFPForPAC").setChecked(proxy.data.bypassFPForPAC).prop('disabled', proxy.data.readonly ? true: false);*/
      $("#proxyPACInterval").val(proxy.data.reloadPACInterval).prop('disabled', proxy.data.readonly ? true: false);
-     */
+     
     $("#proxyPatterns * input[type='button']");//.button("option", "disabled", proxy.data.readonly);
     $("#configUrlPanel input[type='button']");//.button("option", "disabled", proxy.data.readonly);
     $("#proxyLogin").val(list[selectedProxy].data.login);
@@ -123,29 +122,29 @@ function proxyLoad(proxy, edit){
 			list[selectedProxy].data.cycle = $("#proxyCycle").is(":checked");
 			list[selectedProxy].data.useDns = $("#proxyDNS").is(":checked");
 			list[selectedProxy].data.isSocks = $("#proxyIsSocks").is(":checked");
-			/*
-                         list[selectedProxy].data.notifOnLoad = $("#proxyNotifLoad").is(":checked");
-			 list[selectedProxy].data.notifOnError = $("#proxyNotifError").is(":checked");
-			 list[selectedProxy].data.reloadPAC = $("#proxyPACReload").is(":checked");
-			 list[selectedProxy].data.bypassFPForPAC = $("#bypassFPForPAC").is(":checked");
-                         */
+			
+                        list[selectedProxy].data.notifOnLoad = $("#proxyNotifLoad").is(":checked");
+			list[selectedProxy].data.notifOnError = $("#proxyNotifError").is(":checked");
+			list[selectedProxy].data.reloadPAC = $("#proxyPACReload").is(":checked");
+			//list[selectedProxy].data.bypassFPForPAC = $("#bypassFPForPAC").is(":checked");
+                         
 			list[selectedProxy].data.name = $("#proxyName").val();
 			list[selectedProxy].data.notes = $("#proxyNotes").val();
 			list[selectedProxy].data.type = $("input[name='proxyType']:checked").val();
 			list[selectedProxy].data.socks = $("input[name='proxySocks']:checked").val();
 			list[selectedProxy].data.host = $("#proxyHost").val();
 			list[selectedProxy].data.port = $("#proxyPort").val();
-                        /*
+                        
 			 list[selectedProxy].data.configUrl = $("#proxyConfigUrl").val();
 			 list[selectedProxy].data.reloadPACInterval = $("#proxyPACInterval").val();
-                         */
+                         
 			list[selectedProxy].data.color = sProxyColor;
-			/*
+			
 			 if($("input[name='proxyType']:checked").val()=="auto")
 			 {
 			 list[selectedProxy].updatePAC();
 			 }
-			 */
+			
 			updateProxyTable();
 			//oTable.fnSelectRow(selectedProxy);
 			saveProxies();

@@ -47,7 +47,7 @@ function Proxy(_data){
 
 Proxy.prototype = {
     toArray: function(){
-	return	[this.data.readonly, this.data.enabled, this.data.color, this.data.name, this.data.notes, this.data.host, this.data.port, this.data.isSocks, this.data.socks/*, this.data.configUrl, this.data.useDns*/];
+	return	[this.data.readonly, this.data.enabled, this.data.color, this.data.name, this.data.notes, this.data.host, this.data.port, this.data.isSocks, this.data.socks, this.data.configUrl/*, this.data.useDns*/];
     },
     randomId: function(){
 	var chars = "0123456789";

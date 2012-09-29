@@ -340,7 +340,7 @@ function Extension() {
 	var rootNode = xmlDoc.documentElement;
 	rootNode.setAttribute('contextMenu', self.settings.showContextMenu.toString());
 	var mode = self.state;
-	if (self.state == 'auto') mode = 'patterns'
+	if (self.state == 'auto') mode = 'patterns';
 	rootNode.setAttribute('mode', mode);
 	proxiesNode = xmlDoc.createElement('proxies');
 	$.map(proxyList, function (proxy) {

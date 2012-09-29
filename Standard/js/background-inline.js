@@ -18,7 +18,7 @@ if (!localStorage.getItem('proxyList')) {
 	    "cycle": false,
 	    "useDns": true,
 	    "reloadPAC": false,
-            "bypassFPForPAC": true,
+            "bypassFPForPAC": false,
 	    "reloadPACInterval": 60,
 	    "configUrl": "",
 	    "notifOnLoad": false,

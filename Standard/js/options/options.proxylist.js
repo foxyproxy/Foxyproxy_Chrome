@@ -43,9 +43,9 @@ function initProxyList() {
 	    {"sTitle": localize( "SOCKS proxy?"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}},
 	    {"sTitle": localize( "SOCKS Version")},
 
-/*             // Will need to remove and reintroduce columns when functionality is working.
+             // Will need to remove and reintroduce columns when functionality is working.
 	     {"sTitle": localize( "Auto PAC URL")},
-	     {"sTitle": localize( "Proxy DNS")}
+/*	     {"sTitle": localize( "Proxy DNS")}
 */
 	]
     } );
