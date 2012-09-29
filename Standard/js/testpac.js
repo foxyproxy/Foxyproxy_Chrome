@@ -1,3 +1,4 @@
+/* Test pac from options page */
 var testPac = function (event) {
     if (event.data.command == 'test' &&
         event.data.script != undefined) {
