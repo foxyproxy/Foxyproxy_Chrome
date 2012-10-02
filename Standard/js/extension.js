@@ -97,13 +97,19 @@ function Extension() {
 	    var proxy = null;
 	    for (var i = 0; i < proxyList.length; i++)
 		if (proxyList[i].data.id == this.state) proxy = proxyList[i];
-	    if (proxy) {
+	    if (proxy && (proxy.data.pac.length == 0 || !proxy.data.pac)) {
 		console.log("manual mode selected and proxy is " + proxy);
 		chrome.browserAction.setIcon({
 		    imageData: IconCreator.paintIcon(self.icon, proxy.data.color)
 		});
 		ProxyManager.applyProxy(ProxyManager.profileFromProxy(proxy));
-	    }
+	    } else {
+                console.log("manual mode selected with remote PAC and proxy is " + proxy);
+		chrome.browserAction.setIcon({
+		    imageData: IconCreator.paintIcon(self.icon, proxy.data.color)
+		});
+                ProxyManager.applyAutoPac(proxy);
+            }
 	}
     };
     this.getProxyForUrl = function (url, callback) {
