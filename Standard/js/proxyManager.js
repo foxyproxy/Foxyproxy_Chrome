@@ -56,14 +56,25 @@ ProxyManager.applyDisable = function (a) {
  * Patterns mode being set. TODO: change this from "auto" to "patterns".
  */
 ProxyManager.applyAuto = function (a) {
-	ProxyConfig.pacScript.url = "";
-	ProxyConfig.pacScript.data = ProxyManager.generatePacAutoScript();
-  // debug: dump the pac
-  console.log("pac is " + ProxyConfig.pacScript.data);
-	ProxyConfig.mode = "pac_script";
-	console.log(ProxyConfig);
-	chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
-	console.log("Proxy is auto: applyAuto");
+    ProxyConfig.pacScript.url = "";
+    ProxyConfig.pacScript.data = ProxyManager.generatePacAutoScript();
+    // debug: dump the pac
+    console.log("pac is " + ProxyConfig.pacScript.data);
+    ProxyConfig.mode = "pac_script";
+    console.log(ProxyConfig);
+    chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
+    console.log("Proxy is auto: applyAuto");
+};
+
+/**
+ * Using remote PAC script.
+ */
+ProxyManager.applyAutoPac = function (proxy) {
+    ProxyConfig.pacScript.url = "";
+    ProxyConfig.pacScript.data = proxy.data.pac; 
+    ProxyConfig.mode = "pac_script";
+    chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
+    console.log("Proxy is autoPAC: applyAutoPac");
 };
 
 /**
@@ -125,14 +136,14 @@ ProxyManager.generateSocksPacScript = function (a) {
  * support switching by URL like Gecko.
  */
 ProxyManager.generatePacAutoScript = function () {
-	var a = [],
-		b = foxyProxy.proxyList;
-	a.push("function FindProxyForURL(url, host) {");
-	for (var c = 0, sz=b.length; c < sz; c++) {
-		a.push(ProxyManager.proxyToScript(b[c]));
-	}
-	a.push("}");
-	return a.join("\r\n");
+    var a = [],
+	b = foxyProxy.proxyList;
+    a.push("function FindProxyForURL(url, host) {");
+    for (var c = 0, sz=b.length; c < sz; c++) {
+	a.push(ProxyManager.proxyToScript(b[c]));
+    }
+    a.push("}");
+    return a.join("\r\n");
 };
 
 ProxyManager.template = "\
@@ -163,16 +174,20 @@ ProxyManager.proxyToScript = function (proxy) {
 	proxyStr = '"DIRECT"';
 	break;
     case "manual":
-	proxyStr = '"' + (proxy.data.isSocks ? "SOCKS " : "PROXY ") + proxy.data.host + ":" + proxy.data.port + '"';
+        if (!proxy.data.pac || proxy.data.pac.length == 0) {
+            console.log("regular proxy manual used");
+	    proxyStr = '"' + (proxy.data.isSocks ? "SOCKS " : "PROXY ") + proxy.data.host + ":" + proxy.data.port + '"';
+        } else {
+            console.log("Manual mode set and using remote PAC");
+            c += " function wrapper(url, host){ " + proxy.data.pac + " return FindProxyForURL(url, host); }", proxyStr = "wrapper(url, host)";
+        }
 	break;
     case "auto": // PAC
         if (!proxy.data.pac || proxy.data.pac.length == 0) {
             proxyStr = '"' + "PROXY badpac:6666" + '"';
         }
 	else {
-            
             c += " function wrapper(url, host){ " + proxy.data.pac + " return FindProxyForURL(url, host); }", proxyStr = "wrapper(url, host)";
-            console.log("Auto remote PAC triggered, YAY: ", c, "\n\nends here.---");
         }
         break;
     default:
@@ -180,7 +195,6 @@ ProxyManager.proxyToScript = function (proxy) {
         break;
     }
     if (proxy.data.id == "default") {
-        console.log("proxy.data.id is indeed default");
         c += "/* Default FoxyProxy PAC */\n";
 	c += "return " + proxyStr + ";";
 	return c;
@@ -227,10 +241,10 @@ ProxyManager.getPatternForUrl = function (a) {
 			}
 			return true;
 		});
-		return b.proxy == null
+		return b.proxy == null;
 	});
 	if (b.proxy == null) {
-		b.proxy = foxyProxy.proxyList[foxyProxy.proxyList.length - 1]
+		b.proxy = foxyProxy.proxyList[foxyProxy.proxyList.length - 1];
 	}
-	return b
+	return b;
 };
