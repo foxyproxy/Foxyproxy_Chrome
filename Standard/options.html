@@ -39,7 +39,8 @@
 		</center>		
 			<ul id="navbar">
 			  <li id="tabProxies" class="navbar-item navbar-item-selected" pagename="pageProxies" tabindex="0"><span>Proxies</span></li>
-			  <li id="tabGlobal" class="navbar-item" pagename="pageGlobal" tabindex="1"><span>Global Settings</span></li>
+			  <!--<li id="tabGlobal" class="navbar-item" pagename="pageGlobal" tabindex="1"><span>Global Settings</span></li>-->
+                          <li id="tabImport" class="navbar-item" pagename="pageImport" tabindex="2"><span>Import</span></li>
 <!--			  <li id="tabQuick" class="navbar-item" pagename="pageQuick"  tabindex="2">QuickAdd</li>-->
 			  <!--li id="tabAuto" class="navbar-item" pagename="pageAuto"  tabindex="3">AutoAdd</li-->
 			  <!--<li id="tabLog" class="navbar-item" disabled="true" pagename="pageLog" tabindex="4">Logging</li>-->
@@ -79,10 +80,19 @@
 
 		<div id="pageGlobal" class="tabPage" style="display:none">
 				<h1 id="headerLabel">Global Settings</h1>
-                                <input type="file" id="settings-import" />
 		</div>		
 
 		<!-- End of Proxies list page ---------------------------------------------------------------------------------------------------->
+
+                <!-- Import/Export settings page -->
+                <div id="pageImport" class="tabPage" style="display:none">
+                  <h1>Import</h1>
+                  <h2>Import FoxyProxy settings from a file</h2>
+                  <input type="file" id="settings-import" />
+                  <p id="import-result"></p>
+
+                  </div>
+                <!-- End of Import/Export settings page -->
 				
 		<!-- Logging page --------------------------------------------------------------------------------------------------------->
 		<div id="pageLog" class="tabPage" style="display:none">
@@ -254,8 +264,8 @@
 <!-- DIALOGS --------------------------------------------------------------------------------------------------------->
 <!-------------------------------------------------------------------------------------------------------------------->
 
-	<div id="dialog" ></div>
-
+	<div id="dialog"></div>
+        <div id="import-dialog" title="Import FoxyProxy Settings" style="display:none"><p>This file may overwrite your existing proxies. You can add these proxies to the existing list or replace your existing list.</p></div>
 <!-- proxy edit dialog ---------------------------------------------------------------------------------------------------->	
 	<div id="proxyEditDlg" style="display:none;min-height: 460px;">
 		<div id="tabs">
