@@ -1,9 +1,9 @@
 {
-    "name": "FoxyProxy Standard",
+    "name": "Foxy Proxy Standard",
     "version": "2.3",
     "manifest_version": 2,
 
-    "description": "FoxyProxy simplifies configuring browsers to access proxy-servers, offering more features than other proxy-plugins",
+    "description": "Foxy Proxy simplifies configuring browsers to access proxy-servers, offering more features than other proxy-plugins",
     "homepage_url": "http://getfoxyproxy.org/",
     "icons": {
 	"16": "images/foxyproxy-nocopy.gif",
