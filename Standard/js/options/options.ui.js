@@ -202,7 +202,7 @@ $(document).ready(function(){
 	onTabShow(tabId);
     });
     
-    
+    $("#import-link").click(function (e) { e.preventDefault(); $("#tabImport").click();});
 
     
     if(window.location.hash){
