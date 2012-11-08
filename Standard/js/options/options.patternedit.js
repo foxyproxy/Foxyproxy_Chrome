@@ -42,7 +42,7 @@ function patternLoad(pattern, edit){
 					text: localize("Cancel"),
 					click: function(){
 						if(!edit)list[selectedProxy].data.patterns.splice(selectedPattern, 1);
-						updatePatternTable(selectedPattern)
+						updatePatternTable(selectedPattern);
 						$( this ).dialog( "close" );
 					}
 				}]
@@ -51,7 +51,7 @@ function patternLoad(pattern, edit){
 
 function patternDuplicates(patternsList, pattern)
 {	
-	duplicate = false
+	duplicate = false;
 	$.each(patternsList, function (a, b)
 		{
 			if(b == pattern)return;
