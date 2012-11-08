@@ -35,7 +35,6 @@ var importPatterns = function (xmlProxy, proxy, xmlDoc) {
         var patterns = [];
 
         for (; i < length; i++) {
-            console.log('running through patterns');
             pattern =  new ProxyPattern();
             pattern.data.enabled = checkBoolean(xmlPatterns[i].getAttribute("enabled"), false);
             pattern.data.temp = false;
@@ -74,7 +73,7 @@ var importProxies = function (xmlDoc) {
             proxy.data.enabled = checkBoolean(proxies[i].getAttribute("enabled"));
             proxy.data.cycle = checkBoolean(proxies[i].getAttribute("includeInCycle"));
             proxy.data.useDns = checkBoolean(proxies[i].getAttribute("proxyDNS"));
-
+            proxy.data.color = proxies[i].getAttribute("color");
             if (proxies[i].getElementsByTagName('manualconf')[0] != undefined) {
                 elem = proxies[i].getElementsByTagName('manualconf')[0];
                 proxy.data.isSocks = checkBoolean(elem.getAttribute("isSocks"));
