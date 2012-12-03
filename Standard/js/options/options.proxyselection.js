@@ -1,17 +1,31 @@
 function proxySelection(param){
 
-	//function addNewProxy(aUri)
-		var aUri = null;
-		if (param){
-			var aUri = parseUri(param);
-			if(aUri.domain && aUri.port){
+    //function addNewProxy(aUri)
+    var aUri = param;
+    console.log("param is", param);
+    if (param.domain != undefined) {
+        /* there is host value given */
+        aUri.domain = uri.domain;
+        aUri.port = uri.port;
+    }
+    if (aUri == null && param ){
+	/* using a param */
+        aUri = parseUri(param);
+        
+	if(aUri.domain && aUri.port){
 
-			} else {
-				alert(localize("host:port can not be determined from selected text"));
-				return;
-			}
-		}
+	} 
+        else {
+	    alert(localize("host:port can not be determined from selected text"));
+	    return;
+        }
 
+    }
+
+    if (aUri == null) {
+	alert(localize("host:port can not be determined from selected text"));
+	return;
+    }
 	//proxySelectionDlg
 	//proxySelectionUrl
 	//proxySelectionTable
@@ -40,7 +54,7 @@ function proxySelection(param){
 					)
 				).click(function(){
 					$("#proxySelectionTable tbody tr").removeClass('selected_row');
-					$(this).toggleClass('selected_row')
+					$(this).toggleClass('selected_row');
 				})
 		)
 	});

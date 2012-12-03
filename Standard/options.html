@@ -19,10 +19,9 @@
 		<script type="text/javascript" src="js/options/options.proxylist.js"></script> 
 		<script type="text/javascript" src="js/options/options.proxyedit.js"></script> 
 		<script type="text/javascript" src="js/options/options.patternedit.js"></script>
-		<script type="text/javascript" src="js/options/options.proxyselection.js"></script> 
 		<script type="text/javascript" src="js/options/options.globalsettings.js"></script> 
 		<script type="text/javascript" src="js/options/options.log.js"></script> 
-		<script type="text/javascript" src="js/options/options.addpattern.js"></script> 
+		<script type="text/javascript" src="js/options/options.addpattern.js"></script>
 		<!-- <script type="text/javascript" src="js/options/options.ippatternedit.js"></script> -->
 		<script type="text/javascript" src="js/options/options.logpattern.js"></script>
 		<script src="js/options/options.ui.js"></script>
@@ -41,7 +40,7 @@
 			  <li id="tabProxies" class="navbar-item navbar-item-selected" pagename="pageProxies" tabindex="0"><span>Proxies</span></li>
 			  <!--<li id="tabGlobal" class="navbar-item" pagename="pageGlobal" tabindex="1"><span>Global Settings</span></li>-->
                           <li id="tabImport" class="navbar-item" pagename="pageImport" tabindex="2"><span>Import</span></li>
-<!--			  <li id="tabQuick" class="navbar-item" pagename="pageQuick"  tabindex="2">QuickAdd</li>-->
+			  <li id="tabQuick" class="navbar-item" pagename="pageQuick"  tabindex="2">QuickAdd</li>
 			  <!--li id="tabAuto" class="navbar-item" pagename="pageAuto"  tabindex="3">AutoAdd</li-->
 			  <!--<li id="tabLog" class="navbar-item" disabled="true" pagename="pageLog" tabindex="4">Logging</li>-->
                           
@@ -426,6 +425,10 @@
 					<a id="hint_pattern_temp" class="help">&nbsp;</a>
 				</td>
 			</tr>
+                        <tr class="proxyList">
+                          <td alighn=right width="80"><span></span></td>
+                          <td><select id="dialogPatternProxyQA" class="textField" /></td>
+                        </tr>
 			<tr class="modeAdd">
 				<td align=right width="80"><span>Pattern Name</span></td>
 				<td><input type="text" id="patternName" class="textField"></input></td>
