@@ -84,8 +84,11 @@ $(document).ready(function() {
 
     
     $("#enabledQA").click(function(){
-	if(list.length<=1)
+	if(list.length<=1) {
+            alert("You must have entered at least one proxy in order to use QuickAdd");
 	    return false;
+        }
+
 	settings.enabledQA = $(this).is(":checked");
 	
 	chrome.extension.getBackgroundPage().foxyProxy.settings = settings;
@@ -123,11 +126,12 @@ $(document).ready(function() {
 	chrome.extension.getBackgroundPage().foxyProxy.settings = settings;
     });
     
-    $("#patternProxyQA").change(function(){
+    $("#patternProxyQA, #dialogPatternProxyQA").change(function(){
 	settings.patternProxyQA = $(this).val();
 	chrome.extension.getBackgroundPage().foxyProxy.settings = settings;
     });
-    
+
+
 
     $("#proxyTypeDirect").click(function(){
 	if($(this).is(":checked")) {

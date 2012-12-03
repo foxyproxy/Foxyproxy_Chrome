@@ -310,11 +310,18 @@ function Extension() {
 
 	var tab = sender.tab;
 	if (state == 'disabled') return;
-	if (request.action == 'quickadd') {
-	    self.options('quickadd#' + request.data);
-	} else if (request.action == 'proxylist') {
+
+	if (request.action == 'addpattern') {
+            if (self.settings.enabledQA) {
+	        self.options('addpattern#' + request.url);
+            } else {
+                alert(localize("You must enable QuickAdd and reload this page before adding this url to a proxy"));
+            }
+	} 
+        else if (request.action == 'proxylist') {
 	    self.options('tabProxies');
-	} else if (request.action == 'log') {
+	} 
+        else if (request.action == 'log') {
 
 	    self.getProxyForUrl(request.url, function (url, proxy, pattern) {
 
@@ -337,8 +344,6 @@ function Extension() {
 		    });
 		}
 	    });
-	} else if (request.action == 'addpattern') {
-	    self.options('addpattern#' + request.url);
 	}
     });
     self.settingsToXml = function () {
