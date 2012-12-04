@@ -315,7 +315,8 @@ function Extension() {
             if (self.settings.enabledQA) {
 	        self.options('addpattern#' + request.url);
             } else {
-                alert(localize("You must enable QuickAdd and reload this page before adding this url to a proxy"));
+                alert(localize("You must enable QuickAdd from the FoxyProxy Options page before adding this url to a proxy"));
+                self.options('quickadd#');
             }
 	} 
         else if (request.action == 'proxylist') {

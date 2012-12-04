@@ -57,6 +57,12 @@ $(document).ready(function(){
 	}
     });
 });
+var getCurrentTabUrl = function (callback) {
+    chrome.tabs.getSelected(null, function(tab) {
+        callback(tab.url);
+    });
+}
+
 function localize(txt){
     if(!window.locale){
 	window.locale = JSON.parse(localStorage.getItem('en-en'));

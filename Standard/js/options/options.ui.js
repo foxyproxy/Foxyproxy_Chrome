@@ -210,8 +210,8 @@ $(document).ready(function(){
 	if (window.location.hash.indexOf("#tab") == 0){
 	    $(window.location.hash).click();
 	} else if(window.location.hash.indexOf("#quickadd#") == 0){
-	    $("#tabtabProxies").click();
-	    proxySelection(unescape(window.location.hash.replace("#quickadd#", "")));
+	    $("#tabQuick").click();
+	    //proxySelection(unescape(window.location.hash.replace("#quickadd#", "")));
 	} else if(window.location.hash.indexOf("#addpattern#") == 0){
 	    addPattern(unescape(window.location.hash.replace("#addpattern#", "")));
 	}
