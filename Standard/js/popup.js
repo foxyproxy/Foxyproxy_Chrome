@@ -41,7 +41,9 @@ $(document).ready(function(){
             break;
             
             case "quickAdd":
-            options('tabQuick');
+            chrome.extension.getBackgroundPage().getCurrentTabUrl(
+                function (url) { options('addpattern#' + url); }
+            );
             break;
             
             case "tabProxies":
