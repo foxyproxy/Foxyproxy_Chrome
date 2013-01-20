@@ -187,7 +187,7 @@ ProxyManager.proxyToScript = function (proxy) {
             proxyStr = '"' + "PROXY badpac:6666" + '"';
         }
 	else {
-            c += " function wrapper(url, host){ " + proxy.data.pac + " return FindProxyForURL(url, host); }", proxyStr = "wrapper(url, host)";
+            c += "function wrapper(url, host){ " + proxy.data.pac + " return FindProxyForURL(url, host); }", proxyStr = "wrapper(url, host)";
         }
         break;
     default:
