@@ -313,10 +313,7 @@ function Extension() {
 
 	if (request.action == 'addpattern') {
             if (self.settings.enabledQA) {
-	        self.options('addpattern#' + request.url);
-            } else {
-                alert(localize("You must enable QuickAdd from the FoxyProxy Options page before adding this url to a proxy"));
-                self.options('quickadd#');
+	      self.options('addpattern#' + request.url);
             }
 	} 
         else if (request.action == 'proxylist') {
