@@ -222,9 +222,9 @@ ProxyManager.proxyToScript = function (proxy) {
             p = proxy.data.patterns[k].data;
             // use new object to prevent punycoding the
             // real object (which appears in options page)
-            pp.name = punycode.encode(p.name);
-            pp.url = punycode.encode(p.url);
-            pp.regex = punycode.encode(p.regex);
+            pp.name = punycode.toASCII(p.name);
+            pp.url = punycode.toASCII(p.url);
+            pp.regex = punycode.toASCII(p.regex);
             pp.enabled = p.enabled;
             pp.temp = p.temp;
             pp.whitelist = p.whitelist;
