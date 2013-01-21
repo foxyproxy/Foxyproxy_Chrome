@@ -1,6 +1,6 @@
 {
     "name": "Foxy Proxy Standard",
-    "version": "2.4",
+    "version": "2.5",
     "manifest_version": 2,
 
     "description": "Foxy Proxy simplifies configuring browsers to access proxy-servers, offering more features than other proxy-plugins",
