@@ -2,6 +2,9 @@
 
 <html>
 	<head>
+                <!-- punycode needed to prevent bug with types.ChromeSetting.set 
+                     with non-ASCII characters -->
+                <script src="js/punycode.js"></script>
 		<script src="js/jquery-1.7.2.min.js"></script>
 		<script src="js/proxyconfig.js"></script>
 		<script src="js/proxy.js"></script>
@@ -9,6 +12,7 @@
 		<script src="js/webdbwrapper.js"></script>
 		<script src="js/extension.js"></script>
 		<script src="js/icon_creator.js"></script>
+
 		<script src="js/proxyManager.js"></script>
 		<script src="js/background-inline.js"></script>
 	</head>

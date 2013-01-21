@@ -207,9 +207,29 @@ ProxyManager.proxyToScript = function (proxy) {
       switch(s) {
         case "{patterns}":
           var ret = "";
+          // current punycode proxy
+          var pp = null;
+          // the original proxy
+          var p = null;
           for (var k=0, sz=proxy.data.patterns.length; k<sz; k++) {
               proxy.data.patterns[k].data.regex = proxy.data.patterns[k].convertWildcardToRegexString();
-            ret += JSON.stringify(proxy.data.patterns[k].data);
+            /* set name and hostnames to punycode to prevent following error:
+             * Error during types.ChromeSetting.set: 
+             * 'pacScript.data' supports only ASCII 
+             * code(encode URLs in Punycode format). 
+             */
+            pp = {};
+            p = proxy.data.patterns[k].data;
+            // use new object to prevent punycoding the
+            // real object (which appears in options page)
+            pp.name = punycode.encode(p.name);
+            pp.url = punycode.encode(p.url);
+            pp.regex = punycode.encode(p.regex);
+            pp.enabled = p.enabled;
+            pp.temp = p.temp;
+            pp.whitelist = p.whitelist;
+            pp.type = p.type;
+            ret += JSON.stringify(pp);
             if (k+1<sz) ret += ", ";
           }
           return ret;
@@ -238,6 +258,7 @@ ProxyManager.getPatternForUrl = function (a) {
 				}
 				b.proxy = proxy;
 				b.pattern = e;
+                          console.log("found pattern", e);
 			}
 			return true;
 		});
