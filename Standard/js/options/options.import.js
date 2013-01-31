@@ -123,7 +123,6 @@ window.onload = function () {
                     importProxies(xmlDoc);
                     updateProxyTable();
                     saveProxies();
-                    
                 };
 
                 var replaceProxies = function () {
@@ -145,7 +144,7 @@ window.onload = function () {
                                     modal:true,
                                     buttons: {
                                         "Replace": function () { replaceProxies(); $(this).dialog('close'); }, 
-                                        "Add": function () { replaceProxies(); $(this).dialog('close'); },
+                                        "Add": function () { addProxies(); $(this).dialog('close'); },
                                         "Nevermind": function () { /* Do nothing */ $(this).dialog('close'); }
                                     }
                                      
