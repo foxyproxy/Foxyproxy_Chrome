@@ -26,6 +26,7 @@
 		<script type="text/javascript" src="js/options/options.logpattern.js"></script>
 		<script src="js/options/options.ui.js"></script>
                 <script src="js/options/options.import.js"></script>
+                <script src="js/options/options.export.js"></script>
 	</head>
 	<body>
 
@@ -39,7 +40,7 @@
 			<ul id="navbar">
 			  <li id="tabProxies" class="navbar-item navbar-item-selected" pagename="pageProxies" tabindex="0"><span>Proxies</span></li>
 			  <!--<li id="tabGlobal" class="navbar-item" pagename="pageGlobal" tabindex="1"><span>Global Settings</span></li>-->
-                          <li id="tabImport" class="navbar-item" pagename="pageImport" tabindex="2"><span>Import</span></li>
+                          <li id="tabImport" class="navbar-item" pagename="pageImport" tabindex="2"><span>Import/Export</span></li>
 			  <li id="tabQuick" class="navbar-item" pagename="pageQuick"  tabindex="2">QuickAdd</li>
 			  <!--li id="tabAuto" class="navbar-item" pagename="pageAuto"  tabindex="3">AutoAdd</li-->
 			  <!--<li id="tabLog" class="navbar-item" disabled="true" pagename="pageLog" tabindex="4">Logging</li>-->
@@ -87,12 +88,16 @@
 
                 <!-- Import/Export settings page -->
                 <div id="pageImport" class="tabPage" style="display:none">
-                  <h1>Import</h1>
+                  <h1>Import / Export</h1>
                   <h2>Import FoxyProxy settings from a file</h2>
                   <input type="file" id="settings-import" />
                   <p id="import-result"></p>
                   <h3 class="tip">This tool allows you to import your proxies from FoxyProxy on Mozilla Firefox or from another computer.</h3>
-                  </div>
+                  <hr/>
+                  <h2>Export FoxyProxy settings to a file</h2>
+                  <button id="export-to-file">Export</button>
+                  <h3 class="tip">A file named FoxyProxy-export.fpx will be saved in your default Chrome Downloads directory. You can use it to import your settings into another instance of Google Chrome or FoxyProxy on Firefox.</h3>
+                </div>
                 <!-- End of Import/Export settings page -->
 				
 		<!-- Logging page --------------------------------------------------------------------------------------------------------->
