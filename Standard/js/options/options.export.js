@@ -1,52 +1,15 @@
-var generateXMLForPatterns = function (xmlDoc, patternsList) {
-  var j = 0, patternLen, curPattern, curPatternNode, matches, match;
-  
-  if (patternsList) {
-    matches = xmlDoc.createElement("matches");
+/**
+ Options Export feature
+**/
 
-    for (j = 0, patternLen = patternsList.length; j < patternLen; j++) {
-      curPattern = patternsList[j].data;
-      match = xmlDoc.createElement("match");
-      match.setAttribute("enabled", curPattern.enabled);
-      match.setAttribute("name", curPattern.name);
-
-      if (curPattern.type != "wildcard") {
-        match.setAttribute("isRegex", true);
-      } else {
-        match.setAttribute("isRegex", false);
-      }
-      match.setAttribute("pattern", curPattern.url);
-      match.setAttribute("reload", true);
-      match.setAttribute("autoReload", false);
-
-      if (curPattern.whitelist == "Inclusive") {
-        match.setAttribute("isBlacklist", false);
-      } else {
-        match.setAttribute("isBlacklist", true);
-      }
-
-      match.setAttribute("isMultiline", false);
-      match.setAttribute("fromSubscription", false);
-      match.setAttribute("caseSensitive", false);
-
-      matches.appendChild(match);
-    }
-
-    return matches;
-
-  }
-
-  return null;
-
-};
-
+/* Top Level proxy settings/nodes*/
 var setDefaultFoxyProxySettings = function (foxyproxy, xmlDoc) {
 
-  var item;
+  var item, warnings;
   
   var defaultSettings = {
     mode:"disabled", 
-    selectedTabIndex:"6", 
+    selectedTabIndex:"0", 
     toolbaricon:"true", 
     toolsMenu:"true", 
     contextMenu:"true", 
@@ -81,10 +44,21 @@ var setDefaultFoxyProxySettings = function (foxyproxy, xmlDoc) {
     statusbar.setAttribute(item, statusSettings[item]);
   }
 
+  var toolbarSettings = {
+    "left": "options",
+    "middle": "cycle",
+    "right": "contextmenu"
+  };
+  var toolbar = xmlDoc.createElement("toolbar");
+  for (item in toolbarSettings) {
+      toolbar.setAttribute(item, toolbarSettings[item]);
+  }
+
+
   var logg = xmlDoc.createElement("logg");
   logg.setAttribute("enabled", false);
   logg.setAttribute("maxSize", "500");
-  logg.setAttribute("noURLS", false);
+  logg.setAttribute("noURLs", false);
   logg.setAttribute("header", "&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;&lt;head&gt;&lt;title&gt;&lt;/title&gt;&lt;link rel=&quot;icon&quot; href=&quot;http://getfoxyproxy.org/favicon.ico&quot;/&gt;&lt;link rel=&quot;shortcut icon&quot; href=&quot;http://getfoxyproxy.org/favicon.ico&quot;/&gt;&lt;link rel=&quot;stylesheet&quot; href=&quot;http://getfoxyproxy.org/styles/log.css&quot; type=&quot;text/css&quot;/&gt;&lt;/head&gt;&lt;body&gt;&lt;table class=&quot;log-table&quot;&gt;&lt;thead&gt;&lt;tr&gt;&lt;td class=&quot;heading&quot;&gt;${timestamp-heading}&lt;/td&gt;&lt;td class=&quot;heading&quot;&gt;${url-heading}&lt;/td&gt;&lt;td class=&quot;heading&quot;&gt;${proxy-name-heading}&lt;/td&gt;&lt;td class=&quot;heading&quot;&gt;${proxy-notes-heading}&lt;/td&gt;&lt;td class=&quot;heading&quot;&gt;${pattern-name-heading}&lt;/td&gt;&lt;td class=&quot;heading&quot;&gt;${pattern-heading}&lt;/td&gt;&lt;td class=&quot;heading&quot;&gt;${pattern-case-heading}&lt;/td&gt;&lt;td class=&quot;heading&quot;&gt;${pattern-type-heading}&lt;/td&gt;&lt;td class=&quot;heading&quot;&gt;${pattern-color-heading}&lt;/td&gt;&lt;td class=&quot;heading&quot;&gt;${pac-result-heading}&lt;/td&gt;&lt;td class=&quot;heading&quot;&gt;${error-msg-heading}&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tfoot&gt;&lt;tr&gt;&lt;td/&gt;&lt;/tr&gt;&lt;/tfoot&gt;&lt;tbody&gt;");
   logg.setAttribute("row", "&lt;tr&gt;&lt;td class=&quot;timestamp&quot;&gt;${timestamp}&lt;/td&gt;&lt;td class=&quot;url&quot;&gt;&lt;a href=&quot;${url}&quot;&gt;${url}&lt;/a&gt;&lt;/td&gt;&lt;td class=&quot;proxy-name&quot;&gt;${proxy-name}&lt;/td&gt;&lt;td class=&quot;proxy-notes&quot;&gt;${proxy-notes}&lt;/td&gt;&lt;td class=&quot;pattern-name&quot;&gt;${pattern-name}&lt;/td&gt;&lt;td class=&quot;pattern&quot;&gt;${pattern}&lt;/td&gt;&lt;td class=&quot;pattern-case&quot;&gt;${pattern-case}&lt;/td&gt;&lt;td class=&quot;pattern-type&quot;&gt;${pattern-type}&lt;/td&gt;&lt;td class=&quot;pattern-color&quot;&gt;${pattern-color}&lt;/td&gt;&lt;td class=&quot;pac-result&quot;&gt;${pac-result}&lt;/td&gt;&lt;td class=&quot;error-msg&quot;&gt;${error-msg}&lt;/td&gt;&lt;/tr&gt;");
   logg.setAttribute("footer", "lt;/tbody&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;");
@@ -109,23 +83,126 @@ var setDefaultFoxyProxySettings = function (foxyproxy, xmlDoc) {
   quickadd.setAttribute("notify", true);
   quickadd.setAttribute("notifyWhenCanceled", true);
   quickadd.setAttribute("prompt", true);
+
+  // quickadd match
+  var match1Attrs = {
+      'enabled': true,
+      'name': 'Dynamic AutoAdd Pattern',
+      'pattern': '*://${3}${6}/*',
+      'isRegEx': false,
+      'isBlackList': false,
+      'isMultiLine': false,
+      'caseSensitive': false,
+      'fromSubscription': false
+  };
+
+  var match1 = xmlDoc.createElement("match");
+  for (item in match1Attrs) {
+      match1.setAttribute(item, match1Attrs[item]);
+  }
+  autoadd.appendChild(match1);
+
+  var match2Attrs = {
+      'enabled': true,
+      'name': '',
+      'pattern': '*You are not authorized to view this page*',
+      'isRegEx': false,
+      'isBlackList': false,
+      'isMultiLine': false,
+      'caseSensitive': false,
+      'fromSubscription': false
+  };
+
+  var match2 = xmlDoc.createElement("match");
+  for (item in match2Attrs) {
+      match2.setAttribute(item, match2Attrs[item]);
+  }
+  autoadd.appendChild(match2);
   
+  var match3Attrs = {
+      'enabled': true,
+      'name': 'Dynamic AutoAdd Pattern',
+      'pattern': '*://${3}${6}/*',
+      'isRegEx': false,
+      'isBlackList': false,
+      'isMultiLine': false,
+      'caseSensitive': false,
+      'fromSubscription': false
+  };
+  var match3 = xmlDoc.createElement("match");
+  for (item in match3Attrs) {
+      match3.setAttribute(item, match3Attrs[item]);
+  }
+  quickadd.appendChild(match3);
+
   var defaultPrefs = xmlDoc.createElement("defaultPrefs");
   defaultPrefs.setAttribute("origPrefetch", 0);  
 
+  warnings = xmlDoc.createElement("warnings");
+  warnings.setAttribute("white-patterns", true);
+  foxyproxy.appendChild(warnings);
+
+
   foxyproxy.appendChild(random);
   foxyproxy.appendChild(statusbar);
+  foxyproxy.appendChild(toolbar);
   foxyproxy.appendChild(logg);
   foxyproxy.appendChild(autoadd);
   foxyproxy.appendChild(quickadd);
   foxyproxy.appendChild(defaultPrefs);
+  foxyproxy.appendChild(warnings);
 
 };
 
+/* iterate through proxy patterns and generate xml nodes */
+var generateXMLForPatterns = function (xmlDoc, patternsList) {
+  var j = 0, patternLen, curPattern, curPatternNode, matches, match;
+  
+  if (patternsList) {
+    matches = xmlDoc.createElement("matches");
+
+    for (j = 0, patternLen = patternsList.length; j < patternLen; j++) {
+      curPattern = patternsList[j].data;
+      match = xmlDoc.createElement("match");
+      match.setAttribute("enabled", curPattern.enabled);
+      match.setAttribute("name", curPattern.name);
+
+      if (curPattern.type != "wildcard") {
+        match.setAttribute("isRegex", true);
+      } else {
+        match.setAttribute("isRegex", false);
+      }
+      match.setAttribute("pattern", curPattern.url);
+      match.setAttribute("reload", true);
+      match.setAttribute("autoReload", false);
+
+      if (curPattern.whitelist == "Inclusive") {
+        match.setAttribute("isBlackList", false);
+      } else {
+        match.setAttribute("isBlackList", true);
+      }
+
+      match.setAttribute("isMultiLine", false);
+      match.setAttribute("fromSubscription", false);
+      match.setAttribute("caseSensitive", false);
+
+      matches.appendChild(match);
+    }
+
+    return matches;
+
+  }
+
+  return null;
+
+};
+
+
+/** process a single proxy from the local storage **/
 var setSingleProxyNode = function (xmlDoc, curProxy) {
 
   var curProxyNode = xmlDoc.createElement("proxy");
-  var manualconf, autoconf, patternsNode, warnings;
+  var manualconf, autoconf, patternsNode;
 
   // general settings.
   curProxyNode.setAttribute('name', curProxy.name);
@@ -136,7 +213,13 @@ var setSingleProxyNode = function (xmlDoc, curProxy) {
   curProxyNode.setAttribute('isSocks', curProxy.isSocks);
   curProxyNode.setAttribute("mode", curProxy.type);
   curProxyNode.setAttribute("autoconfMode", "pac");
-  
+
+  if (curProxy.id == "default") {
+      curProxyNode.setAttribute("lastresort", true);
+  } else {
+      curProxyNode.setAttribute("lastresort", false);
+  }
+
   // manual conf
   manualconf = xmlDoc.createElement("manualconf");
   manualconf.setAttribute("host", curProxy.host);
@@ -155,10 +238,6 @@ var setSingleProxyNode = function (xmlDoc, curProxy) {
   autoconf.setAttribute("disableOnBadPAC", true);
   curProxyNode.appendChild(autoconf);
   
-  warnings = xmlDoc.createElement("warnings");
-  warnings.setAttribute("white-patterns", true);
-  curProxyNode.appendChild(warnings);
-
   if (curProxy.patterns) {
     patternsNode = generateXMLForPatterns(xmlDoc, curProxy.patterns);
     if (patternsNode) {
@@ -170,6 +249,7 @@ var setSingleProxyNode = function (xmlDoc, curProxy) {
 
 };
 
+/** main xml generation function **/
 var generateXMLFromStorage = function () {
   var xmlDoc = document.implementation.createDocument(null, null, null);
   var foxyproxy = xmlDoc.createElement("foxyproxy");
@@ -195,6 +275,7 @@ var generateXMLFromStorage = function () {
   return xmlDoc;
 };
 
+/** adds a click event to generate and download xml export **/
 var exportAndDownload = function() {
   var dom = generateXMLFromStorage();
   var xmlString = new XMLSerializer().serializeToString(dom);
