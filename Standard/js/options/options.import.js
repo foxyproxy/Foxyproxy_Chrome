@@ -53,108 +53,130 @@ var importPatterns = function (xmlProxy, proxy, xmlDoc) {
 
 };
 
+orderProxyList = function () {
+  // place default at the bottom of the proxy list.
+  
+  
+};
 var importProxies = function (xmlDoc) {
     var proxy, elem, patterns;
     var i = 0;
     var proxies = xmlDoc.getElementsByTagName("proxies")[0].getElementsByTagName("proxy");
+
+  for (; i < proxies.length; i++) {
     
-    for (; i < proxies.length; i++) {
-        
+    /* rebuild a proxy from xml element */
+    proxy = new Proxy();
 
-        /* rebuild a proxy from xml element */
-        proxy = new Proxy();
+    proxy.data.type = checkValidType(proxies[i].getAttribute("mode"));
+    proxy.data.name = proxies[i].getAttribute("name");
+    proxy.data.notes = proxies[i].getAttribute("notes");
 
-        proxy.data.type = checkValidType(proxies[i].getAttribute("mode"));
-        proxy.data.name = proxies[i].getAttribute("name");
-        proxy.data.notes = proxies[i].getAttribute("notes");
+    // removed && proxy.data.type != 'direct' to fix issue with folks
+    // creating a direct connection proxy with patterns. But only checking
+    // the proxy.data.name is less than ideal. In the same time, the default "id"
+    // is 1714905950 Firefox-centric.
 
-        if (proxy.data.name != 'Default' && proxy.data.type != 'direct') {
 
-            proxy.data.enabled = checkBoolean(proxies[i].getAttribute("enabled"));
-            proxy.data.cycle = checkBoolean(proxies[i].getAttribute("includeInCycle"));
-            proxy.data.useDns = checkBoolean(proxies[i].getAttribute("proxyDNS"));
-            proxy.data.color = proxies[i].getAttribute("color");
-            if (proxies[i].getElementsByTagName('manualconf')[0] != undefined) {
-                elem = proxies[i].getElementsByTagName('manualconf')[0];
-                proxy.data.isSocks = checkBoolean(elem.getAttribute("isSocks"));
-                proxy.data.socks = checkNumeric(elem.getAttribute("socksversion"), 5);
-                proxy.data.host = elem.getAttribute("host");
-                proxy.data.port = checkNumeric(elem.getAttribute("port"), 0);
-            } else {
-                proxy.data.isSocks = false;
-                proxy.data.socks = 5;
-            }
-            
-            proxy.data.notifOnLoad = true;
-            proxy.data.notifOnError = true;
-
-            if (proxies[i].getElementsByTagName('autoconf')[0] != undefined) {
-                elem = proxies[i].getElementsByTagName('autoconf')[0];
-                proxy.data.reloadPAC = checkBoolean(elem.getAttribute('autoReload'));
-                proxy.data.configUrl = elem.getAttribute("url");
-            } else {
-                proxy.data.reloadPAC = false;
-            }
-
-            /* handle patterns */
-            importPatterns(proxies[i], proxy, xmlDoc);
-
-            list.splice(0, 0, proxy);
-        }
+    proxy.data.enabled = checkBoolean(proxies[i].getAttribute("enabled"));
+    proxy.data.cycle = checkBoolean(proxies[i].getAttribute("includeInCycle"));
+    proxy.data.useDns = checkBoolean(proxies[i].getAttribute("proxyDNS"));
+    proxy.data.color = proxies[i].getAttribute("color");
+    if (proxies[i].getElementsByTagName('manualconf')[0] != undefined) {
+      elem = proxies[i].getElementsByTagName('manualconf')[0];
+      proxy.data.isSocks = checkBoolean(elem.getAttribute("isSocks"));
+      proxy.data.socks = checkNumeric(elem.getAttribute("socksversion"), 5);
+      proxy.data.host = elem.getAttribute("host");
+      proxy.data.port = checkNumeric(elem.getAttribute("port"), 0);
+    } else {
+      proxy.data.isSocks = false;
+      proxy.data.socks = 5;
     }
+    
+    proxy.data.notifOnLoad = true;
+    proxy.data.notifOnError = true;
+
+    if (proxies[i].getElementsByTagName('autoconf')[0] != undefined) {
+      elem = proxies[i].getElementsByTagName('autoconf')[0];
+      proxy.data.reloadPAC = checkBoolean(elem.getAttribute('autoReload'));
+      proxy.data.configUrl = elem.getAttribute("url");
+    } else {
+      proxy.data.reloadPAC = false;
+    }
+
+    /* handle patterns */
+    importPatterns(proxies[i], proxy, xmlDoc);
+
+    if (proxy.data.name == "Default") {
+      // let's replace the currently default proxy with the one from the
+      // import file. Certain users actually change the default from being direct
+      // to going through a proxy.
+      deleteDefaultProxy();
+      // make this the new default.
+      proxy.data.id = "default";
+      proxy.data.readonly = true; // prevent future removal.
+      list.push(proxy);
+    } 
+    else {
+      list.splice(0, 0, proxy);
+    }
+  }
 };
 
 
-
 window.onload = function () {
-    window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+  window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 
-    var fileInput = document.querySelector("#settings-import");
-    var file;
+  var fileInput = document.querySelector("#settings-import");
+  var file;
 
-    fileInput.onchange = function(e){
-        file = e.target.files[0];
-        var reader = new FileReader();      
-        reader.onload = function (event) {
-            try {
-                var xmlDoc = $.parseXML(event.target.result);
-                
-                var addProxies = function () {
-                    importProxies(xmlDoc);
-                    updateProxyTable();
-                    saveProxies();
-                };
+  fileInput.onchange = function(e){
+    file = e.target.files[0];
+    var reader = new FileReader();      
+    reader.onload = function (event) {
+      try {
+        var xmlDoc = $.parseXML(event.target.result);
+        
+        var addProxies = function () {
+          try {
+            importProxies(xmlDoc);
+            updateProxyTable();
+            saveProxies();
+          } catch (e) {
+            console.log("error importing", e);
+          }
+        };
 
-                var replaceProxies = function () {
-                    // remove all existing proxies!
-                    var i;
-                    for (i = list.length - 1; i >= 0; i--) {
-                        if (list[i].data.name != "Default") {
-                            deleteProxy(i);
-                        }
-                    }
-                    updateProxyTable();
-                    saveProxies();
-                    addProxies();
-                };
+        var replaceProxies = function () {
+          // remove all existing proxies!
+          var i;
+          for (i = list.length - 1; i >= 0; i--) {
+            if (list[i].data.name != "Default") {
+              deleteProxy(i);
+            }
+          }
+          updateProxyTable();
+          saveProxies();
+          addProxies();
+        };
 
 
-                $("#import-dialog").dialog({resizable: false,
+        $("#import-dialog").dialog({resizable: false,
                                     height:200,
                                     modal:true,
                                     buttons: {
-                                        "Replace": function () { replaceProxies(); $(this).dialog('close'); }, 
-                                        "Add": function () { addProxies(); $(this).dialog('close'); },
-                                        "Nevermind": function () { /* Do nothing */ $(this).dialog('close'); }
+                                      "Replace": function () { replaceProxies(); $(this).dialog('close'); }, 
+                                      "Add": function () { addProxies(); $(this).dialog('close'); },
+                                      "Nevermind": function () { /* Do nothing */ $(this).dialog('close'); }
                                     }
-                                     
-                                    });
+                                    
+                                   });
 
-                $("#import-result").text(localize("Your FoxyProxy Settings file has been imported successfully."));
-            } catch (e) {
-                $("#import-result").text(localize("An error occurred. The file you have chosen may not contain valid FoxyProxy settings. Please try to use a different file."));
-            }
-      };      
-        reader.readAsText(file);
-    };
+        $("#import-result").text(localize("Your FoxyProxy Settings file has been imported successfully."));
+      } catch (e) {
+        $("#import-result").text(localize("An error occurred. The file you have chosen may not contain valid FoxyProxy settings. Please try to use a different file."));
+      }
+    };      
+    reader.readAsText(file);
+  };
 };
