@@ -108,7 +108,7 @@ function editProxy(){
     proxyLoad(list[selectedProxy],true);
 }
 
-function updateProxyTable(selected){
+function updateProxyTable(selected) {
     oTable.fnClearTable();
     if(list && list.length)
 	oTable.fnAddData(list);
@@ -117,34 +117,36 @@ function updateProxyTable(selected){
     toggleselectedProxy();
 }
 
-function deleteSelectedProxy(){
+function deleteSelectedProxy() {
     selectedProxy = oTable.fnGetSelectedPosition();
-    /*if(!list[selectedProxy].data.readonly){
-     list.splice(selectedProxy, 1);
-     saveProxies();
-     updateProxyTable();
-     if(list.length<=1)
-     {
-     chrome.extension.getBackgroundPage().foxyProxy.settings.enabledQA=false;
-     }
-     }*/
     deleteProxy(selectedProxy);
 }
 
-function deleteProxy(index)
-{
-    if(!list[index].data.readonly){
-	list.splice(index, 1);
-	saveProxies();
-	updateProxyTable();
-	if(list.length<=1)
-	{
-	    chrome.extension.getBackgroundPage().foxyProxy.settings.enabledQA=false;
-	}
-    }		
+function deleteDefaultProxy() {
+  var i;
+  for (i = list.length - 1; i >= 0; i--) {
+    if (list[i].data.name == "Default") {
+      // deleting default proxy which is located by making a special
+      // call to deleteProxy.
+      deleteProxy(i, true);
+    }
+  }
+};
+
+function deleteProxy(index, deleteDefault) {
+  deleteDefault = deleteDefault || false;
+  if(!list[index].data.readonly || 
+     (list[index].data.readonly && deleteDefault)) {
+    list.splice(index, 1);
+    saveProxies();
+    updateProxyTable();
+    if(list.length<=1) {
+      chrome.extension.getBackgroundPage().foxyProxy.settings.enabledQA=false;
+    }
+  }
 }
 
-function copySelectedProxy(){
+function copySelectedProxy() {
     selectedProxy = oTable.fnGetSelectedPosition();
     if(typeof selectedProxy=='number' && selectedProxy>=0 && !list[selectedProxy].data.readonly){
 	list.splice(selectedProxy, 0, new Proxy(list[selectedProxy]));
