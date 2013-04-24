@@ -138,8 +138,10 @@ var setDefaultFoxyProxySettings = function (foxyproxy, xmlDoc) {
   var defaultPrefs = xmlDoc.createElement("defaultPrefs");
   defaultPrefs.setAttribute("origPrefetch", 0);  
 
-  var warnings = xmlDoc.createElement("warnings");
+  warnings = xmlDoc.createElement("warnings");
   warnings.setAttribute("white-patterns", true);
+  foxyproxy.appendChild(warnings);
+
 
   foxyproxy.appendChild(random);
   foxyproxy.appendChild(statusbar);
@@ -207,15 +209,8 @@ var setSingleProxyNode = function (xmlDoc, curProxy) {
   curProxyNode.setAttribute('id', curProxy.id);
   curProxyNode.setAttribute("notes", curProxy.notes);
   curProxyNode.setAttribute('enabled', curProxy.enabled);
-
-  if (curProxy.id == "default") {
-    curProxyNode.setAttribute('color', '#0055E5');
-  } else {
-    curProxyNode.setAttribute('color', curProxy.color);
-  }
-
-
-
+  curProxyNode.setAttribute('color', curProxy.color);
+  curProxyNode.setAttribute('isSocks', curProxy.isSocks);
   curProxyNode.setAttribute("mode", curProxy.type);
   curProxyNode.setAttribute("autoconfMode", "pac");
 
@@ -230,11 +225,6 @@ var setSingleProxyNode = function (xmlDoc, curProxy) {
   manualconf.setAttribute("host", curProxy.host);
   manualconf.setAttribute("port", curProxy.port);
   manualconf.setAttribute("socksversion", curProxy.socks);
-  if (curProxy.isSocks) {
-    manualconf.setAttribute('isSocks', true);
-  } else {
-    manualconf.setAttribute('isSocks', false);
-  }
   curProxyNode.appendChild(manualconf);
 
   // autoconf
