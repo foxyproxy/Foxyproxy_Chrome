@@ -177,4 +177,28 @@ function moveSelectedProxyDown(){
     }
 }
 
-
+/**
+ * Default is always at the bottom currently, but issues can arise if
+ * it is not (e.g.: if there is a bug in the code) So it is safe to
+ * have a function that ensures it is at the bottom for later
+ * use. Especially with import, which should place all proxies at the
+ * bottom (arr[0]) and the default at the top, but this function may
+ * still be useful in case of failure.
+ */
+var placeDefaultToBottom = function () {
+  // place default at the bottom of the proxy list.
+  
+  var i = 0;
+  var le = list.length;
+  var defaultProxy;
+  if (list[le-1].data.name != 'Default') {
+    // default should always be at the bottom.
+    for (; i < le; i++) {
+      if (list[i].data.name == 'Default') {
+        defaultProxy = list.splice(i, 1);
+        list.push(defaultProxy.pop());
+        return;
+      }
+    }
+  }
+};

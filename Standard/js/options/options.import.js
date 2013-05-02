@@ -53,11 +53,7 @@ var importPatterns = function (xmlProxy, proxy, xmlDoc) {
 
 };
 
-orderProxyList = function () {
-  // place default at the bottom of the proxy list.
-  
-  
-};
+
 var importProxies = function (xmlDoc) {
     var proxy, elem, patterns;
     var i = 0;
@@ -115,12 +111,28 @@ var importProxies = function (xmlDoc) {
       // make this the new default.
       proxy.data.id = "default";
       proxy.data.readonly = true; // prevent future removal.
+
+      
+      // default should always be at the bottom,
+      // since other proxies are added to the top,
+      // but running placeDefaultToBottom at the end to
+      // make sure (making it foolproof from add/replace logic)
       list.push(proxy);
-    } 
+
+      // use splice below to test placeDefaultToBottom() at the end of 
+      // this function.
+      // list.splice(0, 0, proxy);
+      
+
+   } 
     else {
       list.splice(0, 0, proxy);
     }
   }
+  // Default should always be at the bottom.
+  // This should almost never happen except with
+  // funky imports.
+  placeDefaultToBottom();
 };
 
 
