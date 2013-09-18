@@ -1,0 +1,2 @@
+http://developer.chrome.com/extensions/packaging.html
+
