@@ -191,62 +191,122 @@ function Extension() {
 	    }
 	});
     };
+    
     this.updateContextMenu = function () {
-	chrome.contextMenus.removeAll();
-	if (this.settings.showContextMenu) {
-	    chrome.contextMenus.create({
-		title: localize("Use proxies based on their pre-defined patterns and priorities"),
-		type: "radio",
-		onclick: function () {
-		    self.state = 'auto';
-		},
-		checked: ('auto' == state)
-	    });
-	    $.each(this.proxyList, function (i, proxy) {
-		if (proxy.data.enabled) {
-		    chrome.contextMenus.create({
-			title: localize("Use proxy") + " \"" + proxy.data.name + "\" " + localize("for all URLs"),
-			type: "radio",
-			onclick: function () {
-			    self.state = proxy.data.id;
-			},
-			checked: (proxy.data.id == state)
-		    });
-		}
-	    });
-	    chrome.contextMenus.create({
-		title: localize("Disable FoxyProxy"),
-		type: "radio",
-		onclick: function () {
-		    self.state = 'disabled';
-		},
-		checked: ('disabled' == state)
-	    });
-	    chrome.contextMenus.create({
-		type: "separator"
-	    });
-	    chrome.contextMenus.create({
-		title: localize("Options"),
-		onclick: function () {
-		    self.options("tabProxies");
-		}
-	    });
-	    if (this.settings.enabledQA && this.state != 'disabled') {
-		chrome.contextMenus.create({
-		    title: localize("QuickAdd"),
-		    onclick: function (info, tab) {
-			self.options("addpattern#" + tab.url);
-		    }
-		});
-	    }
-	    /*
-	     chrome.contextMenus.create({
-	     title: localize("Proxy List"),
-	     onclick: function(){ self.options("tabProxies");}
-	     });
-	     */
-	}
+        var useAdvancedMenus = this.settings.useAdvancedMenus;
+        chrome.contextMenus.removeAll();
+        
+        if (this.settings.showContextMenu) {
+            chrome.contextMenus.create({
+                title: localize("Use proxies based on their pre-defined patterns and priorities"),
+                type: "radio",
+                onclick: function () {
+                    self.state = 'auto';
+                },
+                checked: ('auto' == state)
+            });
+            
+            if (useAdvancedMenus) {
+                $.each(this.proxyList, function (i, proxy) {
+                    chrome.contextMenus.create({
+                        title: proxy.data.name,
+                        id: proxy.data.id
+                    });
+                    
+                    chrome.contextMenus.create({
+                        title: localize("Enabled"),
+                        parentId: proxy.data.id,
+                        type: "checkbox",
+                        checked: (proxy.data.enabled),
+                        onclick: function() {
+                            proxy.data.enabled = !proxy.data.enabled;
+                            self.updateContextMenu();
+                        }
+                    });
+                    
+                    chrome.contextMenus.create({
+                        title: localize("Use proxy") + " \"" + proxy.data.name + "\" " + localize("for all URLs"),
+                        type: "radio",
+                        onclick: function () {
+                            self.state = proxy.data.id;
+                        },
+                        checked: (proxy.data.id == state),
+                        parentId: proxy.data.id
+                    });
+                    
+                    if (proxy.data.id != "default") {
+                        chrome.contextMenus.create({
+                            title: localize("Patterns"),
+                            id: "patterns" + proxy.data.id,
+                            parentId: proxy.data.id
+                        });
+                    
+                        $.each(proxy.data.patterns, function(px, pattern) {
+                            chrome.contextMenus.create({
+                                title: pattern.data.regex,
+                                parentId: "patterns" + proxy.data.id,
+                                type: "checkbox",
+                                checked: (pattern.data.enabled),
+                                onclick: function() {
+                                    pattern.data.enabled = !pattern.data.enabled;
+                                }
+                            });
+                        });
+                    }
+
+                });
+            } else {
+                $.each(this.proxyList, function (i, proxy) {
+                    if (proxy.data.enabled) {
+                        chrome.contextMenus.create({
+                            title: localize("Use proxy") + " \"" + proxy.data.name + "\" " + localize("for all URLs"),
+                            type: "radio",
+                            onclick: function () {
+                                self.state = proxy.data.id;
+                            },
+                            checked: (proxy.data.id == state)
+                        });
+                    }
+                });
+            }
+            
+            chrome.contextMenus.create({
+                title: localize("Disable FoxyProxy"),
+                type: "radio",
+                onclick: function () {
+                    self.state = 'disabled';
+                },
+                checked: ('disabled' == state)
+            });
+            
+            chrome.contextMenus.create({
+                type: "separator"
+            });
+            
+            chrome.contextMenus.create({
+                title: localize("Options"),
+                onclick: function () {
+                    self.options("tabProxies");
+                }
+            });
+
+            if (this.settings.enabledQA && this.state != 'disabled') {
+                chrome.contextMenus.create({
+                    title: localize("QuickAdd"),
+                    onclick: function (info, tab) {
+                        self.options("addpattern#" + tab.url);
+                    }
+                });
+            }
+            /*
+            chrome.contextMenus.create({
+            title: localize("Proxy List"),
+            onclick: function(){ self.options("tabProxies");}
+            });
+             */
+         }
     };
+    
     self.icon = $('#image')[0];
     self.currentIcon = $("#customImage")[0];
     var animationFrames = 36,

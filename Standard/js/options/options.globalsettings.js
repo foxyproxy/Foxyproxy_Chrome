@@ -1,6 +1,7 @@
-var settings = chrome.extension.getBackgroundPage().foxyProxy.settings;
+var foxyProxy = chrome.extension.getBackgroundPage().foxyProxy;
+var settings = foxyProxy.settings;
 function saveSettings(){
-    chrome.extension.getBackgroundPage().foxyProxy.settings = settings;
+    foxyProxy.settings = settings;
 }
 
 
@@ -77,58 +78,58 @@ $(document).ready(function() {
 
 
     $("#settingsContextmenu").setChecked(settings.showContextMenu).click(function(){
-	settings.showContextMenu = $(this).is(":checked");
-	chrome.extension.getBackgroundPage().foxyProxy.settings = settings;
+        settings.showContextMenu = $(this).is(":checked");
+        saveSettings()
     });
     
 
     
     $("#enabledQA").click(function(){
-	if(list.length<=1) {
+        if(list.length<=1) {
             alert("You must have entered at least one proxy in order to use QuickAdd");
-	    return false;
+            return false;
         }
 
-	settings.enabledQA = $(this).is(":checked");
-	
-	chrome.extension.getBackgroundPage().foxyProxy.settings = settings;
-	if(settings.enabledQA)
-	    $('#QASettingsContainer *').each(function(){ $(this).prop('disabled', false); });
-	else
-	    $('#QASettingsContainer *').each(function(){  $(this).attr('disabled','disabled'); });
+        settings.enabledQA = $(this).is(":checked");
+    
+        saveSettings();
+        if(settings.enabledQA)
+            $('#QASettingsContainer *').each(function(){ $(this).prop('disabled', false); });
+        else
+            $('#QASettingsContainer *').each(function(){  $(this).attr('disabled','disabled'); });
     });
 
     $("#patternTemporaryQA").click(function(){
-	settings.patternTemporaryQA = $(this).is(":checked");
-	chrome.extension.getBackgroundPage().foxyProxy.settings = settings;
+        settings.patternTemporaryQA = $(this).is(":checked");
+        saveSettings()
     });
     $("#patternTemplateQA").keyup(function(){
-	settings.patternTemplateQA=$(this).val();
-	saveSettings();
-	$("#patternResultQA").val(genPattern($("#patternUrlQA").val(),settings.patternTemplateQA));
+        settings.patternTemplateQA=$(this).val();
+        saveSettings();
+        $("#patternResultQA").val(genPattern($("#patternUrlQA").val(),settings.patternTemplateQA));
     });
 
     
     $("#patternUrlQA").change(function(){
-	$("#patternResultQA").val(genPattern($(this).val(),settings.patternTemplateQA));
+        $("#patternResultQA").val(genPattern($(this).val(),settings.patternTemplateQA));
     });
     $("#patternNameQA").change(function(){
-	settings.patternNameQA=$(this).val();
-	chrome.extension.getBackgroundPage().foxyProxy.settings = settings;
+        settings.patternNameQA=$(this).val();
+        saveSettings()
     });
     
     $("input[name='patternWhitelistQA']").click(function(){
-	settings.patternWhitelistQA = $(this).val();
-	chrome.extension.getBackgroundPage().foxyProxy.settings = settings;
+        settings.patternWhitelistQA = $(this).val();
+        saveSettings()
     });
     $("input[name='patternTypeQA']").click(function(){
-	settings.patternTypeQA = $(this).val();
-	chrome.extension.getBackgroundPage().foxyProxy.settings = settings;
+        settings.patternTypeQA = $(this).val();
+        saveSettings()
     });
     
     $("#patternProxyQA, #dialogPatternProxyQA").change(function(){
-	settings.patternProxyQA = $(this).val();
-	chrome.extension.getBackgroundPage().foxyProxy.settings = settings;
+        settings.patternProxyQA = $(this).val();
+        saveSettings()
     });
 
 
@@ -189,8 +190,13 @@ $(document).ready(function() {
     });
     
     $("#proxyModeGlobal").change(function () {
-	var newState = $("option:selected",this).val();
-	chrome.extension.getBackgroundPage().foxyProxy.state = newState;
+        var newState = $("option:selected",this).val();
+        foxyProxy.state = newState;
+    });
+    
+    $("input[name='advancedMenuCheck']").change(function() {
+        settings.useAdvancedMenus = $(this).is(":checked");
+        foxyProxy.updateContextMenu();
     });
     
     onTabShow('');
