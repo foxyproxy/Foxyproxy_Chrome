@@ -38,7 +38,8 @@ if (!localStorage.getItem('settings')){
 	patternNameQA: "Dynamic QuickAdd Pattern",
 	patternTemporaryQA: false,
 	patternWhitelistQA:"Inclusive",
-	patternTypeQA:"wildcard"
+	patternTypeQA:"wildcard",
+	useAdvancedMenus: false
     }));
 }
 if (!localStorage.getItem('state')){
