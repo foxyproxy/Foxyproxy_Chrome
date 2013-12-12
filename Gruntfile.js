@@ -33,14 +33,14 @@ module.exports = function (grunt) {
                 files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
                 tasks: ['coffee:dist']
             },
-            coffeeTest: {
-                files: ['test/spec/{,*/}*.coffee'],
-                tasks: ['coffee:test']
-            },
-            compass: {
-                files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-                tasks: ['compass:server']
-            }
+            // coffeeTest: {
+            //     files: ['test/spec/{,*/}*.coffee'],
+            //     tasks: ['coffee:test']
+            // },
+            // compass: {
+            //     files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+            //     tasks: ['compass:server']
+            // }
         },
         connect: {
             options: {
@@ -145,6 +145,7 @@ module.exports = function (grunt) {
                 dest: '<%= yeoman.dist %>'
             },
             html: [
+                '<%= yeoman.app %>/background.html',
                 '<%= yeoman.app %>/popup.html',
                 '<%= yeoman.app %>/options.html'
             ]
@@ -228,13 +229,22 @@ module.exports = function (grunt) {
                         'generated/*'
                     ]
                 }]
+            },
+            manifest: {
+                files: [{ 
+                    expand: true,
+                    cwd: '<%= yeoman.app %>',
+                    dest: '<%= yeoman.dist %>/',
+                    src: ['manifest.json']
+                    
+                }]
             }
         },
         concurrent: {
-            server: [
-                'coffee:dist',
-                'compass:server'
-            ],
+            //server: [
+            //    'coffee:dist',
+            //    'compass:server'
+            //],
             test: [
                 'coffee',
                 'compass'
@@ -283,15 +293,28 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
-        'chromeManifest:dist',
+        //'chromeManifest:dist',
         'useminPrepare',
         'concurrent:dist',
         'cssmin',
         'concat',
         'uglify',
-        'copy',
+        'copy:dist',
+        'copy:manifest',
         'usemin',
         'compress'
+    ]);
+    
+    grunt.registerTask('standard', [
+    
+    ]);
+    
+    grunt.registerTask('basic', [
+    
+    ]);
+    
+    grunt.registerTask('opera', [
+    
     ]);
 
     grunt.registerTask('default', [

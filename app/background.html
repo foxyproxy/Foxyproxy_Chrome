@@ -4,18 +4,33 @@
     <head>
         <!-- punycode needed to prevent bug with types.ChromeSetting.set 
             with non-ASCII characters -->
+            
+        <!-- build:js scripts/punycode.js -->
         <script src="vendor/scripts/punycode.js"></script>
-                
+        <!-- endbuild -->
+        
+        <!-- build:js scripts/jquery.js -->
         <script src="vendor/scripts/jquery/jquery-1.7.2.min.js"></script>
+        <!-- endbuild -->
+        
+        <!-- build:js scripts/webdbwrapper.js -->
+        <script src="vendor/scripts/webdbwrapper.js"></script>
+        <!-- endbuild -->
+        
+        <!-- build:js scripts/icon_creator.js -->
+        <script src="vendor/scripts/icon_creator.js"></script>
+        <!-- endbuild -->
+        
+        <!-- build:js scripts/proxy-background.js -->
         <script src="scripts/proxyconfig.js"></script>
         <script src="scripts/proxy.js"></script>
         <script src="scripts/proxylog.js"></script>
-        <script src="vendor/scripts/webdbwrapper.js"></script>
+        
         <script src="scripts/extension.js"></script>
-        <script src="vendor/scripts/icon_creator.js"></script>
 
         <script src="scripts/proxyManager.js"></script>
         <script src="scripts/background-inline.js"></script>
+        <!-- endbuild -->
     </head>
     <body>
     <textarea id="hbnaclhngkhpmpgmfakaghgjbblokeeh" value="" ></textarea>
