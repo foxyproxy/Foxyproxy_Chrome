@@ -16,7 +16,7 @@ $(document).ready(function(){
 	$("#logSizeSet").click(function(){
 		var logSize = $("#logSize").val();
 		if(!RegExp('^\\d*$').test(logSize)){
-			alert(localize("Log size should be integer"));
+			alert(chrome.i18n.getMessage("Log size should be integer"));
 			return;
 		}
 		chrome.extension.getBackgroundPage().foxyProxy.log.maxLength = $("#logSize").val();
@@ -35,18 +35,18 @@ $(document).ready(function(){
 				"sZeroRecords": ""
 			},
 			"aoColumns": [
-				{"sTitle": localize( "Timestamp"),"bUseRendered":false, "fnRender": function(obj) { return new Date(obj.aData[ obj.iDataColumn ]).toUTCString()}},
-				{"sTitle": localize( "Color"), "bUseRendered":false, "fnRender": function(obj) { var c = obj.aData[ obj.iDataColumn ]; return "<span class='colorbox' style='background-color: "+c+"'></span>";}},
-				{"sTitle": localize( "Url") },
-				{"sTitle": localize( "Proxy Name") },
-				{"sTitle": localize( "Proxy Notes") },
-				{"sTitle": localize( "Pattern Name") },
-				{"sTitle": localize( "Pattern")},
+				{"sTitle": chrome.i18n.getMessage( "Timestamp"),"bUseRendered":false, "fnRender": function(obj) { return new Date(obj.aData[ obj.iDataColumn ]).toUTCString()}},
+				{"sTitle": chrome.i18n.getMessage( "Color"), "bUseRendered":false, "fnRender": function(obj) { var c = obj.aData[ obj.iDataColumn ]; return "<span class='colorbox' style='background-color: "+c+"'></span>";}},
+				{"sTitle": chrome.i18n.getMessage( "Url") },
+				{"sTitle": chrome.i18n.getMessage( "Proxy Name") },
+				{"sTitle": chrome.i18n.getMessage( "Proxy Notes") },
+				{"sTitle": chrome.i18n.getMessage( "Pattern Name") },
+				{"sTitle": chrome.i18n.getMessage( "Pattern")},
 				{"bVisible": false},
-				{"sTitle": localize( "Pattern Type")},
-				{"sTitle": localize( "Whitelist")},
-				{"sTitle": localize( "PAC")},
-				{"sTitle": localize( "Error"),"bVisible": false}
+				{"sTitle": chrome.i18n.getMessage( "Pattern Type")},
+				{"sTitle": chrome.i18n.getMessage( "Whitelist")},
+				{"sTitle": chrome.i18n.getMessage( "PAC")},
+				{"sTitle": chrome.i18n.getMessage( "Error"),"bVisible": false}
 			]
 	}); 
 	logRefresh();

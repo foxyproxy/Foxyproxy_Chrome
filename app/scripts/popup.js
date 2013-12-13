@@ -1,15 +1,3 @@
-var localize = function (txt){
-    if(!window.locale){
-	window.locale = JSON.parse(localStorage.getItem('en-en'));
-    }
-    if(txt && window.locale[txt]){
-	console.log(window.locale[txt]);
-	return window.locale[txt];
-    } else {
-	console.log(txt);
-	return txt;
-    }
-};
 
 var options = function (data){
     chrome.extension.getBackgroundPage().foxyProxy.options(data);
@@ -54,9 +42,9 @@ $(document).ready(function(){
     });
 
     $("a").each(function(){
-	if(this.childNodes.length == 0 || (this.childNodes.length == 1 && this.childNodes[0].nodeName == "#text")){
-	    this.innerText = localize(this.innerText);
-	}
+    if(this.childNodes.length == 0 || (this.childNodes.length == 1 && this.childNodes[0].nodeName == "#text")){
+        this.innerText = chrome.i18n.getMessage(this.innerText);
+    }
     });
 
     var list = chrome.extension.getBackgroundPage().foxyProxy.proxyList;
@@ -64,24 +52,24 @@ $(document).ready(function(){
 
     $.each(list, function(i, proxy){
         var a;
-	console.log(proxy.data.type);
-	if(proxy.data.enabled){
+    console.log(proxy.data.type);
+    if(proxy.data.enabled){
 
-	    a = $("<a href='#'/>").text(localize("Use proxy") +" \"" + proxy.data.name + "\" "+localize("for all URLs")).css({
-		"color": proxy.data.color
-	    });
+        a = $("<a href='#'/>").text(chrome.i18n.getMessage("Use_proxy") +" \"" + proxy.data.name + "\" "+chrome.i18n.getMessage("for_all_URLs")).css({
+        "color": proxy.data.color
+        });
 
-	$("<li />").attr("id", "state-"+proxy.data.id).attr("proxyid", proxy.data.id).append(a).click(function(){
-		toggleRadioButton($(this).attr("proxyid"));
-	    }).insertBefore("li#state-disabled");
+    $("<li />").attr("id", "state-"+proxy.data.id).attr("proxyid", proxy.data.id).append(a).click(function(){
+        toggleRadioButton($(this).attr("proxyid"));
+        }).insertBefore("li#state-disabled");
 
 
-	}
+    }
     });
 
     $("#state-" + chrome.extension.getBackgroundPage().foxyProxy.state).addClass("navbar-checked");
 
     if(!chrome.extension.getBackgroundPage().foxyProxy.settings.enabledQA || chrome.extension.getBackgroundPage().foxyProxy.state=='disabled')
-	$('#quickAdd').hide();
+    $('#quickAdd').hide();
 });
 

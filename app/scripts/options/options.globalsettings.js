@@ -37,7 +37,7 @@ function onTabShow(tabName) {
     $('<option value="auto">Use proxies based on their pre-defined patterns and priorities</option>').appendTo(proxyModeCombo);
     $.each(list, function(i, proxy){
 	if(proxy.data.enabled){
-	    var option = $("<option value='"+proxy.data.id+"'>"+localize("Use proxy") +" \"" + proxy.data.name + "\" "+localize("for all URLs")+"</option>")
+	    var option = $("<option value='"+proxy.data.id+"'>"+chrome.i18n.getMessage("Use proxy") +" \"" + proxy.data.name + "\" "+chrome.i18n.getMessage("for all URLs")+"</option>")
 		    .appendTo(proxyModeCombo);
 	}
     });

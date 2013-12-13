@@ -6,23 +6,12 @@ if(typeof console == 'undefined'){
     };
 }
 
-var localize = function (txt){
-    if(!window.locale){
-	window.locale = JSON.parse(localStorage.getItem('en-en'));
-    }
-    if(txt && window.locale[txt]){
-	return window.locale[txt];
-    } else {
-	return txt;
-    }
-};
-
 var simple_tooltip = function (target_items, name){
 
     $(target_items).each(function(i){
 
 	var div = $("<div/>").attr({"class": name, "id": name + i});
-	var p = $("<p/>").text(localize($(this).attr('id')));
+	var p = $("<p/>").text(chrome.i18n.getMessage($(this).attr('id')));
 	div.append(p);
 
 	$("body").append(div);
@@ -185,7 +174,7 @@ $(document).ready(function(){
 
     $("span, th, a, button, h1").each(function(){
 	if(this.childNodes.length == 0 || (this.childNodes.length == 1 && this.childNodes[0].nodeName == "#text")){
-	    this.innerText = localize(this.innerText);
+	    this.innerText = chrome.i18n.getMessage(this.innerText);
 	}	
     });
     initProxyList();

@@ -195,7 +195,7 @@ function Extension() {
 	chrome.contextMenus.removeAll();
 	if (this.settings.showContextMenu) {
 	    chrome.contextMenus.create({
-		title: localize("Use proxies based on their pre-defined patterns and priorities"),
+		title: chrome.i18n.getMessage("Use proxies based on their pre-defined patterns and priorities"),
 		type: "radio",
 		onclick: function () {
 		    self.state = 'auto';
@@ -205,7 +205,7 @@ function Extension() {
 	    $.each(this.proxyList, function (i, proxy) {
 		if (proxy.data.enabled) {
 		    chrome.contextMenus.create({
-			title: localize("Use proxy") + " \"" + proxy.data.name + "\" " + localize("for all URLs"),
+			title: chrome.i18n.getMessage("Use proxy") + " \"" + proxy.data.name + "\" " + chrome.i18n.getMessage("for all URLs"),
 			type: "radio",
 			onclick: function () {
 			    self.state = proxy.data.id;
@@ -215,7 +215,7 @@ function Extension() {
 		}
 	    });
 	    chrome.contextMenus.create({
-		title: localize("Disable FoxyProxy"),
+		title: chrome.i18n.getMessage("Disable FoxyProxy"),
 		type: "radio",
 		onclick: function () {
 		    self.state = 'disabled';
@@ -226,14 +226,14 @@ function Extension() {
 		type: "separator"
 	    });
 	    chrome.contextMenus.create({
-		title: localize("Options"),
+		title: chrome.i18n.getMessage("Options"),
 		onclick: function () {
 		    self.options("tabProxies");
 		}
 	    });
 	    if (this.settings.enabledQA && this.state != 'disabled') {
 		chrome.contextMenus.create({
-		    title: localize("QuickAdd"),
+		    title: chrome.i18n.getMessage("QuickAdd"),
 		    onclick: function (info, tab) {
 			self.options("addpattern#" + tab.url);
 		    }
@@ -241,7 +241,7 @@ function Extension() {
 	    }
 	    /*
 	     chrome.contextMenus.create({
-	     title: localize("Proxy List"),
+	     title: chrome.i18n.getMessage("Proxy List"),
 	     onclick: function(){ self.options("tabProxies");}
 	     });
 	     */

@@ -3,7 +3,7 @@ function addPattern(param){
     {
 	
 	settings.enabledQA = false;
-	alert(localize('QuickAdd disabled'));
+	alert(chrome.i18n.getMessage('QuickAdd disabled'));
 	return;
     }
     $(".modeAdd").hide();
@@ -27,12 +27,12 @@ function addPattern(param){
     $("#dialogPatternProxyQA").change();
 
     $("#patternEditDlg").dialog({
-	title: localize("FoxyProxy QuickAdd"),
+	title: chrome.i18n.getMessage("FoxyProxy QuickAdd"),
 	width: "500px",
 	modal: true,
 	buttons:[
 	    {
-		text: localize("OK"),
+		text: chrome.i18n.getMessage("OK"),
 		click: function() { 
 		    selectedProxy = settings.patternProxyQA;
 		    var exists = false;
@@ -56,7 +56,7 @@ function addPattern(param){
 		
 	    },
 	    {
-		text: localize("Cancel"),
+		text: chrome.i18n.getMessage("Cancel"),
 		click: function(){ $(this).dialog("close");}
 	    }
 	]

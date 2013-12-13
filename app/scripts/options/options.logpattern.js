@@ -26,12 +26,12 @@ function proxySelectionPattern(forAll){
 	$('#patternNameTraining').val("Training Pattern");
 	$('#patternTemplateTraining').val("*://${3}${6}/*");
 	$("#trainingPatternsDlg").dialog({
-		title: localize("FoxyProxy"),
+		title: chrome.i18n.getMessage("FoxyProxy"),
 		width: "500px",
 		modal: true,
 		buttons:[
 			{
-				text: localize("Add"),
+				text: chrome.i18n.getMessage("Add"),
 				click: function(){
 					var id = parseInt($("#patternProxyTraining option:selected").val());
 					if(id || id==0){
@@ -58,14 +58,14 @@ function proxySelectionPattern(forAll){
 						
 						saveProxies();
 						updateProxyTable(id);
-						if(hasDuplicates)alert(localize("Some or all of the patterns weren't added because they duplicate existing patterns for the specified proxy."));
+						if(hasDuplicates)alert(chrome.i18n.getMessage("Some or all of the patterns weren't added because they duplicate existing patterns for the specified proxy."));
 						$(this).dialog("close");
 					} else {
-						alert(localize('Select proxy to add patternt'));
+						alert(chrome.i18n.getMessage('Select proxy to add patternt'));
 					}
 				}
 			},{
-				text: localize("Cancel"),
+				text: chrome.i18n.getMessage("Cancel"),
 				click: function(){ $(this).dialog("close");}
 			}
 		]
