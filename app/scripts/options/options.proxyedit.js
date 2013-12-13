@@ -64,28 +64,28 @@ function proxyLoad(proxy, edit){
     $("#proxyIpPatternsLink").css("display", proxy.data.readonly?"none":"block");
     
     $("#proxyEditDlg").dialog({
-	title: localize("FoxyProxy - Proxy settings"),
+	title: chrome.i18n.getMessage("FoxyProxy - Proxy settings"),
 	modal: true,
 	width:"800px",
 	//		height: 460,
 	resizable: false,
 	buttons: [
 	    {
-		text: localize("Save"),
+		text: chrome.i18n.getMessage("Save"),
 		click: function(){
                     var regexp, mode, index, found, name;
 		    if($("input[name='proxyType']:checked").val() == 'manual' && ($("#proxyHost").val()=='' || $("#proxyPort").val()=='')){
-			alert(localize("Hostname/IP address and port must be specified"));
+			alert(chrome.i18n.getMessage("Hostname/IP address and port must be specified"));
 			return;
 		    }
 		    if($("input[name='proxyType']:checked").val() == 'auto' && !RegExp('^\\d*$').test($("#proxyPACInterval").val())){
-			alert(localize("Interval should be integer"));
+			alert(chrome.i18n.getMessage("Interval should be integer"));
 			return;
 		    }
 		    if($("input[name='proxyType']:checked").val()=="auto") {
 			regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
 			if(!regexp.test($("#proxyConfigUrl").val())){
-			    alert(localize("Proxy config URL is not valid"));
+			    alert(chrome.i18n.getMessage("Proxy config URL is not valid"));
 			    return;
 			}
 			
@@ -153,7 +153,7 @@ function proxyLoad(proxy, edit){
 		    }
 		}
 	    },{
-		text: localize("Cancel"),
+		text: chrome.i18n.getMessage("Cancel"),
 		click: function(){
 		    if(!edit)
 			deleteProxy(selectedProxy);
@@ -183,13 +183,13 @@ $(document).ready(function(){
 	    "sZeroRecords": ""
 	},
 	"aoColumns": [
-	    { "sTitle": localize("Enabled"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}},
-	    { "sTitle": localize("Pattern Name")},
-	    { "sTitle": localize("URL pattern")},
-	    { "sTitle": localize("Pattern Type")},
-	    { "sTitle": localize("Whitelist (Inclusive) or Blacklist (Exclusive)")},
-	    //{ "sTitle": localize("Case sensitive"},
-	    { "sTitle": localize("Temporary"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}}
+	    { "sTitle": chrome.i18n.getMessage("Enabled"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}},
+	    { "sTitle": chrome.i18n.getMessage("Pattern Name")},
+	    { "sTitle": chrome.i18n.getMessage("URL pattern")},
+	    { "sTitle": chrome.i18n.getMessage("Pattern Type")},
+	    { "sTitle": chrome.i18n.getMessage("Whitelist (Inclusive) or Blacklist (Exclusive)")},
+	    //{ "sTitle": chrome.i18n.getMessage("Case sensitive"},
+	    { "sTitle": chrome.i18n.getMessage("Temporary"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}}
 	]
     } );
     /*oIpPatternTable = $("#ipPatternList").dataTable( {
@@ -205,12 +205,12 @@ $(document).ready(function(){
      "sZeroRecords": ""
      },
      "aoColumns": [
-     { "sTitle": localize("Enabled"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}},
-     { "sTitle": localize("Pattern Name")},
-     { "sTitle": localize("Local IP address pattern")},
-     { "sTitle": localize("Pattern Type")},
-     { "sTitle": localize("Whitelist (Inclusive) or Blacklist (Exclusive)")},
-     { "sTitle": localize("Temporary"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}}
+     { "sTitle": chrome.i18n.getMessage("Enabled"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}},
+     { "sTitle": chrome.i18n.getMessage("Pattern Name")},
+     { "sTitle": chrome.i18n.getMessage("Local IP address pattern")},
+     { "sTitle": chrome.i18n.getMessage("Pattern Type")},
+     { "sTitle": chrome.i18n.getMessage("Whitelist (Inclusive) or Blacklist (Exclusive)")},
+     { "sTitle": chrome.i18n.getMessage("Temporary"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}}
      ]
      } );*/
     
@@ -285,14 +285,14 @@ function openPacViewDlg(){
 	    url: $("#proxyConfigUrl").val(),
             cache: false,
             error: function(xhr, textStatus, httpError) {
-		alert(localize("PAC file error") + ": " + textStatus + " " + (httpError ? httpError : "")); // httpError can be null
+		alert(chrome.i18n.getMessage("PAC file error") + ": " + textStatus + " " + (httpError ? httpError : "")); // httpError can be null
             },
 	    success: function(data){
 		console.log(data);
 		$("#pacViewDlgText").val(data);
 		$("#pacViewDlg").dialog({
 		    width: '520px',
-		    title: localize("FoxyProxy - PAC View"),
+		    title: chrome.i18n.getMessage("FoxyProxy - PAC View"),
 		    modal: true
 		});
 	    }
@@ -307,7 +307,7 @@ function testPac() {
 	    url: $("#proxyConfigUrl").val() + "?rnd=" + Math.random(),
 	    cache: false,
 	    error: function(xhr, textStatus, httpError) {
-		alert(localize("PAC file error") + ": " + textStatus + " " + (httpError ? httpError : "")); // httpError can be null
+		alert(chrome.i18n.getMessage("PAC file error") + ": " + textStatus + " " + (httpError ? httpError : "")); // httpError can be null
 	    },
 	    success: function(data){
                 var iframe = document.getElementById("testPacFrame");
@@ -326,7 +326,7 @@ function testPac() {
 /* Add window listener for testPac function */
 window.addEventListener('message', function (event) {
     if (event.data) {
-        alert(localize(event.data.name));
+        alert(chrome.i18n.getMessage(event.data.name));
     }
 });
 

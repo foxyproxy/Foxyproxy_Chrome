@@ -16,14 +16,14 @@ function proxySelection(param){
 
 	} 
         else {
-	    alert(localize("host:port can not be determined from selected text"));
+	    alert(chrome.i18n.getMessage("host:port can not be determined from selected text"));
 	    return;
         }
 
     }
 
     if (aUri == null) {
-	alert(localize("host:port can not be determined from selected text"));
+	alert(chrome.i18n.getMessage("host:port can not be determined from selected text"));
 	return;
     }
 	//proxySelectionDlg
@@ -59,12 +59,12 @@ function proxySelection(param){
 		)
 	});
 	$("#proxySelectionDlg").dialog({
-		title: localize("FoxyProxy"),
+		title: chrome.i18n.getMessage("FoxyProxy"),
 		width: "500px",
 		modal: true,
 		buttons:[
 			{
-				text: localize("Add New Proxy"),
+				text: chrome.i18n.getMessage("Add New Proxy"),
 				click: function() { 
 					addNewProxy(aUri);
 					$(this).dialog("close"); 
@@ -72,7 +72,7 @@ function proxySelection(param){
 				css:{"float":"left"}
 				
 			},{
-				text: localize("Save"),
+				text: chrome.i18n.getMessage("Save"),
 				click: function(){
 					var id = parseInt($("#proxySelectionTable tbody tr.selected_row").attr("proxyId"));
 					if(id || id==0){
@@ -85,11 +85,11 @@ function proxySelection(param){
 						updateProxyTable(id);
 						$(this).dialog("close");
 					} else {
-						alert(localize('Select proxy to update'));
+						alert(chrome.i18n.getMessage('Select proxy to update'));
 					}
 				}
 			},{
-				text: localize("Cancel"),
+				text: chrome.i18n.getMessage("Cancel"),
 				click: function(){ $(this).dialog("close");}
 			}
 		]

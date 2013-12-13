@@ -33,19 +33,19 @@ function initProxyList() {
 	},
 	"aoColumns": [
 	    {"bVisible": false},
-	    {"sTitle": localize( "Enabled"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}},
-	    {"sTitle": localize( "Color"), "bUseRendered":false, "fnRender": function(obj) { var c = obj.aData[ obj.iDataColumn ]; return "<span class='colorbox' style='background-color: "+c+"'></span>";}},
+	    {"sTitle": chrome.i18n.getMessage( "Enabled"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}},
+	    {"sTitle": chrome.i18n.getMessage( "Color"), "bUseRendered":false, "fnRender": function(obj) { var c = obj.aData[ obj.iDataColumn ]; return "<span class='colorbox' style='background-color: "+c+"'></span>";}},
 	    
-	    {"sTitle": localize( "Proxy Name") },
-	    {"sTitle": localize( "Proxy Notes") },
-	    {"sTitle": localize( "Host or IP Address") },
-	    {"sTitle": localize( "Port")},
-	    {"sTitle": localize( "SOCKS proxy?"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}},
-	    {"sTitle": localize( "SOCKS Version")},
+	    {"sTitle": chrome.i18n.getMessage( "Proxy Name") },
+	    {"sTitle": chrome.i18n.getMessage( "Proxy Notes") },
+	    {"sTitle": chrome.i18n.getMessage( "Host or IP Address") },
+	    {"sTitle": chrome.i18n.getMessage( "Port")},
+	    {"sTitle": chrome.i18n.getMessage( "SOCKS proxy?"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}},
+	    {"sTitle": chrome.i18n.getMessage( "SOCKS Version")},
 
              // Will need to remove and reintroduce columns when functionality is working.
-	     {"sTitle": localize( "Auto PAC URL")},
-/*	     {"sTitle": localize( "Proxy DNS")}
+	     {"sTitle": chrome.i18n.getMessage( "Auto PAC URL")},
+/*	     {"sTitle": chrome.i18n.getMessage( "Proxy DNS")}
 */
 	]
     } );
@@ -92,7 +92,7 @@ function addNewProxy(aUri){
 		port: aUri.port
 	    });
 	} else {
-	    alert(localize("host:port can not be determined from selected text"));
+	    alert(chrome.i18n.getMessage("host:port can not be determined from selected text"));
 	    return;
 	}
     } else {

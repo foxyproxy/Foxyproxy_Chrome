@@ -6,616 +6,555 @@
     "appDescription": {
     "message": "FoxyProxy for Chrome",
     "description": "The description of the application"
-    }
+    },
 
     "FoxyProxy": {
-      message: "FoxyProxy",
-      description: ""
+      "message": "FoxyProxy",
+      "description": ""
     },
 
-    "Proxies": {
-      message: "Proxies",
-      description: ""
+    "proxies": {
+      "message": "Proxies",
+      "description": ""
     },
 
-    "Global Settings": {
-      message: "Global Settings",
-      description: ""
+    "global_settings": {
+      "message": "Global Settings",
+      "description": ""
     },
 
-    "QuickAdd": {
-      message: "QuickAdd",
-      description: ""
+    "quickadd": {
+      "message": "QuickAdd",
+      "description": ""
     },
 
-    "AutoAdd": {
-      message: "AutoAdd",
-      description: ""
+    "autoadd": {
+      "message": "AutoAdd",
+      "description": ""
     },
 
-    "Logging": {
-      message: "Logging",
-      description: ""
+    "logging": {
+      "message": "Logging",
+      "description": ""
     },
 
-    "Move Up": {
-      message: "Move Up",
-      description: ""
+    "move_up": {
+      "message": "Move Up",
+      "description": ""
     },
 
-    "Move Down": {
-      message: "Move Down",
-      description: ""
+    "move_down": {
+      "message": "Move Down",
+      "description": ""
     },
 
-    "Add New Proxy": {
-      message: "Add New Proxy",
-      description: ""
+    "add_new_proxy": {
+      "message": "Add New Proxy",
+      "description": ""
     },
 
-    "Edit Selection": {
-      message: "Edit Selection",
-      description: ""
+    "edit_selection": {
+      "message": "Edit Selection",
+      "description": ""
     },
 
-    "Copy Selection": {
-      message: "Copy Selection",
-      description: ""
+    "copy_selection": {
+      "message": "Copy Selection",
+      "description": ""
     },
 
-    "Delete Selection": {
-      message: "Delete Selection",
-      description: ""
+    "delete_selection": {
+      "message": "Delete Selection",
+      "description": ""
     },
 
-    "Show icon in the context menu": {
-      message: "Show icon in the context menu",
-      description: ""
+    "show_icon_in_the_context_menu": {
+      "message": "Show icon in the context menu",
+      "description": ""
     },
 
-    "General": {
-      message: "General",
-      description: ""
+    "general": {
+      "message": "General",
+      "description": ""
     },
 
-    "Proxy Details": {
-      message: "Proxy Details",
-      description: ""
+    "proxy_details": {
+      "message": "Proxy Details",
+      "description": ""
     },
 
-    "URL Patterns": {
-      message: "URL Patterns",
-      description: ""
+    "url_patterns": {
+      "message": "URL Patterns",
+      "description": ""
     },
 
-    "Enabled": {
-      message: "Enabled",
-      description: ""
+    "enabled": {
+      "message": "Enabled",
+      "description": ""
     },
 
-    "Proxy Name": {
-      message: "Proxy Name",
-      description: ""
+    "proxy_name": {
+      "message": "Proxy Name",
+      "description": ""
     },
 
-    "Proxy Notes": {
-      message: "Proxy Notes",
-      description: ""
+    "proxy_notes": {
+      "message": "Proxy Notes",
+      "description": ""
     },
-
+/*
     "Include this proxy when cycling proxies by clicking on statusbar or toolbar (Global Settings-> Statusbar/Toolbar Activation-> Cycle through modes must be selected)": {
-      message: "Include this proxy when cycling proxies by clicking on statusbar or toolbar (Global Settings-> Statusbar/Toolbar Activation-> Cycle through modes must be selected)",
-      description: ""
+      "message": "Include this proxy when cycling proxies by clicking on statusbar or toolbar (Global Settings-> Statusbar/Toolbar Activation-> Cycle through modes must be selected)",
+      "description": ""
     },
 
     "Perform remote DNS lookups on hostnames loading through this proxy": {
-      message: "Perform remote DNS lookups on hostnames loading through this proxy",
-      description: ""
+      "message": "Perform remote DNS lookups on hostnames loading through this proxy",
+      "description": ""
+    },
+*/
+    "color": {
+      "message": "Color",
+      "description": ""
     },
 
-    "Color": {
-      message: "Color",
-      description: ""
+    "direct_internet_connection": {
+      "message": "Direct internet connection (no proxy)",
+      "description": ""
     },
 
-    "Direct internet connection (no proxy)": {
-      message: "Direct internet connection (no proxy)",
-      description: ""
+    "manual_proxy_configuration": {
+      "message": "Manual Proxy Configuration",
+      "description": ""
     },
-
-    "Manual Proxy Configuration": {
-      message: "Manual Proxy Configuration",
-      description: ""
-    },
-
+/*
     "Help! Where are settings for HTTP, SSL, FTP, Gopher, and SOCKS?": {
-      message: "Help! Where are settings for HTTP, SSL, FTP, Gopher, and SOCKS?",
-      description: ""
+      "message": "Help! Where are settings for HTTP, SSL, FTP, Gopher, and SOCKS?",
+      "description": ""
+    },
+*/
+    "SOCKS_v4": {
+      "message": "SOCKS v4/4a",
+      "description": ""
     },
 
-    "SOCKS v4/4a": {
-      message: "SOCKS v4/4a",
-      description: ""
+    "SOCKS_v5": {
+      "message": "SOCKS v5",
+      "description": ""
     },
 
-    "SOCKS v5": {
-      message: "SOCKS v5",
-      description: ""
+    "automatic_proxy_configuration_URL": {
+      "message": "Automatic proxy configuration URL",
+      "description": ""
     },
 
-    "Automatic proxy configuration URL": {
-      message: "Automatic proxy configuration URL",
-      description: ""
+    "view": {
+      "message": "View",
+      "description": ""
     },
 
-    "View": {
-      message: "View",
-      description: ""
+    "test": {
+      "message": "Test",
+      "description": ""
     },
 
-    "Test": {
-      message: "Test",
-      description: ""
+    "reload_PAC_every": {
+      "message": "Reload PAC every",
+      "description": ""
     },
 
-    "Reload PAC every": {
-      message: "Reload PAC every",
-      description: ""
-    },
-
-    "Bypass FoxyProxy when loading PAC": {
-      message: "Bypass FoxyProxy when loading PAC",
-      description: ""
+    "bypass_foxyproxy_when_loading_pac": {
+      "message": "Bypass FoxyProxy when loading PAC",
+      "description": ""
     },
 
     "minutes": {
-      message: "minutes",
-      description: ""
+      "message": "minutes",
+      "description": ""
     },
-
+/*
     "Notify me about proxy auto-configuration file loads": {
-      message: "Notify me about proxy auto-configuration file loads",
-      description: ""
+      "message": "Notify me about proxy auto-configuration file loads",
+      "description": ""
     },
 
     "Notify me about proxy auto-configuration file errors": {
-      message: "Notify me about proxy auto-configuration file errors",
-      description: ""
+      "message": "Notify me about proxy auto-configuration file errors",
+      "description": ""
     },
 
     "Here you can specify when this proxy is and is not used.": {
-      message: "Here you can specify when this proxy is and is not used.",
-      description: ""
+      "message": "Here you can specify when this proxy is and is not used.",
+      "description": ""
+    },
+*/
+    "add_new_pattern": {
+      "message": "Add new pattern",
+      "description": ""
     },
 
-    "Add new pattern": {
-      message: "Add new pattern",
-      description: ""
+    "help_contents": {
+      "message": "Help contents",
+      "description": ""
     },
 
-    "Edit selection": {
-      message: "Edit selection",
-      description: ""
+    "temporary": {
+      "message": "Temporary",
+      "description": ""
     },
 
-    "Copy selection": {
-      message: "Copy selection",
-      description: ""
+    "pattern_name": {
+      "message": "Pattern Name",
+      "description": ""
     },
 
-    "Delete selection": {
-      message: "Delete selection",
-      description: ""
+    "pattern_type": {
+      "message": "Pattern Type",
+      "description": ""
     },
 
-    "Help contents": {
-      message: "Help contents",
-      description: ""
+    "url_pattern": {
+      "message": "URL pattern",
+      "description": ""
     },
-
-    "Temporary": {
-      message: "Temporary",
-      description: ""
-    },
-
-    "Pattern Name": {
-      message: "Pattern Name",
-      description: ""
-    },
-
-    "Pattern Type": {
-      message: "Pattern Type",
-      description: ""
-    },
-
-    "URL pattern": {
-      message: "URL pattern",
-      description: ""
-    },
-
+/*
     "URLs matching this pattern are loaded through this proxy": {
-      message: "URLs matching this pattern are loaded through this proxy",
-      description: ""
+      "message": "URLs matching this pattern are loaded through this proxy",
+      "description": ""
     },
 
     "URLs matching this pattern are NOT loaded through this proxy": {
-      message: "URLs matching this pattern are NOT loaded through this proxy",
-      description: ""
+      "message": "URLs matching this pattern are NOT loaded through this proxy",
+      "description": ""
+    },
+*/
+    "wildcards": {
+      "message": "Wildcards",
+      "description": ""
     },
 
-    "Wildcards": {
-      message: "Wildcards",
-      description: ""
+    "regular_expression": {
+      "message": "Regular expression",
+      "description": ""
     },
 
-    "Regular expression": {
-      message: "Regular expression",
-      description: ""
+    "set": {
+      "message": "Set",
+      "description": ""
     },
 
-    "Set": {
-      message: "Set",
-      description: ""
-    },
+    // "as the new host": {
+    //   "message": "port of which proxy configuration?",
+    //   "description": ""
+    // },
 
-    "as the new host: {
-      message: port of which proxy configuration?"
-      description: ""
-    },
-
-    "Host or IP Address": {
-      message: "Host or IP Address",
-      description: ""
+    "Host_or_IP_Address": {
+      "message": "Host or IP Address",
+      "description": ""
     },
 
     "Port": {
-      message: "Port",
-      description: ""
+      "message": "Port",
+      "description": ""
     },
 
-    "SOCKS proxy?": {
-      message: "SOCKS proxy?",
-      description: ""
+    "SOCKS_proxy": {
+      "message": "SOCKS proxy?",
+      "description": ""
     },
 
-    "SOCKS Version": {
-      message: "SOCKS Version",
-      description: ""
+    "SOCKS_Version": {
+      "message": "SOCKS Version",
+      "description": ""
     },
 
-    "Auto PAC URL": {
-      message: "Auto PAC URL",
-      description: ""
+    "Auto_PAC_URL": {
+      "message": "Auto PAC URL",
+      "description": ""
     },
 
-    "Proxy DNS": {
-      message: "Proxy DNS",
-      description: ""
+    "Proxy_DNS": {
+      "message": "Proxy DNS",
+      "description": ""
     },
 
-    "host: {
-      message: port can not be determined from selected text"
-      description: ""
+    "host": {
+      "message": "port can not be determined from selected text",
+      "description": ""
     },
 
-    "FoxyProxy - Proxy settings": {
-      message: "FoxyProxy - Proxy settings",
-      description: ""
+    "FoxyProxy_Proxy_settings": {
+      "message": "FoxyProxy - Proxy settings",
+      "description": ""
     },
 
     "Save": {
-      message: "Save",
-      description: ""
+      "message": "Save",
+      "description": ""
     },
 
     "Cancel": {
-      message: "Cancel",
-      description: ""
+      "message": "Cancel",
+      "description": ""
     },
 
-    "Whitelist (Inclusive) or Blacklist (Exclusive)": {
-      message: "Whitelist (Inclusive) or Blacklist (Exclusive)",
-      description: ""
+    "Whitelist_or_Blacklist": {
+      "message": "Whitelist (Inclusive) or Blacklist (Exclusive)",
+      "description": ""
     },
 
-    "PAC execution timeout.": {
-      message: "PAC execution timeout.",
-      description: ""
+    "PAC_execution_timeout": {
+      "message": "PAC execution timeout.",
+      "description": ""
     },
 
-    "PAC file successfully loaded": {
-      message: "PAC file successfully loaded",
-      description: ""
+    "PAC_file_successfully_loaded": {
+      "message": "PAC file successfully loaded",
+      "description": ""
     },
 
-    "PAC file error": {
-      message: "PAC file error",
-      description: ""
+    "PAC_file_error": {
+      "message": "PAC file error",
+      "description": ""
     },
 
-    "FoxyProxy - Add/Edit pattern": {
-      message: "FoxyProxy - Add/Edit pattern",
-      description: ""
+    "FoxyProxy_Add_Edit_pattern": {
+      "message": "FoxyProxy - Add/Edit pattern",
+      "description": ""
     },
 
-    "host: {
-      message: port can not be determined from selected text"
-      description: ""
+    // "Use proxies based on their pre-defined patterns and priorities": {
+    //   "message": "Use proxies based on their pre-defined patterns and priorities",
+    //   "description": ""
+    // },
+
+    "Disable_FoxyProxy": {
+      "message": "Disable FoxyProxy",
+      "description": ""
     },
 
-    "Use proxies based on their pre-defined patterns and priorities": {
-      message: "Use proxies based on their pre-defined patterns and priorities",
-      description: ""
-    },
-
-    "Disable FoxyProxy": {
-      message: "Disable FoxyProxy",
-      description: ""
-    },
-
-    "Quick Add": {
-      message: "Quick Add",
-      description: ""
+    "Quick_Add": {
+      "message": "Quick Add",
+      "description": ""
     },
 
     "Options": {
-      message: "Options",
-      description: ""
+      "message": "Options",
+      "description": ""
     },
 
-    "Proxy List": {
-      message: "Proxy List",
-      description: ""
+    "Proxy_List": {
+      "message": "Proxy List",
+      "description": ""
     },
 
-    "Use proxy": {
-      message: "Use proxy",
-      description: ""
+    "Use_proxy": {
+      "message": "Use proxy",
+      "description": ""
     },
 
-    "for all URLs": {
-      message: "for all URLs",
-      description: ""
+    "for_all_URLs": {
+      "message": "for all URLs",
+      "description": ""
     },
 
-    "Hostname/IP address and port must be specified": {
-      message:  "Hostname/IP address and port must be specified",
-      description: ""
-    },
-
-    "PAC file sucsessful loaded": {
-      message: "PAC file sucsessful loaded",
-      description: ""
-    },
-
-    "PAC file error": {
-      message: "PAC file error",
-      description: ""
-    },
-
-    "PAC execution timeout.": {
-      message: "PAC execution timeout.",
-      description: ""
-    },
-
-    "Logging": {
-      message: "Logging",
-      description: ""
-    },
+    // "Hostname/IP address and port must be specified": {
+    //   "message":  "Hostname/IP address and port must be specified",
+    //   "description": ""
+    // },
+    // 
+    // "PAC file sucsessful loaded": {
+    //   "message": "PAC file sucsessful loaded",
+    //   "description": ""
+    // },
 
     "Clear": {
-      message: "Clear",
-      description: ""
+      "message": "Clear",
+      "description": ""
     },
 
     "Refresh": {
-      message: "Refresh",
-      description: ""
+      "message": "Refresh",
+      "description": ""
     },
-
-    "Set": {
-      message: "Set",
-      description: ""
-    },
-
+/*
     "Copy URL to Clipboard": {
-      message: "Copy URL to Clipboard",
-      description: ""
-    },
-
-    "Delete Selection": {
-      message: "Delete Selection",
-      description: ""
+      "message": "Copy URL to Clipboard",
+      "description": ""
     },
 
     "Open URL in New Tab": {
-      message: "Open URL in New Tab",
-      description: ""
+      "message": "Open URL in New Tab",
+      "description": ""
     },
 
     "Maximum size before log wraps": {
-      message: "Maximum size before log wraps",
-      description: ""
+      "message": "Maximum size before log wraps",
+      "description": ""
     },
-
-    "Pattern Name": {
-      message: "Pattern Name",
-      description: ""
-    },
-
+*/
     "Timestamp": {
-      message: "Timestamp",
-      description: ""
+      "message": "Timestamp",
+      "description": ""
     },
 
     "Pattern": {
-      message: "Pattern",
-      description: ""
-    },
-
-    "Pattern Type": {
-      message: "Pattern Type",
-      description: ""
+      "message": "Pattern",
+      "description": ""
     },
 
     "Whitelist": {
-      message: "Whitelist",
-      description: ""
+      "message": "Whitelist",
+      "description": ""
     },
 
     "Error": {
-      message: "Error",
-      description: ""
+      "message": "Error",
+      "description": ""
     },
 
     "PAC": {
-      message: "PAC",
-      description: ""
-    },
-
-    "Pattern": {
-      message: "Pattern",
-      description: ""
+      "message": "PAC",
+      "description": ""
     },
 
     "Url": {
-      message: "Url",
-      description: ""
+      "message": "Url",
+      "description": ""
     },
-
+/*
     "Pattern URL must be specified": {
-      message: "Pattern URL must be specified",
-      description: ""
+      "message": "Pattern URL must be specified",
+      "description": ""
     },
 
     "URL pattern template": {
-      message: "URL pattern template",
-      description: ""
+      "message": "URL pattern template",
+      "description": ""
     },
 
     "QuickAdd adds a dynamic URL pattern to a proxy when you press Alt-F2": {
-      message: "QuickAdd adds a dynamic URL pattern to a proxy when you press Alt-F2",
-      description: ""
+      "message": "QuickAdd adds a dynamic URL pattern to a proxy when you press Alt-F2",
+      "description": ""
     },
 
     "QuickAdd disabled" : {
-      message:  "QuickAdd disabled",
-      description: ""
+      "message":  "QuickAdd disabled",
+      "description": ""
     },
 
     "Password does not match the confirm password" : {
-      message:  "Password does not match the confirm password",
-      description: ""
+      "message":  "Password does not match the confirm password",
+      "description": ""
     },
 
     "Database error" : {
-      message:  "Database error",
-      description: ""
+      "message":  "Database error",
+      "description": ""
     },
 
     "No such license key" : {
-      message:  "No such license key",
-      description: ""
+      "message":  "No such license key",
+      "description": ""
     },
 
     "License key exists but has been disabled" : {
-      message:  "License key exists but has been disabled",
-      description: ""
+      "message":  "License key exists but has been disabled",
+      "description": ""
     },
 
     "License key exists and is enabled, but email address on record doesn't match specified email address" : {
-      message:  "License key exists and is enabled, but email address on record doesn't match specified email address",
-      description: ""
+      "message":  "License key exists and is enabled, but email address on record doesn't match specified email address",
+      "description": ""
     },
 
     "License key is expired" : {
-      message:  "License key is expired",
-      description: ""
+      "message":  "License key is expired",
+      "description": ""
     },
 
     "Proxy config URL is not valid" : {
-      message:  "Proxy config URL is not valid",
-      description: ""
+      "message":  "Proxy config URL is not valid",
+      "description": ""
     },
-
-    "Could not load: {
-      message: " 
-      description: ""
+*/
+    "could_not_load": {
+      "message": "",
+      "description": ""
     },
 
     "hint_pac" : {
-      message:  "You can use http
-      description: ""
+      "message":  "You can use http",
+      "description": ""
     },
 
     "hint_pattern_temp" : {
-      message:  "Temporary patterns allow you to create patterns for URLs that you don't visit often without cluttering the pattern list for a proxy. Temporary patterns are not saved to disk. They are kept in-memory and used for this Firefox session only.",
-      description: ""
+      "message":  "Temporary patterns allow you to create patterns for URLs that you don't visit often without cluttering the pattern list for a proxy. Temporary patterns are not saved to disk. They are kept in-memory and used for this Firefox session only.",
+      "description": ""
     },
 
     "hint_pattern_blackwhite" : {
-      message:  "Blacklist (exclusion) patterns have precedence over whitelist (inclusion) patterns
-      description: ""
+      "message":  "Blacklist (exclusion) patterns have precedence over whitelist (inclusion) patterns",
+      "description": ""
     },
 
     "hint_pattern_url_template" : {
-      message:  "The asterisk (*) matches zero or more characters, and the question mark (?) matches any single character",
-      description: ""
+      "message":  "The asterisk (*) matches zero or more characters, and the question mark (?) matches any single character",
+      "description": ""
     },
 
-    "Created By" : {
-      message:  "Created By",
-      description: ""
+    "created_by" : {
+      "message":  "Created By",
+      "description": ""
     },
 
-    "Contributions By" : {
-      message:  "Contributions By",
-      description: ""
+    "contributions_by" : {
+      "message":  "Contributions By",
+      "description": ""
     },
 
-    "Copyright" : {
-      message:  "Copyright",
-      description: ""
+    "copyright" : {
+      "message":  "Copyright",
+      "description": ""
     },
 
-    "All Rights Reserved." : {
-      message:  "All Rights Reserved.",
-      description: ""
+    "all_rights_reserved" : {
+      "message":  "All Rights Reserved.",
+      "description": ""
     },
 
-    "Released under the GPL license." : {
-      message:  "Released under the GPL license.",
-      description: ""
+    "released_under_the_gpl_license" : {
+      "message":  "Released under the GPL license.",
+      "description": ""
     },
 
-    "Thanks to" : {
-      message:  "Thanks to",
-      description: ""
+    "thanks_to" : {
+      "message":  "Thanks to",
+      "description": ""
     },
 
     "OCS" : {
-      message:  "OCS",
-      description: ""
+      "message":  "OCS",
+      "description": ""
+    },
+    // 
+    // "for hosting FoxyProxy's website. If you need hosting, please consider OCS." : {
+    //   "message":  "for hosting FoxyProxy's website. If you need hosting, please consider OCS.",
+    //   "description": ""
+    // },
+
+    "home" : {
+      "message":  "Home",
+      "description": ""
     },
 
-    "for hosting FoxyProxy's website. If you need hosting, please consider OCS." : {
-      message:  "for hosting FoxyProxy's website. If you need hosting, please consider OCS.",
-      description: ""
+    "support" : {
+      "message":  "Support",
+      "description": ""
     },
 
-    "Home" : {
-      message:  "Home",
-      description: ""
-    },
-
-    "Support" : {
-      message:  "Support",
-      description: ""
-    },
-
-    "Credits" : {
-      message:  "Credits"
-      description: ""
+    "credits" : {
+      "message":  "Credits",
+      "description": ""
     }
-
 }

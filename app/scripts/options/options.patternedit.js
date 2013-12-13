@@ -11,15 +11,15 @@ function patternLoad(pattern, edit){
 		
 		
 			$("#patternEditDlg").dialog({
-				title: localize("FoxyProxy - Add/Edit pattern"),
+				title: chrome.i18n.getMessage("FoxyProxy - Add/Edit pattern"),
 				modal: true,
 				width:500,
 				resizable: false,
 				buttons: [{ 
-					text:localize("Save"),
+					text:chrome.i18n.getMessage("Save"),
 					click: function(){
 						if($("#patternUrl").val() == ''){
-							alert(localize("Pattern URL must be specified"));
+							alert(chrome.i18n.getMessage("Pattern URL must be specified"));
 						} else {
 							var patterns = list[selectedProxy].data.patterns;
 							patterns[selectedPattern].data.enabled = $("#patternEnabled").is(":checked");
@@ -31,7 +31,7 @@ function patternLoad(pattern, edit){
 							if(!edit && patternDuplicates(patterns, pattern))
 							{
 								patterns.splice(selectedPattern,1);
-								alert(localize("Some or all of the patterns weren't added because they duplicate existing patterns for the specified proxy."));
+								alert(chrome.i18n.getMessage("Some or all of the patterns weren't added because they duplicate existing patterns for the specified proxy."));
 							}
 							updatePatternTable();
 							oPatternTable.fnSelectRow(selectedPattern);
@@ -39,7 +39,7 @@ function patternLoad(pattern, edit){
 						}
 					}
 				},{
-					text: localize("Cancel"),
+					text: chrome.i18n.getMessage("Cancel"),
 					click: function(){
 						if(!edit)list[selectedProxy].data.patterns.splice(selectedPattern, 1);
 						updatePatternTable(selectedPattern);

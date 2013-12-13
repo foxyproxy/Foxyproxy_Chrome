@@ -63,16 +63,6 @@ var getCurrentTabUrl = function (callback) {
     });
 }
 
-function localize(txt){
-    if(!window.locale){
-	window.locale = JSON.parse(localStorage.getItem('en-en'));
-    }
-    if(txt && window.locale && window.locale[txt]){
-	return window.locale[txt];
-    } else {
-	return txt;
-    }
-}
 var ProfileManager;
 var foxyProxy;
 function copyToClipboard(str) {
