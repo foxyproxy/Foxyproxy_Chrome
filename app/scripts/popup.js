@@ -43,7 +43,7 @@ $(document).ready(function(){
 
     $("a").each(function(){
     if(this.childNodes.length == 0 || (this.childNodes.length == 1 && this.childNodes[0].nodeName == "#text")){
-        this.innerText = chrome.i18n.getMessage(this.innerText);
+        this.innerText = "FIXME!";//chrome.i18n.getMessage(this.innerText);
     }
     });
 
@@ -55,7 +55,7 @@ $(document).ready(function(){
     console.log(proxy.data.type);
     if(proxy.data.enabled){
 
-        a = $("<a href='#'/>").text(chrome.i18n.getMessage("Use_proxy") +" \"" + proxy.data.name + "\" "+chrome.i18n.getMessage("for_all_URLs")).css({
+        a = $("<a href='#'/>").text(chrome.i18n.getMessage("mode_custom_label", proxy.data.name)).css({
         "color": proxy.data.color
         });
 

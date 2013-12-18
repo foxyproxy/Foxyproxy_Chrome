@@ -195,7 +195,7 @@ function Extension() {
 	chrome.contextMenus.removeAll();
 	if (this.settings.showContextMenu) {
 	    chrome.contextMenus.create({
-		title: chrome.i18n.getMessage("Use proxies based on their pre-defined patterns and priorities"),
+		title: chrome.i18n.getMessage("mode_patterns_label"),
 		type: "radio",
 		onclick: function () {
 		    self.state = 'auto';
@@ -205,7 +205,7 @@ function Extension() {
 	    $.each(this.proxyList, function (i, proxy) {
 		if (proxy.data.enabled) {
 		    chrome.contextMenus.create({
-			title: chrome.i18n.getMessage("Use proxy") + " \"" + proxy.data.name + "\" " + chrome.i18n.getMessage("for all URLs"),
+			title: chrome.i18n.getMessage("mode_custom_label", proxy.data.name),
 			type: "radio",
 			onclick: function () {
 			    self.state = proxy.data.id;
@@ -215,7 +215,7 @@ function Extension() {
 		}
 	    });
 	    chrome.contextMenus.create({
-		title: chrome.i18n.getMessage("Disable FoxyProxy"),
+		title: chrome.i18n.getMessage("mode_disabled_label"),
 		type: "radio",
 		onclick: function () {
 		    self.state = 'disabled';
@@ -226,7 +226,7 @@ function Extension() {
 		type: "separator"
 	    });
 	    chrome.contextMenus.create({
-		title: chrome.i18n.getMessage("Options"),
+		title: chrome.i18n.getMessage("options"),
 		onclick: function () {
 		    self.options("tabProxies");
 		}
@@ -241,7 +241,7 @@ function Extension() {
 	    }
 	    /*
 	     chrome.contextMenus.create({
-	     title: chrome.i18n.getMessage("Proxy List"),
+	     title: chrome.i18n.getMessage("Proxy_List"),
 	     onclick: function(){ self.options("tabProxies");}
 	     });
 	     */
