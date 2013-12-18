@@ -142,7 +142,9 @@ module.exports = function (grunt) {
         },*/
         useminPrepare: {
             options: {
-                dest: '<%= yeoman.dist %>'
+                dest: '<%= yeoman.dist %>',
+                assetsDirs: [ 'styles/images', 'styles/custom-theme/images']
+                
             },
             html: [
                 '<%= yeoman.app %>/background.html',
@@ -152,7 +154,7 @@ module.exports = function (grunt) {
         },
         usemin: {
             options: {
-                dirs: ['<%= yeoman.dist %>']
+                dirs: ['<%= yeoman.dist %>'],
             },
             html: ['<%= yeoman.dist %>/{,*/}*.html'],
             css: ['<%= yeoman.dist %>/styles/{,*/}*.css']
@@ -164,6 +166,19 @@ module.exports = function (grunt) {
                     cwd: '<%= yeoman.app %>/images',
                     src: '{,*/}*.{png,jpg,jpeg}',
                     dest: '<%= yeoman.dist %>/images'
+                },
+                {
+                    expand: true,
+                    cwd: '<%= yeoman.app %>/styles/images',
+                    src: '{,*/}*.{png,jpg,jpeg}',
+                    dest: '<%= yeoman.dist %>/styles/images'
+                    
+                },
+                {
+                    expand: true,
+                    cwd: '<%= yeoman.app %>/styles/custom-theme/images',
+                    src: '{,*/}*.png',
+                    dest: '<%= yeoman.dist %>/styles/custom-theme/images'
                 }]
             }
         },

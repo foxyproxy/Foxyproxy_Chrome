@@ -69,7 +69,7 @@ Proxy.prototype = {
 		this.data.pac = xhr.responseText;
 	    else
 	    {
-		alert(chrome.i18n.getMessage("Could not load:")+" "+this.data.configUrl);
+		alert(chrome.i18n.getMessage("could_not_load", this.data.configUrl));
 		this.data.pac = "";
 	    }
 	} else {

@@ -323,14 +323,14 @@
       "description": ""
     },
 
-    // "Use proxies based on their pre-defined patterns and priorities": {
-    //   "message": "Use proxies based on their pre-defined patterns and priorities",
-    //   "description": ""
-    // },
+     "mode_patterns_label": {
+       "message": "Use proxies based on their pre-defined patterns and priorities",
+       "description": "FP4FF: mode.patterns.label"
+     },
 
-    "Disable_FoxyProxy": {
+    "mode_disabled_label": {
       "message": "Disable FoxyProxy",
-      "description": ""
+      "description": "FP4FF: mode.disable.label"
     },
 
     "Quick_Add": {
@@ -338,7 +338,7 @@
       "description": ""
     },
 
-    "Options": {
+    "options": {
       "message": "Options",
       "description": ""
     },
@@ -348,14 +348,15 @@
       "description": ""
     },
 
-    "Use_proxy": {
-      "message": "Use proxy",
-      "description": ""
-    },
-
-    "for_all_URLs": {
-      "message": "for all URLs",
-      "description": ""
+    "mode_custom_label": {
+      "message": "Use proxy $proxy_name$ for all URLs",
+      "description": "FP4FF: mode.custom.label",
+      "placeholders": {
+          "proxy_name": {
+            "content": "$1",
+            "example": "http://proxy.example.com"
+          }
+      }
     },
 
     // "Hostname/IP address and port must be specified": {
@@ -479,8 +480,14 @@
     },
 */
     "could_not_load": {
-      "message": "",
-      "description": ""
+      "message": "Could not load $config_url$",
+      "description": "Error message when proxy auto-config URL cannot be loaded",
+      "placeholders": {
+          "config_url": {
+            "content": "$1",
+            "example": "http://proxyconfig.example.com"
+          }
+      }
     },
 
     "hint_pac" : {

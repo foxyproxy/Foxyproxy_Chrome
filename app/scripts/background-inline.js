@@ -45,17 +45,11 @@ if (!localStorage.getItem('state')){
     localStorage.setItem('state', 'disabled');
 }
 $(document).ready(function(){
-    $.ajax({
-	url: chrome.extension.getURL("locale/en-en.json"),
-	complete: function(xhr, status,data){
-	    console.log(xhr, status, data);
-	    localStorage.setItem('en-en', xhr.responseText);
-	    foxyProxy = new Extension();
-	    foxyProxy.log.clear();
-	    foxyProxy.state = localStorage.getItem('state');
-	    
-	}
-    });
+
+        foxyProxy = new Extension();
+        foxyProxy.log.clear();
+        foxyProxy.state = localStorage.getItem('state');
+
 });
 var getCurrentTabUrl = function (callback) {
     chrome.tabs.getSelected(null, function(tab) {
