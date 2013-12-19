@@ -11,7 +11,7 @@ var simple_tooltip = function (target_items, name){
     $(target_items).each(function(i){
 
 	var div = $("<div/>").attr({"class": name, "id": name + i});
-	var p = $("<p/>").text(chrome.i18n.getMessage($(this).attr('id')));
+	var p = $("<p/>").text($(this).attr('id'));
 	div.append(p);
 
 	$("body").append(div);
@@ -174,7 +174,7 @@ $(document).ready(function(){
 
     $("span, th, a, button, h1").each(function(){
 	if(this.childNodes.length == 0 || (this.childNodes.length == 1 && this.childNodes[0].nodeName == "#text")){
-	    this.innerText = chrome.i18n.getMessage(this.innerText);
+	    this.innerText = this.innerText; //FIXME
 	}	
     });
     initProxyList();

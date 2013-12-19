@@ -43,7 +43,7 @@ $(document).ready(function(){
 
     $("a").each(function(){
     if(this.childNodes.length == 0 || (this.childNodes.length == 1 && this.childNodes[0].nodeName == "#text")){
-        this.innerText = "FIXME!";//chrome.i18n.getMessage(this.innerText);
+        this.innerText = this.innerText; //FIXME
     }
     });
 

@@ -184,9 +184,9 @@ window.onload = function () {
                                     
                                    });
 
-        $("#import-result").text(chrome.i18n.getMessage("Your FoxyProxy Settings file has been imported successfully."));
+        $("#import-result").text(chrome.i18n.getMessage("import_success"));
       } catch (e) {
-        $("#import-result").text(chrome.i18n.getMessage("An error occurred. The file you have chosen may not contain valid FoxyProxy settings. Please try to use a different file."));
+        $("#import-result").text(chrome.i18n.getMessage("import_error"));
       }
     };      
     reader.readAsText(file);

@@ -16,14 +16,14 @@ function proxySelection(param){
 
 	} 
         else {
-	    alert(chrome.i18n.getMessage("host:port can not be determined from selected text"));
+	    alert(chrome.i18n.getMessage("error_host_port_cannot_be_determined"));
 	    return;
         }
 
     }
 
     if (aUri == null) {
-	alert(chrome.i18n.getMessage("host:port can not be determined from selected text"));
+	alert(chrome.i18n.getMessage("error_host_port_cannot_be_determined"));
 	return;
     }
 	//proxySelectionDlg
@@ -35,7 +35,7 @@ function proxySelection(param){
 			$("<tr />").attr("proxyId", i)
 				.append(
 					$("<td>").html(
-						(proxy.data.enabled?"<img src='css/images/bullet_tick.png'>":"")
+						(proxy.data.enabled?"<img src='styles/images/bullet_tick.png'>":"")
 					)
 				)
 				.append(
@@ -59,12 +59,12 @@ function proxySelection(param){
 		)
 	});
 	$("#proxySelectionDlg").dialog({
-		title: chrome.i18n.getMessage("FoxyProxy"),
+		title: chrome.i18n.getMessage("appName"),
 		width: "500px",
 		modal: true,
 		buttons:[
 			{
-				text: chrome.i18n.getMessage("Add New Proxy"),
+				text: chrome.i18n.getMessage("add_new_proxy"),
 				click: function() { 
 					addNewProxy(aUri);
 					$(this).dialog("close"); 
@@ -85,7 +85,7 @@ function proxySelection(param){
 						updateProxyTable(id);
 						$(this).dialog("close");
 					} else {
-						alert(chrome.i18n.getMessage('Select proxy to update'));
+						alert(chrome.i18n.getMessage('select_proxy_to_update'));
 					}
 				}
 			},{

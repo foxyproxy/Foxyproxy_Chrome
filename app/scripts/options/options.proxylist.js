@@ -36,16 +36,16 @@ function initProxyList() {
 	    {"sTitle": chrome.i18n.getMessage( "Enabled"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}},
 	    {"sTitle": chrome.i18n.getMessage( "Color"), "bUseRendered":false, "fnRender": function(obj) { var c = obj.aData[ obj.iDataColumn ]; return "<span class='colorbox' style='background-color: "+c+"'></span>";}},
 	    
-	    {"sTitle": chrome.i18n.getMessage( "Proxy Name") },
-	    {"sTitle": chrome.i18n.getMessage( "Proxy Notes") },
-	    {"sTitle": chrome.i18n.getMessage( "Host or IP Address") },
-	    {"sTitle": chrome.i18n.getMessage( "Port")},
-	    {"sTitle": chrome.i18n.getMessage( "SOCKS proxy?"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}},
-	    {"sTitle": chrome.i18n.getMessage( "SOCKS Version")},
+	    {"sTitle": chrome.i18n.getMessage( "proxy_name") },
+	    {"sTitle": chrome.i18n.getMessage( "proxy_notes") },
+	    {"sTitle": chrome.i18n.getMessage( "Host_or_IP_Address") },
+	    {"sTitle": chrome.i18n.getMessage( "port")},
+	    {"sTitle": chrome.i18n.getMessage( "is_SOCKS_proxy"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}},
+	    {"sTitle": chrome.i18n.getMessage( "SOCKS_Version")},
 
              // Will need to remove and reintroduce columns when functionality is working.
-	     {"sTitle": chrome.i18n.getMessage( "Auto PAC URL")},
-/*	     {"sTitle": chrome.i18n.getMessage( "Proxy DNS")}
+	     {"sTitle": chrome.i18n.getMessage( "Auto_PAC_URL")},
+/*	     {"sTitle": chrome.i18n.getMessage( "Proxy_DNS")}
 */
 	]
     } );
@@ -92,7 +92,7 @@ function addNewProxy(aUri){
 		port: aUri.port
 	    });
 	} else {
-	    alert(chrome.i18n.getMessage("host:port can not be determined from selected text"));
+	    alert(chrome.i18n.getMessage("error_host_port_cannot_be_determined"));
 	    return;
 	}
     } else {

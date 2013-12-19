@@ -23,7 +23,7 @@
       "description": ""
     },
 
-    "quickadd": {
+    "quickAdd": {
       "message": "QuickAdd",
       "description": ""
     },
@@ -45,11 +45,6 @@
 
     "move_down": {
       "message": "Move Down",
-      "description": ""
-    },
-
-    "add_new_proxy": {
-      "message": "Add New Proxy",
       "description": ""
     },
 
@@ -92,16 +87,12 @@
       "message": "Enabled",
       "description": ""
     },
-
-    "proxy_name": {
-      "message": "Proxy Name",
-      "description": ""
+    
+    "add": {
+        "message": "Add"
     },
 
-    "proxy_notes": {
-      "message": "Proxy Notes",
-      "description": ""
-    },
+
 /*
     "Include this proxy when cycling proxies by clicking on statusbar or toolbar (Global Settings-> Statusbar/Toolbar Activation-> Cycle through modes must be selected)": {
       "message": "Include this proxy when cycling proxies by clicking on statusbar or toolbar (Global Settings-> Statusbar/Toolbar Activation-> Cycle through modes must be selected)",
@@ -203,20 +194,6 @@
       "description": ""
     },
 
-    "pattern_name": {
-      "message": "Pattern Name",
-      "description": ""
-    },
-
-    "pattern_type": {
-      "message": "Pattern Type",
-      "description": ""
-    },
-
-    "url_pattern": {
-      "message": "URL pattern",
-      "description": ""
-    },
 /*
     "URLs matching this pattern are loaded through this proxy": {
       "message": "URLs matching this pattern are loaded through this proxy",
@@ -248,43 +225,15 @@
     //   "description": ""
     // },
 
-    "Host_or_IP_Address": {
-      "message": "Host or IP Address",
-      "description": ""
-    },
 
-    "Port": {
-      "message": "Port",
-      "description": ""
-    },
-
-    "SOCKS_proxy": {
-      "message": "SOCKS proxy?",
-      "description": ""
-    },
-
-    "SOCKS_Version": {
-      "message": "SOCKS Version",
-      "description": ""
-    },
-
-    "Auto_PAC_URL": {
-      "message": "Auto PAC URL",
-      "description": ""
-    },
 
     "Proxy_DNS": {
       "message": "Proxy DNS",
       "description": ""
     },
 
-    "host": {
-      "message": "port can not be determined from selected text",
-      "description": ""
-    },
-
-    "FoxyProxy_Proxy_settings": {
-      "message": "FoxyProxy - Proxy settings",
+    "proxy_settings": {
+      "message": "Proxy settings",
       "description": ""
     },
 
@@ -298,11 +247,6 @@
       "description": ""
     },
 
-    "Whitelist_or_Blacklist": {
-      "message": "Whitelist (Inclusive) or Blacklist (Exclusive)",
-      "description": ""
-    },
-
     "PAC_execution_timeout": {
       "message": "PAC execution timeout.",
       "description": ""
@@ -313,13 +257,8 @@
       "description": ""
     },
 
-    "PAC_file_error": {
-      "message": "PAC file error",
-      "description": ""
-    },
-
-    "FoxyProxy_Add_Edit_pattern": {
-      "message": "FoxyProxy - Add/Edit pattern",
+    "add_edit_pattern": {
+      "message": "Add/Edit pattern",
       "description": ""
     },
 
@@ -359,10 +298,7 @@
       }
     },
 
-    // "Hostname/IP address and port must be specified": {
-    //   "message":  "Hostname/IP address and port must be specified",
-    //   "description": ""
-    // },
+
     // 
     // "PAC file sucsessful loaded": {
     //   "message": "PAC file sucsessful loaded",
@@ -394,35 +330,7 @@
       "description": ""
     },
 */
-    "Timestamp": {
-      "message": "Timestamp",
-      "description": ""
-    },
 
-    "Pattern": {
-      "message": "Pattern",
-      "description": ""
-    },
-
-    "Whitelist": {
-      "message": "Whitelist",
-      "description": ""
-    },
-
-    "Error": {
-      "message": "Error",
-      "description": ""
-    },
-
-    "PAC": {
-      "message": "PAC",
-      "description": ""
-    },
-
-    "Url": {
-      "message": "Url",
-      "description": ""
-    },
 /*
     "Pattern URL must be specified": {
       "message": "Pattern URL must be specified",
@@ -438,12 +346,12 @@
       "message": "QuickAdd adds a dynamic URL pattern to a proxy when you press Alt-F2",
       "description": ""
     },
-
-    "QuickAdd disabled" : {
+*/
+    "QuickAdd_disabled" : {
       "message":  "QuickAdd disabled",
       "description": ""
     },
-
+/*
     "Password does not match the confirm password" : {
       "message":  "Password does not match the confirm password",
       "description": ""
@@ -474,10 +382,7 @@
       "description": ""
     },
 
-    "Proxy config URL is not valid" : {
-      "message":  "Proxy config URL is not valid",
-      "description": ""
-    },
+
 */
     "could_not_load": {
       "message": "Could not load $config_url$",
@@ -563,5 +468,162 @@
     "credits" : {
       "message":  "Credits",
       "description": ""
+    },
+    
+    "okay" : {
+        "message": "OK",
+        "description": "okay"
+    },
+    
+    /* options.import.js */
+    "import_success": {
+        "message": "Your FoxyProxy Settings file has been imported successfully."
+    },
+    
+    "import_error": {
+        "message": "An error occurred. The file you have chosen may not contain valid FoxyProxy settings. Please try to use a different file."
+    },
+    
+    /* options.log.js */
+    "log_size_integer": {
+        "message": "Log size should be integer"
+    },
+    
+    "proxy_name": {
+      "message": "Proxy Name",
+      "description": ""
+    },
+
+    "proxy_notes": {
+      "message": "Proxy Notes",
+      "description": ""
+    },
+    
+    
+    "pattern_name": {
+      "message": "Pattern Name",
+      "description": ""
+    },
+
+    "url_pattern": {
+      "message": "URL pattern",
+      "description": ""
+    },
+    
+    "pattern_type": {
+        "message": "Pattern Type"
+    },
+    
+    "Timestamp": {
+      "message": "Timestamp",
+      "description": ""
+    },
+
+    "Pattern": {
+      "message": "Pattern",
+      "description": ""
+    },
+
+    "Whitelist": {
+      "message": "Whitelist",
+      "description": ""
+    },
+
+    "Error": {
+      "message": "Error",
+      "description": ""
+    },
+
+    "PAC": {
+      "message": "PAC",
+      "description": ""
+    },
+
+    "Url": {
+      "message": "Url",
+      "description": ""
+    },
+    
+    /* options.logpattern.js */
+    
+    "error_duplicate_pattern": {
+        "message": "Some or all of the patterns weren't added because they duplicate existing patterns for the specified proxy."
+    },
+    
+    "select_proxy_add_pattern": {
+        "message": "Select proxy to add pattern"
+    },
+    
+    /* options.proxyedit.js */
+    
+    "error_no_hostname_or_ip": {
+      "message":  "Hostname/IP address and port must be specified",
+      "description": ""
+    },
+    
+    "error_non_integer_interval" : {
+        "message": "Interval should be integer"
+    },
+    
+    "error_invalid_proxy_config_url": {
+        "message":  "Proxy config URL is not valid",
+        "description": ""
+    },
+    
+    "Whitelist_or_Blacklist": {
+      "message": "Whitelist (Inclusive) or Blacklist (Exclusive)",
+      "description": ""
+    },
+    
+    "PAC_file_error": {
+      "message": "PAC file error",
+      "description": ""
+    },
+    
+    "PAC_View": {
+        "message": "PAC View"
+    },
+    
+    /* options.proxylist.js */
+    
+    "Host_or_IP_Address": {
+      "message": "Host or IP Address",
+      "description": ""
+    },
+
+    "port": {
+      "message": "Port",
+      "description": ""
+    },
+
+    "is_SOCKS_proxy": {
+      "message": "SOCKS proxy?",
+      "description": ""
+    },
+
+    "SOCKS_Version": {
+      "message": "SOCKS Version",
+      "description": ""
+    },
+
+    "Auto_PAC_URL": {
+      "message": "Auto PAC URL",
+      "description": ""
+    },
+    
+    "error_host_port_cannot_be_determined": {
+      "message": "host:port can not be determined from selected text",
+      "description": ""
+    },
+    
+    /* options.proxyselection.js */
+    
+    "add_new_proxy": {
+      "message": "Add New Proxy",
+      "description": ""
+    },
+    
+    "select_proxy_to_update": {
+        "message": "Select proxy to update"
     }
 }
