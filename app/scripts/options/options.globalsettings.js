@@ -34,10 +34,10 @@ function onTabShow(tabName) {
     console.log("tagName is", tabName);
     var proxyModeCombo = $('#proxyModeGlobal');
     proxyModeCombo.empty();
-    $('<option value="auto">Use proxies based on their pre-defined patterns and priorities</option>').appendTo(proxyModeCombo);
+    $('<option value="auto">' + chrome.i18n.getMessage("mode_patterns_label") + '</option>').appendTo(proxyModeCombo);
     $.each(list, function(i, proxy){
 	if(proxy.data.enabled){
-	    var option = $("<option value='"+proxy.data.id+"'>"+chrome.i18n.getMessage("Use proxy") +" \"" + proxy.data.name + "\" "+chrome.i18n.getMessage("for all URLs")+"</option>")
+	    var option = $("<option value='"+proxy.data.id+"'>"+chrome.i18n.getMessage("mode_custom_label", proxy.data.name )+"</option>")
 		    .appendTo(proxyModeCombo);
 	}
     });

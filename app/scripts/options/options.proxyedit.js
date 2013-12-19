@@ -64,7 +64,7 @@ function proxyLoad(proxy, edit){
     $("#proxyIpPatternsLink").css("display", proxy.data.readonly?"none":"block");
     
     $("#proxyEditDlg").dialog({
-	title: chrome.i18n.getMessage("FoxyProxy - Proxy settings"),
+	title: chrome.i18n.getMessage("appName") + " - " + chrome.i18n.getMessage("proxy_settings"),
 	modal: true,
 	width:"800px",
 	//		height: 460,
@@ -75,17 +75,17 @@ function proxyLoad(proxy, edit){
 		click: function(){
                     var regexp, mode, index, found, name;
 		    if($("input[name='proxyType']:checked").val() == 'manual' && ($("#proxyHost").val()=='' || $("#proxyPort").val()=='')){
-			alert(chrome.i18n.getMessage("Hostname/IP address and port must be specified"));
+			alert(chrome.i18n.getMessage("error_no_hostname_or_ip"));
 			return;
 		    }
 		    if($("input[name='proxyType']:checked").val() == 'auto' && !RegExp('^\\d*$').test($("#proxyPACInterval").val())){
-			alert(chrome.i18n.getMessage("Interval should be integer"));
+			alert(chrome.i18n.getMessage("error_non_integer_interval"));
 			return;
 		    }
 		    if($("input[name='proxyType']:checked").val()=="auto") {
 			regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
 			if(!regexp.test($("#proxyConfigUrl").val())){
-			    alert(chrome.i18n.getMessage("Proxy config URL is not valid"));
+			    alert(chrome.i18n.getMessage("error_invalid_proxy_config_url"));
 			    return;
 			}
 			
@@ -183,13 +183,13 @@ $(document).ready(function(){
 	    "sZeroRecords": ""
 	},
 	"aoColumns": [
-	    { "sTitle": chrome.i18n.getMessage("Enabled"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}},
-	    { "sTitle": chrome.i18n.getMessage("Pattern Name")},
-	    { "sTitle": chrome.i18n.getMessage("URL pattern")},
-	    { "sTitle": chrome.i18n.getMessage("Pattern Type")},
-	    { "sTitle": chrome.i18n.getMessage("Whitelist (Inclusive) or Blacklist (Exclusive)")},
+	    { "sTitle": chrome.i18n.getMessage("enabled"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}},
+	    { "sTitle": chrome.i18n.getMessage("pattern_name")},
+	    { "sTitle": chrome.i18n.getMessage("url_pattern")},
+	    { "sTitle": chrome.i18n.getMessage("pattern_type")},
+	    { "sTitle": chrome.i18n.getMessage("Whitelist_or_Blacklist")},
 	    //{ "sTitle": chrome.i18n.getMessage("Case sensitive"},
-	    { "sTitle": chrome.i18n.getMessage("Temporary"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}}
+	    { "sTitle": chrome.i18n.getMessage("temporary"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}}
 	]
     } );
     /*oIpPatternTable = $("#ipPatternList").dataTable( {
@@ -285,14 +285,14 @@ function openPacViewDlg(){
 	    url: $("#proxyConfigUrl").val(),
             cache: false,
             error: function(xhr, textStatus, httpError) {
-		alert(chrome.i18n.getMessage("PAC file error") + ": " + textStatus + " " + (httpError ? httpError : "")); // httpError can be null
+		alert(chrome.i18n.getMessage("PAC_file_error") + ": " + textStatus + " " + (httpError ? httpError : "")); // httpError can be null
             },
 	    success: function(data){
 		console.log(data);
 		$("#pacViewDlgText").val(data);
 		$("#pacViewDlg").dialog({
 		    width: '520px',
-		    title: chrome.i18n.getMessage("FoxyProxy - PAC View"),
+		    title: chrome.i18n.getMessage("appName") + " - " + chrome.i18n.getMessage("PAC_View"),
 		    modal: true
 		});
 	    }
@@ -307,7 +307,7 @@ function testPac() {
 	    url: $("#proxyConfigUrl").val() + "?rnd=" + Math.random(),
 	    cache: false,
 	    error: function(xhr, textStatus, httpError) {
-		alert(chrome.i18n.getMessage("PAC file error") + ": " + textStatus + " " + (httpError ? httpError : "")); // httpError can be null
+		alert(chrome.i18n.getMessage("PAC_file_error") + ": " + textStatus + " " + (httpError ? httpError : "")); // httpError can be null
 	    },
 	    success: function(data){
                 var iframe = document.getElementById("testPacFrame");
@@ -326,7 +326,7 @@ function testPac() {
 /* Add window listener for testPac function */
 window.addEventListener('message', function (event) {
     if (event.data) {
-        alert(chrome.i18n.getMessage(event.data.name));
+        alert(event.data.name);
     }
 });
 

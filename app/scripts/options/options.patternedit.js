@@ -11,7 +11,7 @@ function patternLoad(pattern, edit){
 		
 		
 			$("#patternEditDlg").dialog({
-				title: chrome.i18n.getMessage("FoxyProxy - Add/Edit pattern"),
+				title: chrome.i18n.getMessage("appName") + " - " + chrome.i18n.getMessage("add_edit_pattern"),
 				modal: true,
 				width:500,
 				resizable: false,
@@ -31,7 +31,7 @@ function patternLoad(pattern, edit){
 							if(!edit && patternDuplicates(patterns, pattern))
 							{
 								patterns.splice(selectedPattern,1);
-								alert(chrome.i18n.getMessage("Some or all of the patterns weren't added because they duplicate existing patterns for the specified proxy."));
+								alert(chrome.i18n.getMessage("error_duplicate_pattern"));
 							}
 							updatePatternTable();
 							oPatternTable.fnSelectRow(selectedPattern);

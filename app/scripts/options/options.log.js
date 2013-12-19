@@ -16,7 +16,7 @@ $(document).ready(function(){
 	$("#logSizeSet").click(function(){
 		var logSize = $("#logSize").val();
 		if(!RegExp('^\\d*$').test(logSize)){
-			alert(chrome.i18n.getMessage("Log size should be integer"));
+			alert(chrome.i18n.getMessage("log_size_integer"));
 			return;
 		}
 		chrome.extension.getBackgroundPage().foxyProxy.log.maxLength = $("#logSize").val();
@@ -35,15 +35,15 @@ $(document).ready(function(){
 				"sZeroRecords": ""
 			},
 			"aoColumns": [
-				{"sTitle": chrome.i18n.getMessage( "Timestamp"),"bUseRendered":false, "fnRender": function(obj) { return new Date(obj.aData[ obj.iDataColumn ]).toUTCString()}},
+				{"sTitle": chrome.i18n.getMessage( "Timestamp"),"bUseRendered":false, "fnRender": function(obj) { return new Date(obj.aData[ obj.iDataColumn ]).toUTCString(); }},
 				{"sTitle": chrome.i18n.getMessage( "Color"), "bUseRendered":false, "fnRender": function(obj) { var c = obj.aData[ obj.iDataColumn ]; return "<span class='colorbox' style='background-color: "+c+"'></span>";}},
 				{"sTitle": chrome.i18n.getMessage( "Url") },
-				{"sTitle": chrome.i18n.getMessage( "Proxy Name") },
-				{"sTitle": chrome.i18n.getMessage( "Proxy Notes") },
-				{"sTitle": chrome.i18n.getMessage( "Pattern Name") },
+				{"sTitle": chrome.i18n.getMessage( "proxy_name") },
+				{"sTitle": chrome.i18n.getMessage( "proxy_notes") },
+				{"sTitle": chrome.i18n.getMessage( "pattern_name") },
 				{"sTitle": chrome.i18n.getMessage( "Pattern")},
 				{"bVisible": false},
-				{"sTitle": chrome.i18n.getMessage( "Pattern Type")},
+				{"sTitle": chrome.i18n.getMessage( "pattern_type")},
 				{"sTitle": chrome.i18n.getMessage( "Whitelist")},
 				{"sTitle": chrome.i18n.getMessage( "PAC")},
 				{"sTitle": chrome.i18n.getMessage( "Error"),"bVisible": false}

@@ -3,7 +3,7 @@ function addPattern(param){
     {
 	
 	settings.enabledQA = false;
-	alert(chrome.i18n.getMessage('QuickAdd disabled'));
+	alert(chrome.i18n.getMessage('QuickAdd_disabled'));
 	return;
     }
     $(".modeAdd").hide();
@@ -27,12 +27,12 @@ function addPattern(param){
     $("#dialogPatternProxyQA").change();
 
     $("#patternEditDlg").dialog({
-	title: chrome.i18n.getMessage("FoxyProxy QuickAdd"),
+	title: chrome.i18n.getMessage("appName") + chrome.i18n.getMessage("quickAdd"),
 	width: "500px",
 	modal: true,
 	buttons:[
 	    {
-		text: chrome.i18n.getMessage("OK"),
+		text: chrome.i18n.getMessage("okay"),
 		click: function() { 
 		    selectedProxy = settings.patternProxyQA;
 		    var exists = false;
