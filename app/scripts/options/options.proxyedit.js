@@ -183,13 +183,13 @@ $(document).ready(function(){
 	    "sZeroRecords": ""
 	},
 	"aoColumns": [
-	    { "sTitle": chrome.i18n.getMessage("enabled"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}},
+	    { "sTitle": chrome.i18n.getMessage("enabled"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='styles/images/bullet_tick.png'>":"";}},
 	    { "sTitle": chrome.i18n.getMessage("pattern_name")},
 	    { "sTitle": chrome.i18n.getMessage("url_pattern")},
 	    { "sTitle": chrome.i18n.getMessage("pattern_type")},
 	    { "sTitle": chrome.i18n.getMessage("Whitelist_or_Blacklist")},
 	    //{ "sTitle": chrome.i18n.getMessage("Case sensitive"},
-	    { "sTitle": chrome.i18n.getMessage("temporary"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}}
+	    { "sTitle": chrome.i18n.getMessage("temporary"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='styles/images/bullet_tick.png'>":"";}}
 	]
     } );
     /*oIpPatternTable = $("#ipPatternList").dataTable( {
@@ -205,12 +205,12 @@ $(document).ready(function(){
      "sZeroRecords": ""
      },
      "aoColumns": [
-     { "sTitle": chrome.i18n.getMessage("Enabled"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}},
+     { "sTitle": chrome.i18n.getMessage("Enabled"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='styles/images/bullet_tick.png'>":"";}},
      { "sTitle": chrome.i18n.getMessage("Pattern Name")},
      { "sTitle": chrome.i18n.getMessage("Local IP address pattern")},
      { "sTitle": chrome.i18n.getMessage("Pattern Type")},
      { "sTitle": chrome.i18n.getMessage("Whitelist (Inclusive) or Blacklist (Exclusive)")},
-     { "sTitle": chrome.i18n.getMessage("Temporary"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}}
+     { "sTitle": chrome.i18n.getMessage("Temporary"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='styles/images/bullet_tick.png'>":"";}}
      ]
      } );*/
     
