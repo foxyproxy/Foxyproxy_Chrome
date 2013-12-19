@@ -51,20 +51,27 @@ function proxyLoad(proxy, edit){
     sProxyColor = proxy.data.color;
     $('#proxyColor').ColorPickerSetColor(sProxyColor);//.prop('disabled', proxy.data.readonly ? true: false);
     $('#proxyColor div').css('backgroundColor',sProxyColor);
-    oPatternTable.fnClearTable();
-    //oIpPatternTable.fnClearTable();
-    if(proxy.data.patterns && proxy.data.patterns.length)
-	oPatternTable.fnAddData(proxy.data.patterns);
-    //if(proxy.data.ipPatterns && proxy.data.ipPatterns.length)
-    //oIpPatternTable.fnAddData(proxy.data.ipPatterns);
-    if(proxy.data.readonly && ( $("#tabs").tabs('option', 'selected') == 2 || $("#tabs").tabs('option', 'selected') == 3 ) ){
-	$("#tabs").tabs( "select" , 1 );
+    
+    if ('Basic' != foxyProxy.getFoxyProxyEdition()) {
+        oPatternTable.fnClearTable();
+        //oIpPatternTable.fnClearTable();
+        if(proxy.data.patterns && proxy.data.patterns.length) {
+            oPatternTable.fnAddData(proxy.data.patterns);
+        }
+        //if(proxy.data.ipPatterns && proxy.data.ipPatterns.length)
+        //oIpPatternTable.fnAddData(proxy.data.ipPatterns);
+        if(proxy.data.readonly && ( $("#tabs").tabs('option', 'selected') == 2 || $("#tabs").tabs('option', 'selected') == 3 ) ){
+            $("#tabs").tabs( "select" , 1 );
+        }
+        $("#proxyPatternsLink").css("display", proxy.data.readonly?"none":"block");
+        $("#proxyIpPatternsLink").css("display", proxy.data.readonly?"none":"block");
+    } else {
+        // we are basic edition, hide URL patterns tab
+        $("#proxyPatternsLink").hide();
     }
-    $("#proxyPatternsLink").css("display", proxy.data.readonly?"none":"block");
-    $("#proxyIpPatternsLink").css("display", proxy.data.readonly?"none":"block");
     
     $("#proxyEditDlg").dialog({
-	title: chrome.i18n.getMessage("appName") + " - " + chrome.i18n.getMessage("proxy_settings"),
+	title: chrome.i18n.getMessage("FoxyProxy") + " - " + chrome.i18n.getMessage("proxy_settings"),
 	modal: true,
 	width:"800px",
 	//		height: 460,

@@ -112,6 +112,21 @@ function Extension() {
             }
 	}
     };
+    
+    /**
+     * returns the edition of this version of FoxyProxy, e.g. 'Standard' or 'Basic'.
+     * defaults to 'Standard'
+     */
+    this.getFoxyProxyEdition = function() {
+        var edition = chrome.i18n.getMessage("FoxyProxy_Edition");
+        
+        if (!edition) {
+            edition = 'Standard';
+        }
+        
+        return edition;
+    };
+    
     this.getProxyForUrl = function (url, callback) {
 	switch (this.state) {
 	case "disabled":

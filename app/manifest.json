@@ -3,7 +3,7 @@
     "version": "3.0",
     "manifest_version": 2,
     "default_locale": "en",
-    "description": "Foxy Proxy simplifies configuring browsers to access proxy-servers, offering more features than other proxy-plugins",
+    "description": "FoxyProxy simplifies configuring browsers to access proxy-servers, offering more features than other proxy-plugins",
     "homepage_url": "http://getfoxyproxy.org/",
     "icons": {
         "16": "images/foxyproxy-nocopy.gif",

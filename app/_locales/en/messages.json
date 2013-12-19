@@ -1,16 +1,27 @@
 {
-    "appName": {
-    "message": "FoxyProxy",
-    "description": "The name of the application"
-    },
-    "appDescription": {
-    "message": "FoxyProxy for Chrome",
-    "description": "The description of the application"
-    },
-
     "FoxyProxy": {
       "message": "FoxyProxy",
       "description": ""
+    },
+    
+    "FoxyProxy_Target": {
+        "message": "Chrome",
+        "description": "Name of the target browser for this build of the FoxyProxy extension."
+    },
+    
+    "FoxyProxy_Version": {
+        "message": "DEV",
+        "description": "FoxyProxy version string"
+    },
+    
+    "FoxyProxy_Edition": {
+        "message": "DEV",
+        "description": "FoxyProxy edition - e.g. Basic or Standard"
+    },
+    
+    "for": {
+        "message": "for",
+        "description": "Preposition used to indicate the object, aim, or purpose of an action or activity."
     },
 
     "proxies": {
@@ -93,17 +104,7 @@
     },
 
 
-/*
-    "Include this proxy when cycling proxies by clicking on statusbar or toolbar (Global Settings-> Statusbar/Toolbar Activation-> Cycle through modes must be selected)": {
-      "message": "Include this proxy when cycling proxies by clicking on statusbar or toolbar (Global Settings-> Statusbar/Toolbar Activation-> Cycle through modes must be selected)",
-      "description": ""
-    },
 
-    "Perform remote DNS lookups on hostnames loading through this proxy": {
-      "message": "Perform remote DNS lookups on hostnames loading through this proxy",
-      "description": ""
-    },
-*/
     "color": {
       "message": "Color",
       "description": ""
@@ -118,12 +119,7 @@
       "message": "Manual Proxy Configuration",
       "description": ""
     },
-/*
-    "Help! Where are settings for HTTP, SSL, FTP, Gopher, and SOCKS?": {
-      "message": "Help! Where are settings for HTTP, SSL, FTP, Gopher, and SOCKS?",
-      "description": ""
-    },
-*/
+
     "SOCKS_v4": {
       "message": "SOCKS v4/4a",
       "description": ""
@@ -163,22 +159,7 @@
       "message": "minutes",
       "description": ""
     },
-/*
-    "Notify me about proxy auto-configuration file loads": {
-      "message": "Notify me about proxy auto-configuration file loads",
-      "description": ""
-    },
 
-    "Notify me about proxy auto-configuration file errors": {
-      "message": "Notify me about proxy auto-configuration file errors",
-      "description": ""
-    },
-
-    "Here you can specify when this proxy is and is not used.": {
-      "message": "Here you can specify when this proxy is and is not used.",
-      "description": ""
-    },
-*/
     "add_new_pattern": {
       "message": "Add new pattern",
       "description": ""
@@ -194,17 +175,6 @@
       "description": ""
     },
 
-/*
-    "URLs matching this pattern are loaded through this proxy": {
-      "message": "URLs matching this pattern are loaded through this proxy",
-      "description": ""
-    },
-
-    "URLs matching this pattern are NOT loaded through this proxy": {
-      "message": "URLs matching this pattern are NOT loaded through this proxy",
-      "description": ""
-    },
-*/
     "wildcards": {
       "message": "Wildcards",
       "description": ""
@@ -219,13 +189,6 @@
       "message": "Set",
       "description": ""
     },
-
-    // "as the new host": {
-    //   "message": "port of which proxy configuration?",
-    //   "description": ""
-    // },
-
-
 
     "Proxy_DNS": {
       "message": "Proxy DNS",
@@ -298,13 +261,6 @@
       }
     },
 
-
-    // 
-    // "PAC file sucsessful loaded": {
-    //   "message": "PAC file sucsessful loaded",
-    //   "description": ""
-    // },
-
     "Clear": {
       "message": "Clear",
       "description": ""
@@ -314,76 +270,12 @@
       "message": "Refresh",
       "description": ""
     },
-/*
-    "Copy URL to Clipboard": {
-      "message": "Copy URL to Clipboard",
-      "description": ""
-    },
 
-    "Open URL in New Tab": {
-      "message": "Open URL in New Tab",
-      "description": ""
-    },
-
-    "Maximum size before log wraps": {
-      "message": "Maximum size before log wraps",
-      "description": ""
-    },
-*/
-
-/*
-    "Pattern URL must be specified": {
-      "message": "Pattern URL must be specified",
-      "description": ""
-    },
-
-    "URL pattern template": {
-      "message": "URL pattern template",
-      "description": ""
-    },
-
-    "QuickAdd adds a dynamic URL pattern to a proxy when you press Alt-F2": {
-      "message": "QuickAdd adds a dynamic URL pattern to a proxy when you press Alt-F2",
-      "description": ""
-    },
-*/
     "QuickAdd_disabled" : {
       "message":  "QuickAdd disabled",
       "description": ""
     },
-/*
-    "Password does not match the confirm password" : {
-      "message":  "Password does not match the confirm password",
-      "description": ""
-    },
 
-    "Database error" : {
-      "message":  "Database error",
-      "description": ""
-    },
-
-    "No such license key" : {
-      "message":  "No such license key",
-      "description": ""
-    },
-
-    "License key exists but has been disabled" : {
-      "message":  "License key exists but has been disabled",
-      "description": ""
-    },
-
-    "License key exists and is enabled, but email address on record doesn't match specified email address" : {
-      "message":  "License key exists and is enabled, but email address on record doesn't match specified email address",
-      "description": ""
-    },
-
-    "License key is expired" : {
-      "message":  "License key is expired",
-      "description": ""
-    },
-
-
-*/
     "could_not_load": {
       "message": "Could not load $config_url$",
       "description": "Error message when proxy auto-config URL cannot be loaded",
@@ -449,11 +341,6 @@
       "message":  "OCS",
       "description": ""
     },
-    // 
-    // "for hosting FoxyProxy's website. If you need hosting, please consider OCS." : {
-    //   "message":  "for hosting FoxyProxy's website. If you need hosting, please consider OCS.",
-    //   "description": ""
-    // },
 
     "home" : {
       "message":  "Home",
@@ -475,7 +362,6 @@
         "description": "okay"
     },
     
-    /* options.import.js */
     "import_success": {
         "message": "Your FoxyProxy Settings file has been imported successfully."
     },
@@ -484,7 +370,6 @@
         "message": "An error occurred. The file you have chosen may not contain valid FoxyProxy settings. Please try to use a different file."
     },
     
-    /* options.log.js */
     "log_size_integer": {
         "message": "Log size should be integer"
     },
@@ -544,8 +429,6 @@
       "description": ""
     },
     
-    /* options.logpattern.js */
-    
     "error_duplicate_pattern": {
         "message": "Some or all of the patterns weren't added because they duplicate existing patterns for the specified proxy."
     },
@@ -553,8 +436,6 @@
     "select_proxy_add_pattern": {
         "message": "Select proxy to add pattern"
     },
-    
-    /* options.proxyedit.js */
     
     "error_no_hostname_or_ip": {
       "message":  "Hostname/IP address and port must be specified",
@@ -583,8 +464,6 @@
     "PAC_View": {
         "message": "PAC View"
     },
-    
-    /* options.proxylist.js */
     
     "Host_or_IP_Address": {
       "message": "Host or IP Address",
@@ -615,8 +494,6 @@
       "message": "host:port can not be determined from selected text",
       "description": ""
     },
-    
-    /* options.proxyselection.js */
     
     "add_new_proxy": {
       "message": "Add New Proxy",
