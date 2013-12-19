@@ -10,4 +10,15 @@ How to build FoxyProxy for Chrome with Grunt.
 3. Find a command-line, and run:
     npm install -g grunt-cli
     
+4. In this directory (the top-level of foxyproxy-chrome source, where you found this file), run:
+    npm install
+    
+5. To build the Standard edition for Chrome (which is the default), run:
+    grunt build
+    
+    The packaged files are copied to ./dist/ and a zip file suitable for uploading will be output in ./package/
+    
+6. To build a different edition, use --target and --edition command-line options, e.g.
+    grunt build --target=Chrome --edition=Basic
+    
 
