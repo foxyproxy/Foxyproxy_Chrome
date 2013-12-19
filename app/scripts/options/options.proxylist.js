@@ -33,14 +33,14 @@ function initProxyList() {
 	},
 	"aoColumns": [
 	    {"bVisible": false},
-	    {"sTitle": chrome.i18n.getMessage( "Enabled"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}},
+	    {"sTitle": chrome.i18n.getMessage( "Enabled"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='styles/images/bullet_tick.png'>":"";}},
 	    {"sTitle": chrome.i18n.getMessage( "Color"), "bUseRendered":false, "fnRender": function(obj) { var c = obj.aData[ obj.iDataColumn ]; return "<span class='colorbox' style='background-color: "+c+"'></span>";}},
 	    
 	    {"sTitle": chrome.i18n.getMessage( "proxy_name") },
 	    {"sTitle": chrome.i18n.getMessage( "proxy_notes") },
 	    {"sTitle": chrome.i18n.getMessage( "Host_or_IP_Address") },
 	    {"sTitle": chrome.i18n.getMessage( "port")},
-	    {"sTitle": chrome.i18n.getMessage( "is_SOCKS_proxy"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='css/images/bullet_tick.png'>":"";}},
+	    {"sTitle": chrome.i18n.getMessage( "is_SOCKS_proxy"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='styles/images/bullet_tick.png'>":"";}},
 	    {"sTitle": chrome.i18n.getMessage( "SOCKS_Version")},
 
              // Will need to remove and reintroduce columns when functionality is working.
