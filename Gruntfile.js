@@ -25,40 +25,23 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         yeoman: yeomanConfig,
-        watch: {
-            options: {
-                spawn: false
-            },
-            coffee: {
-                files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
-                tasks: ['coffee:dist']
-            },
-            // coffeeTest: {
-            //     files: ['test/spec/{,*/}*.coffee'],
-            //     tasks: ['coffee:test']
-            // },
-            // compass: {
-            //     files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-            //     tasks: ['compass:server']
-            // }
-        },
-        connect: {
-            options: {
-                port: 9000,
-                // change this to '0.0.0.0' to access the server from outside
-                hostname: 'localhost'
-            },
-            test: {
-                options: {
-                    middleware: function (connect) {
-                        return [
-                            mountFolder(connect, '.tmp'),
-                            mountFolder(connect, 'test')
-                        ];
-                    }
-                }
-            }
-        },
+        // watch: {
+        //     options: {
+        //         spawn: false
+        //     },
+        //     coffee: {
+        //         files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
+        //         tasks: ['coffee:dist']
+        //     },
+        //     coffeeTest: {
+        //         files: ['test/spec/{,*/}*.coffee'],
+        //         tasks: ['coffee:test']
+        //     },
+        //     compass: {
+        //         files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+        //         tasks: ['compass:server']
+        //     }
+        // },
         clean: {
             dist: {
                 files: [{
@@ -89,57 +72,6 @@ module.exports = function (grunt) {
                 }
             }
         },
-        coffee: {
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: '<%= yeoman.app %>/scripts',
-                    src: '{,*/}*.coffee',
-                    dest: '.tmp/scripts',
-                    ext: '.js'
-                }]
-            },
-            test: {
-                files: [{
-                    expand: true,
-                    cwd: 'test/spec',
-                    src: '{,*/}*.coffee',
-                    dest: '.tmp/spec',
-                    ext: '.js'
-                }]
-            }
-        },
-        compass: {
-            options: {
-                sassDir: '<%= yeoman.app %>/styles',
-                cssDir: '.tmp/styles',
-                generatedImagesDir: '.tmp/images/generated',
-                imagesDir: '<%= yeoman.app %>/images',
-                javascriptsDir: '<%= yeoman.app %>/scripts',
-                fontsDir: '<%= yeoman.app %>/styles/fonts',
-                importPath: '<%= yeoman.app %>/bower_components',
-                httpImagesPath: '/images',
-                httpGeneratedImagesPath: '/images/generated',
-                relativeAssets: false
-            },
-            dist: {},
-            server: {
-                options: {
-                    debugInfo: true
-                }
-            }
-        },
-        // not used since Uglify task does concat,
-        // but still available if needed
-        /*concat: {
-            dist: {}
-        },*/
-        // not enabled since usemin task does concat and uglify
-        // check index.html to edit your build targets
-        // enable this task if you prefer defining your build targets here
-        /*uglify: {
-            dist: {}
-        },*/
         useminPrepare: {
             options: {
                 dest: '<%= yeoman.dist %>',
@@ -260,34 +192,47 @@ module.exports = function (grunt) {
             //    'coffee:dist',
             //    'compass:server'
             //],
-            test: [
-                'coffee',
-                'compass'
-            ],
+            // test: [
+            //     'coffee',
+            //     'compass'
+            // ],
             dist: [
-                'coffee',
-                'compass:dist',
+                //'coffee',
+                //'compass:dist',
                 'imagemin',
                 'svgmin',
                 'htmlmin'
             ]
         },
-        chromeManifest: {
-            dist: {
-                options: {
-                    buildnumber: true,
-                    background: {
-                        target:'scripts/background.js'
-                    }
-                },
-                src: '<%= yeoman.app %>',
-                dest: '<%= yeoman.dist %>'
-            }
-        },
+        // chromeManifest: {
+        //     dist: {
+        //         options: {
+        //             buildnumber: true,
+        //             background: {
+        //                 target:'scripts/background.js'
+        //             }
+        //         },
+        //         src: '<%= yeoman.app %>',
+        //         dest: '<%= yeoman.dist %>'
+        //     }
+        // },
         compress: {
             dist: {
                 options: {
-                    archive: 'package/foxyproxy.zip'
+                    mode: 'zip',
+                    archive: function() {
+                        var messages = grunt.file.readJSON(yeomanConfig.dist + '/_locales/en/messages.json');
+                        
+                        var pkgName = 'foxyproxy-' +
+                                messages.FoxyProxy_Target.message + '-' +
+                                messages.FoxyProxy_Edition.message + '-' +
+                                messages.FoxyProxy_Version.message + '.zip';
+                                
+                        grunt.log.writeln("Packaging archive as " +pkgName);
+                        
+                        return 'package/' + pkgName;
+                        //return "mikewashere.zip";
+                    }
                 },
                 files: [{
                     expand: true,
@@ -302,7 +247,6 @@ module.exports = function (grunt) {
     grunt.registerTask('test', [
         'clean:server',
         'concurrent:test',
-        'connect:test',
         'jasmine'
     ]);
 
@@ -330,13 +274,15 @@ module.exports = function (grunt) {
         
         manifest.name = messages.appName.message;
         
-        // TODO: version number
-        
+        manifest.version = messages.FoxyProxy_Version.message;
+                
         grunt.file.write( yeomanConfig.dist + '/manifest.json', JSON.stringify(manifest));
     });
     
     grunt.registerTask('messages', [], function() {
-        var messages,
+        var currentVersion,
+            versions,
+            messages,
             target = grunt.option('target') || 'Chrome', // default to Chrome extension if not supplied.
             edition = grunt.option('edition') || 'Standard'; // default to Standard edition if not supplied.
             
@@ -347,14 +293,31 @@ module.exports = function (grunt) {
         //     grunt.fail.fatal("Invalid edition specified. Only 'Basic' and 'Standard' are supported.");
         // }
         
+        // reset options in case we used defaults
+        grunt.option('target', target);
+        grunt.option('edition', edition);
+        
         grunt.log.writeln("Generating messages for target: " + target + " and edition: " + edition);
         
         messages = grunt.file.readJSON(yeomanConfig.app + '/_locales/en/messages.json');
         
-        messages["FoxyProxy_Target"].message = target;
-        messages["FoxyProxy_Target"].description = "Name of the target browser for the extension. Generated by Grunt.";
-        messages["FoxyProxy_Edition"].message = edition;
-        messages["FoxyProxy_Edition"].description = "Edition of the extension. Generated by Grunt.";
+        versions = grunt.file.readJSON('versions.json');
+        currentVersion = versions[target][edition];
+        
+        messages.FoxyProxy_Version = {
+            message: currentVersion.release + "." + currentVersion.major + "." + currentVersion.minor,
+            description: "Generated by Grunt."
+        };
+        
+        messages.FoxyProxy_Target = {
+            message: target,
+            description: "Name of the target browser for the extension. Generated by Grunt."
+        };
+        
+        messages.FoxyProxy_Edition = {
+            message: edition,
+            description: "Edition of the extension. Generated by Grunt."
+        };
         
         messages.appName = {
             // message: messages.FoxyProxy.message
@@ -373,13 +336,6 @@ module.exports = function (grunt) {
         
     });
     
-    grunt.registerTask('version', [], function() {
-        var versions,
-            target = grunt.option('target') || 'Chrome';
-        //TODO
-        versions = grunt.file.readJSON('versions.json');
-    });
-
 
     grunt.registerTask('default', [
         'jshint',
