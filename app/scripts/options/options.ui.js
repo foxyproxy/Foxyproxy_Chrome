@@ -11,7 +11,7 @@ var simple_tooltip = function (target_items, name){
     $(target_items).each(function(i){
 
 	var div = $("<div/>").attr({"class": name, "id": name + i});
-	var p = $("<p/>").text($(this).attr('id'));
+	var p = $("<p/>").text(chrome.i18n.getMessage($(this).attr('id')));
 	div.append(p);
 
 	$("body").append(div);
