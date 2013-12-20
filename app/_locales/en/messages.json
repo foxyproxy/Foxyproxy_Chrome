@@ -288,7 +288,7 @@
     },
 
     "hint_pac" : {
-      "message":  "You can use http",
+      "message":  "You can use http://, https://, and any other supported scheme.",
       "description": ""
     },
 
