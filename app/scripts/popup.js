@@ -1,13 +1,14 @@
+var foxyproxy = chrome.extension.getBackgroundPage().foxyProxy;
 
 var options = function (data){
-    chrome.extension.getBackgroundPage().foxyProxy.options(data);
+    foxyproxy.options(data);
     
 };
 
 var toggleRadioButton = function (id){
     $("li").removeClass("navbar-checked");
     $("#state-"+id).addClass("navbar-checked");
-    chrome.extension.getBackgroundPage().foxyProxy.state = id;
+    foxyproxy.state = id;
     window.close();
 };
 
@@ -42,12 +43,17 @@ $(document).ready(function(){
     });
 
     $("a").each(function(){
-    if(this.childNodes.length == 0 || (this.childNodes.length == 1 && this.childNodes[0].nodeName == "#text")){
+    if(this.childNodes.length === 0 || (this.childNodes.length == 1 && this.childNodes[0].nodeName == "#text")){
         this.innerText = this.innerText; //FIXME
     }
     });
+    
+    if ('Basic' == foxyproxy.getFoxyProxyEdition()) {
+        console.log('hiding auto mode for Basic edition');
+        $("#state-auto").hide();
+    }
 
-    var list = chrome.extension.getBackgroundPage().foxyProxy.proxyList;
+    var list = foxyproxy.proxyList;
     console.log(list);
 
     $.each(list, function(i, proxy){
@@ -69,7 +75,8 @@ $(document).ready(function(){
 
     $("#state-" + chrome.extension.getBackgroundPage().foxyProxy.state).addClass("navbar-checked");
 
-    if(!chrome.extension.getBackgroundPage().foxyProxy.settings.enabledQA || chrome.extension.getBackgroundPage().foxyProxy.state=='disabled')
-    $('#quickAdd').hide();
+    if(!foxyproxy.settings.enabledQA || foxyproxy.state=='disabled' || 'Basic' == foxyproxy.getFoxyProxyEdition()) {
+        $('#quickAdd').hide();
+    }
 });
 
