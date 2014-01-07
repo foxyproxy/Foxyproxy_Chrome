@@ -1,0 +1,21 @@
+{
+    "undef"     : true,
+    "unused"    : true,
+    "eqnull"    : true,
+    "multistr"  : true,
+    "globalstrict": true,
+    
+    "browser"   : true,
+    "jquery"    : true,
+
+    "devel"     : true,
+    
+    "globals"  : {
+        "window"        : false,
+        "document"      : false,
+        "localStorage"  : false,
+        "console"       : false,
+        "chrome"        : false,
+        "$"             : false
+    }
+}

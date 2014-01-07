@@ -1,0 +1,27 @@
+{
+    "Chrome": {
+        "Standard": {
+            "release": "3",
+            "major":   "0",
+            "minor":   "0"
+        },
+        "Basic": {
+            "release": "0",
+            "major":   "2",
+            "minor":   "0"
+        }
+    },
+    
+    "Opera": {
+        "Standard": {
+            "release": "1",
+            "major":   "0",
+            "minor":   "0"
+        },
+        "Basic": {
+            "release": "1",
+            "major":   "0",
+            "minor":   "0"
+        }
+    }
+}

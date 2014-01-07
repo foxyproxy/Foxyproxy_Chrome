@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/chrome/!svn/ver/130/trunk/Standard/js/options
+END
+options.import.js
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/chrome/!svn/ver/130/trunk/Standard/js/options/options.import.js
+END
+options.ippatternedit.js
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/chrome/!svn/ver/35/trunk/Standard/js/options/options.ippatternedit.js
+END
+options.proxylist.js
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/chrome/!svn/ver/130/trunk/Standard/js/options/options.proxylist.js
+END
+options.ui.js
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/chrome/!svn/ver/110/trunk/Standard/js/options/options.ui.js
+END
+options.logpattern.js
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/chrome/!svn/ver/35/trunk/Standard/js/options/options.logpattern.js
+END
+options.export.js
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/chrome/!svn/ver/129/trunk/Standard/js/options/options.export.js
+END
+options.globalsettings.js
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/chrome/!svn/ver/109/trunk/Standard/js/options/options.globalsettings.js
+END
+options.log.js
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/chrome/!svn/ver/35/trunk/Standard/js/options/options.log.js
+END
+options.patternedit.js
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/chrome/!svn/ver/106/trunk/Standard/js/options/options.patternedit.js
+END
+options.addpattern.js
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/chrome/!svn/ver/109/trunk/Standard/js/options/options.addpattern.js
+END
+options.proxyedit.js
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/chrome/!svn/ver/97/trunk/Standard/js/options/options.proxyedit.js
+END
+options.proxyselection.js
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/chrome/!svn/ver/109/trunk/Standard/js/options/options.proxyselection.js
+END
