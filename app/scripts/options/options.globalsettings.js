@@ -204,6 +204,11 @@ $(document).ready(function() {
         foxyProxy.state = newState;
     });
     
+    $("input[name='advancedMenuCheck']").change(function() {
+        settings.useAdvancedMenus = $(this).is(":checked");
+        foxyProxy.updateContextMenu();
+    });
+    
     onTabShow('');
 });
 

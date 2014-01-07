@@ -211,7 +211,7 @@ function Extension() {
         var useAdvancedMenus = this.settings.useAdvancedMenus;
         chrome.contextMenus.removeAll();
         
-        if (this.settings.showContextMenu && this.getFoxyProxyEdition() != 'Basic')) {
+        if (this.settings.showContextMenu && this.getFoxyProxyEdition() != 'Basic') {
             chrome.contextMenus.create({
                 title: chrome.i18n.getMessage("mode_patterns_label"),
                 type: "radio",
