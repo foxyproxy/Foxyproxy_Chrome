@@ -1,13 +1,13 @@
 {
     "Chrome": {
         "Standard": {
-            "release": "3",
-            "major":   "0",
-            "minor":   "0"
+            "release": "2",
+            "major":   "9",
+            "minor":   "1"
         },
         "Basic": {
             "release": "0",
-            "major":   "2",
+            "major":   "9",
             "minor":   "0"
         }
     },
