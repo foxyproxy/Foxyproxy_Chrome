@@ -76,6 +76,9 @@ h3.tip {
     padding-bottom:15px;
 }
 
+h3.tip a, h3.tip a:visited {
+    color: blue;
+}
 #navbar-container > ul {
   -webkit-user-select: none;
   list-style-type: none;
