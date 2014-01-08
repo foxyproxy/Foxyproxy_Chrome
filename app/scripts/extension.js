@@ -1,5 +1,16 @@
-const afterInstallUrl = "http://getfoxyproxy.org/chrome/standard/install.html";
+/* onInstalled listener opens tab to the appropriate post-install page. */
+chrome.management.onInstalled.addListener(function(extensionInfo) {
+    var target = chrome.i18n.getMessage("FoxyProxy_Target").toLowerCase();
+        edition = chrome.i18n.getMessage("FoxyProxy_Edition").toLowerCase();        
+        afterInstallUrl = "http://getfoxyproxy.org/" + target + "/" + edition + "/install.html";
+        
+    chrome.tabs.create({
+        url: afterInstallUrl,
+        selected: true
+    });
+});
 
+/* Extension object - main entry point for FoxyProxy extension */
 function Extension() {
     var settings = JSON.parse(localStorage.getItem('settings'));
     var proxyList = $.map(JSON.parse(localStorage.getItem('proxyList')), function (p) {
@@ -150,37 +161,7 @@ function Extension() {
 	callback(url);
     };
 
-    function checkFirst() {
-	if (!localStorage.getItem("installedtime")) {
-	    localStorage.setItem("installedtime", (new Date()).toString());
-	    var id = chrome.i18n.getMessage("@@extension_id");
-	    chrome.management.getAll(function (a) {
-		for (var i = 0; i < a.length; i++)
-		    if (a[i].id === id) localStorage.setItem("version", a[i].version);
-	    });
-	    chrome.tabs.create({
-		url: afterInstallUrl,
-		selected: true
-	    });
-	    return true;
-	}
-	return false;
-    }
 
-    function checkVersion() {
-	var id = chrome.i18n.getMessage("@@extension_id");
-	var version = "";
-	chrome.management.getAll(function (a) {
-	    for (var i = 0; i < a.length; i++)
-		if (a[i].id === id) {
-		    version = localStorage.getItem("version") || a[i].version;
-		    /*if(version !== a[i].version)
-		     chrome.tabs.create({url: afterUpdateUrl, selected: true });*/
-		    version = a[i].version;
-		    localStorage.setItem("version", version);
-		}
-	});
-    }
     this.options = function (data) {
 	//-- This function opens options page with passed data parametr or update existent tab with opened options page if exists
 	var bOptionsPageFound = false;
@@ -431,5 +412,4 @@ function Extension() {
     }
     /*self.updateLocalIps = updateLocalIps;
      updateLocalIps();*/
-    checkFirst() || checkVersion();
 }
