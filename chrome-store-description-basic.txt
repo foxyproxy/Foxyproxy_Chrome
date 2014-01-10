@@ -1,0 +1,23 @@
+Proxy servers are specialized internet servers built to relay IP traffic from one sub-net of IP addresses to another, in order to make traffic from one sub-net look like it is coming from another.
+
+This is useful for several reasons:
+
+Sales and Marketing groups use them to perform GeoIP tests, in order to be certain that advertising & local content is reaching the intended markets. 
+
+It enables travelers to access their favorite video/audio sites (BBC iplayer, Hulu, ITV, Pandora, NetFlix, NFL) from most any location in the world should they be traveling through regions where traffic from the broadcaster is being blocked.
+
+It can bypass content-filtering from nations & institutions censoring the web for your "protection".
+
+For needs like these, a wide assortment of proxy servers were set up around the globe.
+  
+Some proxy servers are commercial grade - they must work - while others are free, running on luck.
+
+When a person has located a proxy server in the region they need to relay through, their job is to then configure their computer to relay through that proxy server, which can be complicated.  
+
+Sometimes one must dig deep into the configuration of the browser, sometimes deep into the network configuration of the operating system, and sometimes both, which is where FoxyProxy steps in.
+
+FoxyProxy minimizes the process of configuring your computer to talk through a proxy server, with a reduced set of simplified, browser-based controls.  
+
+This saves time for those tech-savvy enough to configure their computer to talk to a proxy-server, but are too busy, and it stops headaches for those choosing to focus their talents on goals other than the deep workings of technology, yet still must use technology.
+
+Try It.
