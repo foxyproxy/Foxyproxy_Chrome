@@ -159,6 +159,11 @@
       "message": "minutes",
       "description": ""
     },
+    
+    "patterns": {
+        "message": "Patterns",
+        "description": ""
+    },
 
     "add_new_pattern": {
       "message": "Add new pattern",
