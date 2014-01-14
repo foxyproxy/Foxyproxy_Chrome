@@ -232,7 +232,7 @@ function Extension() {
                     
                     if (proxy.data.id != "default") {
                         chrome.contextMenus.create({
-                            title: localize("Patterns"),
+                            title: chrome.i18n.getMessage("patterns"),
                             id: "patterns" + proxy.data.id,
                             parentId: proxy.data.id
                         });
