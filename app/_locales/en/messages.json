@@ -103,8 +103,10 @@
         "message": "Add"
     },
 
-
-
+    "more": { 
+        "message": "More"
+    },
+    
     "color": {
       "message": "Color",
       "description": ""
@@ -507,5 +509,11 @@
     
     "select_proxy_to_update": {
         "message": "Select proxy to update"
+    },
+    
+    "use_advanced_menus": {
+        "message": "Use Advanced Menus"
     }
+    
+    
 }
