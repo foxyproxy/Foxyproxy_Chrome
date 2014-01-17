@@ -189,20 +189,22 @@ function Extension() {
     };
     
     this.updateContextMenu = function () {
-        var useAdvancedMenus = this.settings.useAdvancedMenus;
+        var foxyProxy = this,
+            useAdvancedMenus = foxyProxy.settings.useAdvancedMenus;
+
         chrome.contextMenus.removeAll();
         
         if (this.settings.showContextMenu && this.getFoxyProxyEdition() != 'Basic') {
             chrome.contextMenus.create({
                 title: chrome.i18n.getMessage("mode_patterns_label"),
-                type: "radio",
+                type: "checkbox",
                 onclick: function () {
                     self.state = 'auto';
                 },
-                checked: ('auto' == state)
+                checked: ('auto' == self.state)
             });
             
-            if (useAdvancedMenus) {
+            if (useAdvancedMenus) { // create sub-menu options for each proxy
                 $.each(this.proxyList, function (i, proxy) {
                     chrome.contextMenus.create({
                         title: proxy.data.name,
@@ -213,24 +215,23 @@ function Extension() {
                         title: chrome.i18n.getMessage("enabled"),
                         parentId: proxy.data.id,
                         type: "checkbox",
-                        checked: (proxy.data.enabled),
+                        checked: (proxy.data.enabled), //FIXME
                         onclick: function() {
                             proxy.data.enabled = !proxy.data.enabled;
-                            self.updateContextMenu();
                         }
                     });
                     
                     chrome.contextMenus.create({
                         title: chrome.i18n.getMessage("mode_custom_label", proxy.data.name),
-                        type: "radio",
+                        type: "checkbox",
                         onclick: function () {
                             self.state = proxy.data.id;
                         },
-                        checked: (proxy.data.id == state),
+                        checked: (proxy.data.id == self.state),
                         parentId: proxy.data.id
                     });
                     
-                    if (proxy.data.id != "default") {
+                    if (proxy.data.id != "default" && proxy.data.patterns && proxy.data.patterns.length > 0) {
                         chrome.contextMenus.create({
                             title: chrome.i18n.getMessage("patterns"),
                             id: "patterns" + proxy.data.id,
@@ -239,7 +240,7 @@ function Extension() {
                     
                         $.each(proxy.data.patterns, function(px, pattern) {
                             chrome.contextMenus.create({
-                                title: pattern.data.regex,
+                                title: pattern.data.url,
                                 parentId: "patterns" + proxy.data.id,
                                 type: "checkbox",
                                 checked: (pattern.data.enabled),
@@ -251,12 +252,13 @@ function Extension() {
                     }
 
                 });
-            } else {
+
+            } else { // simple menus
                 $.each(this.proxyList, function (i, proxy) {
                     if (proxy.data.enabled) {
                         chrome.contextMenus.create({
                             title: chrome.i18n.getMessage("mode_custom_label", proxy.data.name),
-                            type: "radio",
+                            type: "checkbox",
                             onclick: function () {
                                 self.state = proxy.data.id;
                             },
@@ -264,11 +266,14 @@ function Extension() {
                         });
                     }
                 });
+
             }
             
+            // common menu options (simple and advanced)
+            // everybody gets disable entry
             chrome.contextMenus.create({
                 title: chrome.i18n.getMessage("mode_disabled_label"),
-                type: "radio",
+                type: "checkbox",
                 onclick: function () {
                     self.state = 'disabled';
                 },
@@ -276,32 +281,60 @@ function Extension() {
             });
             
             chrome.contextMenus.create({
-                type: "separator"
-            });
+                 type: "separator"
+             });
+            
+            if (useAdvancedMenus) { // make sure 'more' comes last for advanced menus
+
+                 chrome.contextMenus.create({
+                     title: chrome.i18n.getMessage("more"),
+                     id: "context-menu-more"
+                 });
+
+                 chrome.contextMenus.create({
+                     title: chrome.i18n.getMessage("global_settings"),
+                     id: "context-menu-global-settings",
+                     parentId: "context-menu-more",
+                     type: "normal"
+                 });
+            }
             
             chrome.contextMenus.create({
                 title: chrome.i18n.getMessage("options"),
+                parentId: useAdvancedMenus ? "context-menu-more" : null,
                 onclick: function () {
                     self.options("tabProxies");
                 }
             });
-
+            
             if (this.settings.enabledQA && this.state != 'disabled') {
                 chrome.contextMenus.create({
                     title: chrome.i18n.getMessage("QuickAdd"),
+                    parentId: useAdvancedMenus ? "context-menu-more" : null,
                     onclick: function (info, tab) {
                         self.options("addpattern#" + tab.url);
                     }
                 });
             }
-            /*
+            
             chrome.contextMenus.create({
-            title: localize("Proxy List"),
-            onclick: function(){ self.options("tabProxies");}
+                title: chrome.i18n.getMessage("use_advanced_menus"),
+                type: "checkbox",
+                checked: useAdvancedMenus,
+                parentId: useAdvancedMenus ? "context-menu-global-settings" : null,
+                onclick: function() {
+                    foxyProxy.toggleAdvancedMenus();
+                }
+
             });
-             */
+
          }
 
+    };
+    
+    this.toggleAdvancedMenus = function toggleAdvancedMenus() {
+        settings.useAdvancedMenus = !settings.useAdvancedMenus;
+        foxyProxy.updateContextMenu();
     };
     
     self.icon = $('#image')[0];
