@@ -6,7 +6,7 @@
     "description": "FoxyProxy simplifies configuring browsers to access proxy-servers, offering more features than other proxy-plugins",
     "homepage_url": "http://getfoxyproxy.org/",
     "icons": {
-        "16": "images/foxyproxy-context16.png",
+        "16": "images/16x16.png",
         "48": "images/logo-48.png",
         "128": "images/logo-128.png"
     },
