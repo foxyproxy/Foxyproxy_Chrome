@@ -317,6 +317,17 @@ function Extension() {
             }
             
             chrome.contextMenus.create({
+                title: chrome.i18n.getMessage("show_context_menu"),
+                type: "checkbox",
+                checked: settings.showContextMenu,
+                parentId: useAdvancedMenus ? "context-menu-global-settings" : null,
+                onclick: function() {
+                    foxyProxy.toggleShowContextMenu();
+                }
+
+            });
+            
+            chrome.contextMenus.create({
                 title: chrome.i18n.getMessage("use_advanced_menus"),
                 type: "checkbox",
                 checked: useAdvancedMenus,
@@ -340,6 +351,16 @@ function Extension() {
             chrome.tabs.sendMessage(self.optionsTabId, { setting: "useAdvancedMenus" });
         }
     };
+    
+    this.toggleShowContextMenu = function toggleShowContextMenu() {
+        settings.showContextMenu = !settings.showContextMenu;
+        foxyProxy.updateContextMenu();
+        
+        if (self.optionsTabId) {
+            chrome.tabs.sendMessage(self.optionsTabId, { setting: "showContextMenu" });
+        }
+    };
+
     
     self.icon = $('#image')[0];
     self.currentIcon = $("#customImage")[0];
