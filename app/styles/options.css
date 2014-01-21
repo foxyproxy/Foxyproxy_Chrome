@@ -215,3 +215,15 @@ background-color:#222;
 padding:2px 7px;
 }
 
+#pageGlobal table {
+    width: 66%;
+    margin: 40px 0px;
+}
+
+#pageGlobal label[for='showContextMenuCheck'] span:before {
+    content: "__MSG_show_context_menu__";
+}
+
+#pageGlobal label[for='advancedMenuCheck'] span:before {
+    content: "__MSG_use_advanced_menus__";
+}

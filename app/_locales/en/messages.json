@@ -513,6 +513,10 @@
     
     "use_advanced_menus": {
         "message": "Use Advanced Menus"
+    },
+    
+    "show_context_menu": {
+        "message": "Show icon in context-menu"
     }
     
     

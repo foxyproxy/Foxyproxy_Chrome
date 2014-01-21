@@ -80,12 +80,17 @@ function onTabShow(tabName) {
     
     if ('pageGlobal' == tabName) {
         $("input[name='advancedMenuCheck']").attr('checked', settings.useAdvancedMenus);
+        $("input[name='showContextMenuCheck']").attr('checked', settings.showContextMenu);
     }
     
     chrome.runtime.onMessage.addListener(function( request) {
         if (request.setting) {
             if ("useAdvancedMenus" == request.setting) {
                 $("input[name='advancedMenuCheck']").attr('checked', settings.useAdvancedMenus);
+            }
+
+            if ("showContextMenu" == request.setting) {
+                $("input[name='showContextMenuCheck']").attr('checked', settings.showContextMenu);
             }
         }
     });
@@ -96,12 +101,6 @@ $(document).ready(function() {
     if (foxyProxy.getFoxyProxyEdition() != 'Basic') {
         $("#tabQuick").show();
     }
-
-    $("#settingsContextmenu").setChecked(settings.showContextMenu).click(function(){
-        settings.showContextMenu = $(this).is(":checked");
-        foxyProxy.settings = settings;
-    });
-
     
     $("#enabledQA").click(function(){
         if(list.length<=1) {
@@ -218,6 +217,10 @@ $(document).ready(function() {
     
     $("input[name='advancedMenuCheck']").click(function() {
         foxyProxy.toggleAdvancedMenus();
+    });
+    
+    $("input[name='showContextMenuCheck']").click(function() {
+        foxyProxy.toggleShowContextMenu();
     });
     
     onTabShow('');
