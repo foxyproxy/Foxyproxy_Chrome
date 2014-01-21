@@ -163,29 +163,28 @@ function Extension() {
 
 
     this.options = function (data) {
-	//-- This function opens options page with passed data parametr or update existent tab with opened options page if exists
-	var bOptionsPageFound = false;
-	chrome.tabs.getAllInWindow(null, function (tabs) {
-	    $.each(tabs, function (i, tab) {
-		if (tab.url.indexOf(chrome.extension.getURL("options.html")) == 0) {
-		    bOptionsPageFound = true;
-		    chrome.tabs.update(tab.id, {
-			url: chrome.extension.getURL("options.html") + "#" + data,
-			selected: true
-		    });
-		    chrome.tabs.update(tab.id, {
-			url: chrome.extension.getURL("options.html") + "#" + data,
-			selected: true
-		    });
-		}
-	    });
-	    if (!bOptionsPageFound) {
-		chrome.tabs.create({
-		    url: chrome.extension.getURL("options.html") + "#" + data,
-		    selected: true
-		});
-	    }
-	});
+        //-- This function opens options page with passed data parametr or update existent tab with opened options page if exists
+        var bOptionsPageFound = false;
+        chrome.tabs.getAllInWindow(null, function (tabs) {
+            $.each(tabs, function (i, tab) {
+                if (tab.url.indexOf(chrome.extension.getURL("options.html")) == 0) {
+                    bOptionsPageFound = true;
+                    chrome.tabs.update(tab.id, {
+                        url: chrome.extension.getURL("options.html") + "#" + data,
+                        selected: true
+                    });
+                    self.optionsTabId = tab.id;
+                }
+            });
+            if (!bOptionsPageFound) {
+                chrome.tabs.create({
+                    url: chrome.extension.getURL("options.html") + "#" + data,
+                    selected: true
+                }, function( tab) {
+                    self.optionsTabId = tab.id;
+                });
+            }
+        });
     };
     
     this.updateContextMenu = function () {
@@ -333,8 +332,13 @@ function Extension() {
     };
     
     this.toggleAdvancedMenus = function toggleAdvancedMenus() {
+        
         settings.useAdvancedMenus = !settings.useAdvancedMenus;
         foxyProxy.updateContextMenu();
+        
+        if (self.optionsTabId) {
+            chrome.tabs.sendMessage(self.optionsTabId, { setting: "useAdvancedMenus" });
+        }
     };
     
     self.icon = $('#image')[0];

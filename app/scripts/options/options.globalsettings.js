@@ -77,6 +77,18 @@ function onTabShow(tabName) {
         $("input[name='patternWhitelistQA'][value='"+settings.patternWhitelistQA+"']").setChecked(true);
         $("input[name='patternTypeQA'][value='"+settings.patternTypeQA+"']").setChecked(true);
     }
+    
+    if ('pageGlobal' == tabName) {
+        $("input[name='advancedMenuCheck']").attr('checked', settings.useAdvancedMenus);
+    }
+    
+    chrome.runtime.onMessage.addListener(function( request) {
+        if (request.setting) {
+            if ("useAdvancedMenus" == request.setting) {
+                $("input[name='advancedMenuCheck']").attr('checked', settings.useAdvancedMenus);
+            }
+        }
+    });
 }
 
 $(document).ready(function() {
@@ -204,7 +216,7 @@ $(document).ready(function() {
         foxyProxy.state = newState;
     });
     
-    $("input[name='advancedMenuCheck']").change(function() {
+    $("input[name='advancedMenuCheck']").click(function() {
         foxyProxy.toggleAdvancedMenus();
     });
     
