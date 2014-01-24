@@ -16,9 +16,10 @@ function Extension() {
     var self = this;
     var timers = [];
     
-    var settings = JSON.parse(localStorage.getItem('settings'));
+    var settings = JSON.parse(storageAPI.getItem('settings')); //FIXME
     
-    var proxyList = $.map(JSON.parse(localStorage.getItem('proxyList')), function (p) {
+    //FIXME
+    var proxyList = $.map(JSON.parse(storageAPI.getItem('proxyList')), function (p) {
         var t = new Proxy(p);
         var i = 0;
         while (i < t.data.patterns.length) {
@@ -38,7 +39,7 @@ function Extension() {
     this.__defineSetter__("settings", function (oSettings) {
         settings = oSettings;
         self.updateContextMenu();
-        localStorage.setItem("settings", JSON.stringify(oSettings));
+        storageAPI.setItem("settings", JSON.stringify(oSettings));
     });
     
     this.__defineGetter__("proxyList", function () {
@@ -51,7 +52,7 @@ function Extension() {
         self.updateContextMenu();
         reloadTimers();
     
-        localStorage.setItem("proxyList", JSON.stringify(
+        storageAPI.setItem("proxyList", JSON.stringify(
             $.map(proxyList, function (el) {
                 //-- Save to storage only proxies with temp= false
                 if (el.data.type == 'auto' && el.data.pac) {
@@ -85,10 +86,10 @@ function Extension() {
         while (timers.length) {
             clearInterval(timers.pop());
         } 
-        {
+        
         $.map(proxyList, function (proxy, i) {
             //-- Save to storage only proxies with temp= false
-            if (proxy.data.type == 'auto' && proxy.data.reloadPAC && parseInt(proxy.data.reloadPACInterval)) {
+            if (proxy.data.type == 'auto' && proxy.data.reloadPAC && parseInt(proxy.data.reloadPACInterval, 10)) {
                 timers.push(
                     setInterval((function (i) {
                         return function () {
@@ -99,7 +100,7 @@ function Extension() {
                     })(i), proxy.data.reloadPACInterval * 60000));
             }
         });
-        }
+        
     }
 
     
@@ -126,7 +127,7 @@ function Extension() {
                 for (var i = 0; i < proxyList.length; i++) {
                     if (proxyList[i].data.id == this.state) proxy = proxyList[i];
                 }
-                if (proxy && (proxy.data.pac.length == 0 || !proxy.data.pac)) {
+                if (proxy && (proxy.data.pac.length === 0 || !proxy.data.pac)) {
                     console.log("manual mode selected and proxy is " + proxy);
                     chrome.browserAction.setIcon({
                         imageData: IconCreator.paintIcon(self.icon, proxy.data.color)
@@ -185,7 +186,7 @@ function Extension() {
         var bOptionsPageFound = false;
         chrome.tabs.getAllInWindow(null, function (tabs) {
             $.each(tabs, function (i, tab) {
-                if (tab.url.indexOf(chrome.extension.getURL("options.html")) == 0) {
+                if (tab.url.indexOf(chrome.extension.getURL("options.html")) === 0) {
                     bOptionsPageFound = true;
                     chrome.tabs.update(tab.id, {
                         url: chrome.extension.getURL("options.html") + "#" + data,
@@ -203,6 +204,10 @@ function Extension() {
                 });
             }
         });
+    };
+    
+    this.toggleChromeSync = function() {
+        settings.useChromeSync = !settings.useChromeSync;
     };
     
     
@@ -392,7 +397,7 @@ function Extension() {
     rotation = 0,
     animating = false;
     this.animateFlip = function (bInAction) {
-    if (rotation == 0 || bInAction) {
+    if (rotation === 0 || bInAction) {
         rotation += 1 / animationFrames;
         self.drawIconAtRotation();
         if (rotation <= 1) {
@@ -424,7 +429,7 @@ function Extension() {
     this.animateBlink = function (count, bInAction) {
     if (!animating || bInAction) {
         animating = true;
-        if (count % 2 == 0) {
+        if (count % 2 === 0) {
         chrome.browserAction.setIcon({
             path: 'images/logo.png'
         });
@@ -541,10 +546,10 @@ function Extension() {
     quickAddMatchNode.setAttribute('name', self.settings.patternNameQA);
     xmlDoc.documentElement.appendChild(quickAddNode);
     return (new XMLSerializer()).serializeToString(xmlDoc);
-    }
+    };
     self.saveToFile = function (content) {
     //plugin.saveToFile(content);
-    }
+    };
 
     function updateLocalIps() {
     /*if (!plugin.updateLocalIps) {
