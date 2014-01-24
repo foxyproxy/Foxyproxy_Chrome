@@ -81,6 +81,7 @@ function onTabShow(tabName) {
     if ('pageGlobal' == tabName) {
         $("input[name='advancedMenuCheck']").attr('checked', settings.useAdvancedMenus);
         $("input[name='showContextMenuCheck']").attr('checked', settings.showContextMenu);
+        $("input[name='useChromeSyncCheck']").attr('checked', settings.useChromeSync);
     }
     
     chrome.runtime.onMessage.addListener(function( request) {
@@ -221,6 +222,10 @@ $(document).ready(function() {
     
     $("input[name='showContextMenuCheck']").click(function() {
         foxyProxy.toggleShowContextMenu();
+    });
+    
+    $("input[name='useChromeSyncCheck']").click(function() {
+        foxyProxy.toggleChromeSync();
     });
     
     onTabShow('');
