@@ -214,9 +214,10 @@ function Extension() {
                         title: chrome.i18n.getMessage("enabled"),
                         parentId: proxy.data.id,
                         type: "checkbox",
-                        checked: (proxy.data.enabled), //FIXME
+                        checked: (proxy.data.enabled),
                         onclick: function() {
                             proxy.data.enabled = !proxy.data.enabled;
+                            self.applys();
                         }
                     });
                     
@@ -245,6 +246,7 @@ function Extension() {
                                 checked: (pattern.data.enabled),
                                 onclick: function() {
                                     pattern.data.enabled = !pattern.data.enabled;
+                                    self.applys();
                                 }
                             });
                         });
