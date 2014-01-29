@@ -12,59 +12,76 @@ chrome.management.onInstalled.addListener(function(extensionInfo) {
 
 /* Extension object - main entry point for FoxyProxy extension */
 function Extension() {
-    var state = null;
-    var self = this;
-    var timers = [];
+    var _settings,
+        _proxyList,
+        state = null;
+        self = this;
+        timers = [];
     
-    var settings = JSON.parse(storageAPI.getItem('settings')); //FIXME
-    
-    //FIXME
-    var proxyList = $.map(JSON.parse(storageAPI.getItem('proxyList')), function (p) {
-        var t = new Proxy(p);
-        var i = 0;
-        while (i < t.data.patterns.length) {
-            if (t.data.patterns[i].data.temp) t.data.patterns.splice(i, 1);
-            else i++;
+    //chrome.runtime.sendMessage({ "settings": null, "proxyList": null }, function( response) {
+    updateSettings({ "settings": null, "proxyList": null }, null, function( response) {
+        console.log("response: " + response);
+        console.log(response);
+        if (response && response.settings) {
+            _settings = response.settings;
         }
-        return t;
+        
+        if (response && response.proxyList) {
+            _proxyList = response.proxyList;
+        }
     });
 
     //this.log = new FoxyLog();
 
     /***** getters/setters *****/
     this.__defineGetter__("settings", function () {
-        return settings;
+        return self.settings;
     });
     
     this.__defineSetter__("settings", function (oSettings) {
         settings = oSettings;
-        self.updateContextMenu();
-        storageAPI.setItem("settings", JSON.stringify(oSettings));
+        
+        chrome.runtime.sendMessage({ "settings": oSettings }, function( response) {
+                        
+            if (response.settings) {
+                _settings = response.settings;
+            }
+
+            if (response.proxyList) {
+                _proxyList = response.proxyList;
+            }
+            
+            self.updateContextMenu();
+            
+        });
+        
     });
     
     this.__defineGetter__("proxyList", function () {
-        return proxyList;
+        console.log("get proxyList");
+        console.log(_proxyList);
+        return _proxyList;
     });
     
     this.__defineSetter__("proxyList", function (aProxy) {
         //-- handler for property proxyList setting
-        proxyList = aProxy;
-        self.updateContextMenu();
-        reloadTimers();
+        _proxyList = aProxy;
     
-        storageAPI.setItem("proxyList", JSON.stringify(
-            $.map(proxyList, function (el) {
-                //-- Save to storage only proxies with temp= false
-                if (el.data.type == 'auto' && el.data.pac) {
-                    el.updatePAC();
-                }
-                if (!el.data.temp) {
-                    return el;
-                } else {
-                    return null;
-                }
-            })
-        ));
+        chrome.runtime.sendMessage({"proxyList": proxyList }, function( response) {
+            if (response.settings) {
+                _settings = response.settings;
+            }
+
+            if (response.proxyList) {
+                _proxyList = response.proxyList;
+            }
+            
+            self.updateContextMenu();
+            
+            self.reloadTimers();
+            
+        });
+
     });
     
     this.__defineGetter__("state", function () {
@@ -72,10 +89,11 @@ function Extension() {
     });
     this.__defineSetter__("state", function (_state) {
     //-- Handler for switching between the extension state (available states is [disabled | auto | <proxy.data.id>])
+        console.log("setting state...");
         state = _state;
         reloadTimers();
         this.applys();
-        self.updateContextMenu();
+        //self.updateContextMenu();
         localStorage.setItem("state", _state);
     });
 
@@ -87,20 +105,22 @@ function Extension() {
             clearInterval(timers.pop());
         } 
         
-        $.map(proxyList, function (proxy, i) {
-            //-- Save to storage only proxies with temp= false
-            if (proxy.data.type == 'auto' && proxy.data.reloadPAC && parseInt(proxy.data.reloadPACInterval, 10)) {
-                timers.push(
-                    setInterval((function (i) {
-                        return function () {
-                            proxyList[i].updatePAC();
-                            console.log(proxyList[i]);
-                            self.applys();
-                        };
-                    })(i), proxy.data.reloadPACInterval * 60000));
-            }
-        });
-        
+        if (proxyList && proxyList.length) {
+            //FIXME: remove $.map and jquery dep
+            $.map(proxyList, function (proxy, i) {
+                //-- Save to storage only proxies with temp= false
+                if (proxy.data.type == 'auto' && proxy.data.reloadPAC && parseInt(proxy.data.reloadPACInterval, 10)) {
+                    timers.push(
+                        setInterval((function (i) {
+                            return function () {
+                                proxyList[i].updatePAC();
+                                console.log(proxyList[i]);
+                                self.applys();
+                            };
+                        })(i), proxy.data.reloadPACInterval * 60000));
+                }
+            });
+        }
     }
 
     
@@ -206,8 +226,8 @@ function Extension() {
         });
     };
     
-    this.toggleChromeSync = function() {
-        settings.useChromeSync = !settings.useChromeSync;
+    this.toggleSyncStorage = function() {
+        settings.useSyncStorage = !settings.useSyncStorage;
     };
     
     

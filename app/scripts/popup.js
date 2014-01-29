@@ -30,9 +30,9 @@ $(document).ready(function(){
             break;
             
             case "quickAdd":
-            chrome.extension.getBackgroundPage().getCurrentTabUrl(
-                function (url) { options('addpattern#' + url); }
-            );
+            chrome.tabs.getSelected(null, function(tab) {
+                options('addpattern#' + tab.url);
+            });
             break;
             
             case "tabProxies":

@@ -138,12 +138,14 @@ ProxyManager.applyProxy = function (a) {
 ProxyManager.generatePacAutoScript = function () {
   var a = [],
       b = foxyProxy.proxyList;
-  a.push("function FindProxyForURL(url, host) {");
-  for (var c = 0, sz=b.length; c < sz; c++) {
-    a.push(ProxyManager.proxyToScript(b[c]));
+  if (b && b.length) { 
+      a.push("function FindProxyForURL(url, host) {");
+      for (var c = 0, sz=b.length; c < sz; c++) {
+        a.push(ProxyManager.proxyToScript(b[c]));
+      }
+      a.push("}");
+      return a.join("\r\n");
   }
-  a.push("}");
-  return a.join("\r\n");
 };
 
 

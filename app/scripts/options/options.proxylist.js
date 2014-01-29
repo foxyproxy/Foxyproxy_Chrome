@@ -4,11 +4,14 @@ var list = null;
 var bg = null;
 
 function resetProxies(){
+    console.log("resetProxies");
     bg = chrome.extension.getBackgroundPage();
+    console.log(bg.foxyProxy.proxyList);
     list = $.map(bg.foxyProxy.proxyList, function (p){ return new Proxy(p);} );
 }
 
 function saveProxies(){
+    console.log("saveProxies");
     bg.foxyProxy.proxyList = list;
     bg.foxyProxy.state = bg.foxyProxy.state;
     onTabShow("");
