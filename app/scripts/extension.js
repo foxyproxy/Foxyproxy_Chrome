@@ -1,13 +1,15 @@
 /* onInstalled listener opens tab to the appropriate post-install page. */
-chrome.management.onInstalled.addListener(function(extensionInfo) {
-    var target = chrome.i18n.getMessage("FoxyProxy_Target").toLowerCase();
-        edition = chrome.i18n.getMessage("FoxyProxy_Edition").toLowerCase();        
-        afterInstallUrl = "http://getfoxyproxy.org/" + target + "/" + edition + "/install.html";
+chrome.runtime.onInstalled.addListener(function(details) {
+    if (details.reason && details.reason == "install") {
+        var target = chrome.i18n.getMessage("FoxyProxy_Target").toLowerCase();
+            edition = chrome.i18n.getMessage("FoxyProxy_Edition").toLowerCase();        
+            afterInstallUrl = "http://getfoxyproxy.org/" + target + "/" + edition + "/install.html";
         
-    chrome.tabs.create({
-        url: afterInstallUrl,
-        selected: true
-    });
+        chrome.tabs.create({
+            url: afterInstallUrl,
+            selected: true
+        });
+    }
 });
 
 /* Extension object - main entry point for FoxyProxy extension */
