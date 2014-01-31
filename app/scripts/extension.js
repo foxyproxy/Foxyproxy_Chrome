@@ -1,14 +1,23 @@
 /* onInstalled listener opens tab to the appropriate post-install page. */
 chrome.runtime.onInstalled.addListener(function(details) {
-    if (details.reason && details.reason == "install") {
-        var target = chrome.i18n.getMessage("FoxyProxy_Target").toLowerCase();
-            edition = chrome.i18n.getMessage("FoxyProxy_Edition").toLowerCase();        
-            afterInstallUrl = "http://getfoxyproxy.org/" + target + "/" + edition + "/install.html";
-        
-        chrome.tabs.create({
-            url: afterInstallUrl,
-            selected: true
-        });
+    var urlToOpen;
+    
+    if (details.reason ) {
+        var target = chrome.i18n.getMessage("FoxyProxy_Target").toLowerCase(),
+            edition = chrome.i18n.getMessage("FoxyProxy_Edition").toLowerCase();
+            
+        if (details.reason == "install") {
+            urlToOpen = "http://getfoxyproxy.org/" + target + "/" + edition + "/install.html";
+        } else if (details.reason == "update") {
+            urlToOpen = "http://getfoxyproxy.org/" + target + "/" + edition + "/releasenotes.html";
+        }
+
+        if (urlToOpen) {
+            chrome.tabs.create({
+                url: urlToOpen,
+                selected: true
+            });
+        }
     }
 });
 
