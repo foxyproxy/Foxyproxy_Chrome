@@ -9,7 +9,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
         if (details.reason == "install") {
             urlToOpen = "http://getfoxyproxy.org/" + target + "/" + edition + "/install.html";
         } else if (details.reason == "update") {
-            urlToOpen = "http://getfoxyproxy.org/" + target + "/" + edition + "/releasenotes.html";
+            urlToOpen = "http://getfoxyproxy.org/" + target + "/" + edition + "/update.html";
         }
 
         if (urlToOpen) {
