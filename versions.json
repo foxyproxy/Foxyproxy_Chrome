@@ -3,12 +3,12 @@
         "Standard": {
             "release": "2",
             "major":   "9",
-            "minor":   "1"
+            "minor":   "2"
         },
         "Basic": {
             "release": "1",
             "major":   "0",
-            "minor":   "0"
+            "minor":   "1"
         }
     },
     
