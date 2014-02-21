@@ -17,16 +17,27 @@
         "default_popup": "popup.html"
     },
     "background": {
-        "page": "background.html"
+        //"page": "background.html",
+        "persistent": false,
+        "scripts": [
+            "scripts/background.js",
+            "scripts/util.js",
+            "vendor/scripts/punycode.js",
+            "scripts/proxyconfig.js",
+            "scripts/proxy.js",
+            "scripts/proxyManager.js",
+            "scripts/extension.js",
+            "scripts/settings.js"
+        ]
     },
     "content_scripts": [
 
-    ],
+    ],/*
     "sandbox": {
         "pages": [
             "pac-sandbox.html"
         ]
-    },
+    },*/
     "options_page": "options.html",
     "permissions": [
         "background",

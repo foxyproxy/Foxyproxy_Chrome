@@ -34,8 +34,10 @@ function genPattern(url, strTemplate, caseSensitive) {
 
 function onTabShow(tabName) {
     console.log("tagName is", tabName);
-    var proxyModeCombo = $('#proxyModeGlobal');
-    proxyModeCombo.empty();
+    
+    /*
+    //var proxyModeCombo = $('#proxyModeGlobal');
+    //proxyModeCombo.empty();
     
     if ('Basic' !== foxyProxy.getFoxyProxyEdition()) {
         $('<option value="auto">' + chrome.i18n.getMessage("mode_patterns_label") + '</option>').appendTo(proxyModeCombo);
@@ -51,7 +53,7 @@ function onTabShow(tabName) {
     
     $('<option value="disabled">Disable FoxyProxy</option>').appendTo(proxyModeCombo);
     $("option[value='"+chrome.extension.getBackgroundPage().foxyProxy.state+"']",proxyModeCombo).attr("selected", "selected");
-    
+    */
     if ('pageQuick' == tabName) {
     
         $("#enabledQA").setChecked(settings.enabledQA);

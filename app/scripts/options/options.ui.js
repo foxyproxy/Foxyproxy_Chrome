@@ -177,7 +177,7 @@ $(document).ready(function(){
 	    this.innerText = this.innerText; //FIXME
 	}	
     });
-    initProxyList();
+    //initProxyList();
     
     
     console.log('ready');
@@ -207,6 +207,7 @@ $(document).ready(function(){
     }
     
     var id = chrome.i18n.getMessage("@@extension_id");
+    //FIXME: remove management api call, use message strings.
     chrome.management.get(id, function(info)
 			  {
 			      $('#appString').text(info.name+" "+info.version);
