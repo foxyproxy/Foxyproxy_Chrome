@@ -1,9 +1,9 @@
 
 $(document).ready(function(){
 
-        foxyProxy = new Extension();
+        //foxyProxy = new Extension();
         //foxyProxy.log.clear();
-        foxyProxy.state = localStorage.getItem('state');
+        //foxyProxy.state = localStorage.getItem('state');
 
 });
 // 

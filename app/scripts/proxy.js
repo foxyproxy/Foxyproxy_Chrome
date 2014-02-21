@@ -1,3 +1,4 @@
+
 function Proxy(_data){
     this.className = "Proxy";
     this.data = {
@@ -27,21 +28,20 @@ function Proxy(_data){
     };
 
     if(_data && _data.data){
-	$.extend(this.data, _data.data);
-    }
-    else{
-	$.extend(this.data, _data);
+        FPUtil.extend(this.data, _data.data);
+    } else {
+        FPUtil.extend(this.data, _data);
     }
 
     if (this.data.patterns && this.data.patterns.length){
-	this.data.patterns = $.map(this.data.patterns, function(obj){
-	    return new ProxyPattern(obj);
-	});
+        this.data.patterns = this.data.patterns.map( function(obj){
+            return new ProxyPattern(obj);
+        });
     }
     if (this.data.ipPatterns && this.data.ipPatterns.length){
-	this.data.ipPatterns = $.map(this.data.ipPatterns, function(obj){
-	    return new ProxyPattern(obj);
-	});
+        this.data.ipPatterns = this.data.ipPatterns.map(function(obj){
+            return new ProxyPattern(obj);
+        });
     }
 }
 
@@ -61,7 +61,7 @@ Proxy.prototype = {
     },
     updatePAC: function(){
 	if(this.data.configUrl){
-	    var xhr = $.ajax({
+	    var xhr = $.ajax({ //FIXME
 		url:this.data.configUrl, 
 		async: false
 	    });
@@ -91,9 +91,9 @@ function ProxyPattern(_data){
     };
 
     if(_data && _data.data){
-	$.extend(this.data, _data.data);
+	FPUtil.extend(this.data, _data.data);
     }else{
-	$.extend(this.data, _data);
+	FPUtil.extend(this.data, _data);
     }
     //this.data.regex = this.convertWildcardToRegexString();
 }

@@ -1,56 +1,25 @@
-/* onInstalled listener opens tab to the appropriate post-install page. */
-chrome.runtime.onInstalled.addListener(function(details) {
-    var urlToOpen;
-    
-    if (details.reason ) {
-        var target = chrome.i18n.getMessage("FoxyProxy_Target").toLowerCase(),
-            edition = chrome.i18n.getMessage("FoxyProxy_Edition").toLowerCase();
-            
-        if (details.reason == "install") {
-            urlToOpen = "http://getfoxyproxy.org/" + target + "/" + edition + "/install.html";
-        } else if (details.reason == "update") {
-            urlToOpen = "http://getfoxyproxy.org/" + target + "/" + edition + "/update.html";
-        }
-
-        if (urlToOpen) {
-            chrome.tabs.create({
-                url: urlToOpen,
-                selected: true
-            });
-        }
-    }
-});
 
 /* Extension object - main entry point for FoxyProxy extension */
 function Extension() {
     var _settings,
         _proxyList,
-        state = null;
+        state,
         self = this;
         timers = [];
     
     //chrome.runtime.sendMessage({ "settings": null, "proxyList": null }, function( response) {
-    updateSettings({ "settings": null, "proxyList": null }, null, function( response) {
-        console.log("response: " + response);
-        console.log(response);
-        if (response && response.settings) {
-            _settings = response.settings;
-        }
-        
-        if (response && response.proxyList) {
-            _proxyList = response.proxyList;
-        }
-    });
+
 
     //this.log = new FoxyLog();
 
     /***** getters/setters *****/
     this.__defineGetter__("settings", function () {
-        return self.settings;
+        return _settings;
     });
     
     this.__defineSetter__("settings", function (oSettings) {
-        settings = oSettings;
+        console.log("setting settings");
+        _settings = oSettings;
         
         chrome.runtime.sendMessage({ "settings": oSettings }, function( response) {
                         
@@ -76,6 +45,7 @@ function Extension() {
     
     this.__defineSetter__("proxyList", function (aProxy) {
         //-- handler for property proxyList setting
+        console.log("setting proxyList");
         _proxyList = aProxy;
     
         chrome.runtime.sendMessage({"proxyList": proxyList }, function( response) {
@@ -98,15 +68,19 @@ function Extension() {
     this.__defineGetter__("state", function () {
         return state;
     });
+    
     this.__defineSetter__("state", function (_state) {
     //-- Handler for switching between the extension state (available states is [disabled | auto | <proxy.data.id>])
         console.log("setting state...");
         state = _state;
         reloadTimers();
-        this.applys();
+        this.applyState();
         //self.updateContextMenu();
         localStorage.setItem("state", _state);
     });
+    
+    // async api
+
 
     /***** util functions *****/
     
@@ -116,9 +90,8 @@ function Extension() {
             clearInterval(timers.pop());
         } 
         
-        if (proxyList && proxyList.length) {
-            //FIXME: remove $.map and jquery dep
-            $.map(proxyList, function (proxy, i) {
+        if (_proxyList && _proxyList.length) {
+            _proxyList.map( function (proxy, i) {
                 //-- Save to storage only proxies with temp= false
                 if (proxy.data.type == 'auto' && proxy.data.reloadPAC && parseInt(proxy.data.reloadPACInterval, 10)) {
                     timers.push(
@@ -126,7 +99,7 @@ function Extension() {
                             return function () {
                                 proxyList[i].updatePAC();
                                 console.log(proxyList[i]);
-                                self.applys();
+                                self.applyState();
                             };
                         })(i), proxy.data.reloadPACInterval * 60000));
                 }
@@ -135,7 +108,7 @@ function Extension() {
     }
 
     
-    this.applys = function () {
+    this.applyState = function () {
         console.log("State change: " + this.state);
         switch (this.state) {
             case "disabled": // foxyproxy is disabled
@@ -155,21 +128,23 @@ function Extension() {
 
             default: // single proxy selected
                 var proxy = null;
-                for (var i = 0; i < proxyList.length; i++) {
-                    if (proxyList[i].data.id == this.state) proxy = proxyList[i];
-                }
-                if (proxy && (proxy.data.pac.length === 0 || !proxy.data.pac)) {
-                    console.log("manual mode selected and proxy is " + proxy);
-                    chrome.browserAction.setIcon({
-                        imageData: IconCreator.paintIcon(self.icon, proxy.data.color)
-                    });
-                    ProxyManager.applyProxy(ProxyManager.profileFromProxy(proxy));
-                } else {
-                    console.log("manual mode selected with remote PAC and proxy is " + proxy);
-                    chrome.browserAction.setIcon({
-                        imageData: IconCreator.paintIcon(self.icon, proxy.data.color)
-                    });
-                    ProxyManager.applyAutoPac(proxy);
+                if (_proxyList) {
+                    for (var i = 0; i < _proxyList.length; i++) {
+                        if (_proxyList[i].data.id == this.state) proxy = _proxyList[i];
+                    }
+                    if (proxy && (proxy.data.pac.length === 0 || !proxy.data.pac)) {
+                        console.log("manual mode selected and proxy is " + proxy);
+                        chrome.browserAction.setIcon({
+                            imageData: IconCreator.paintIcon(self.icon, proxy.data.color)
+                        });
+                        ProxyManager.applyProxy(ProxyManager.profileFromProxy(proxy));
+                    } else {
+                        console.log("manual mode selected with remote PAC and proxy is " + proxy);
+                        chrome.browserAction.setIcon({
+                            imageData: IconCreator.paintIcon(self.icon, proxy.data.color)
+                        });
+                        ProxyManager.applyAutoPac(proxy);
+                    }
                 }
         }
     };
@@ -188,36 +163,37 @@ function Extension() {
         return edition;
     };
     
+    // used by quickAdd feature
     this.getProxyForUrl = function (url, callback) {
-    switch (this.state) {
-    case "disabled":
-        break;
-    case "auto":
-        var res = ProxyManager.getPatternForUrl(url);
-        if (res.proxy) {
-        callback(url, res.proxy, res.pattern);
-        return;
+        switch (this.state) {
+            case "disabled":
+                break;
+            case "auto":
+                var res = ProxyManager.getPatternForUrl(url);
+                if (res.proxy) {
+                    callback(url, res.proxy, res.pattern);
+                    return;
+                }
+                break;
+            default:
+                var proxy = null;
+                for (var i = 0; i < proxyList.length; i++)
+                    if (proxyList[i].data.id == this.state) proxy = proxyList[i];
+                if (proxy) {
+                    callback(url, proxy);
+                    return;
+                }
         }
-        break;
-    default:
-        var proxy = null;
-        for (var i = 0; i < proxyList.length; i++)
-        if (proxyList[i].data.id == this.state) proxy = proxyList[i];
-        if (proxy) {
-        callback(url, proxy);
-        return;
-        }
-    }
-    callback(url);
+        callback(url);
     };
 
 
     this.options = function (data) {
         //-- This function opens options page with passed data parametr or update existent tab with opened options page if exists
         var bOptionsPageFound = false;
-        chrome.tabs.getAllInWindow(null, function (tabs) {
-            $.each(tabs, function (i, tab) {
-                if (tab.url.indexOf(chrome.extension.getURL("options.html")) === 0) {
+        chrome.tabs.getAllInWindow(null, function (tabs) { //FIXME: replace tab.url with chrome.extension.getViews to remove tabs permission
+            tabs.forEach(function ( tab) {
+                if (tab.url.indexOf(chrome.extension.getURL("options.html")) === 0) { 
                     bOptionsPageFound = true;
                     chrome.tabs.update(tab.id, {
                         url: chrome.extension.getURL("options.html") + "#" + data,
@@ -241,166 +217,6 @@ function Extension() {
         settings.useSyncStorage = !settings.useSyncStorage;
     };
     
-    
-    /***** context menus *****/
-    
-    this.updateContextMenu = function () {
-        var foxyProxy = this,
-            useAdvancedMenus = foxyProxy.settings.useAdvancedMenus;
-
-        chrome.contextMenus.removeAll();
-        
-        if (this.settings.showContextMenu && this.getFoxyProxyEdition() != 'Basic') {
-            chrome.contextMenus.create({
-                title: chrome.i18n.getMessage("mode_patterns_label"),
-                type: "checkbox",
-                onclick: function () {
-                    self.state = 'auto';
-                },
-                checked: ('auto' == self.state)
-            });
-            
-            if (useAdvancedMenus) { // create sub-menu options for each proxy
-                $.each(this.proxyList, function (i, proxy) {
-                    chrome.contextMenus.create({
-                        title: proxy.data.name,
-                        id: proxy.data.id
-                    });
-                    
-                    chrome.contextMenus.create({
-                        title: chrome.i18n.getMessage("enabled"),
-                        parentId: proxy.data.id,
-                        type: "checkbox",
-                        checked: (proxy.data.enabled),
-                        onclick: function() {
-                            proxy.data.enabled = !proxy.data.enabled;
-                            self.applys();
-                        }
-                    });
-                    
-                    chrome.contextMenus.create({
-                        title: chrome.i18n.getMessage("mode_custom_label", proxy.data.name),
-                        type: "checkbox",
-                        onclick: function () {
-                            self.state = proxy.data.id;
-                        },
-                        checked: (proxy.data.id == self.state),
-                        parentId: proxy.data.id
-                    });
-                    
-                    if (proxy.data.id != "default" && proxy.data.patterns && proxy.data.patterns.length > 0) {
-                        chrome.contextMenus.create({
-                            title: chrome.i18n.getMessage("patterns"),
-                            id: "patterns" + proxy.data.id,
-                            parentId: proxy.data.id
-                        });
-                    
-                        $.each(proxy.data.patterns, function(px, pattern) {
-                            chrome.contextMenus.create({
-                                title: pattern.data.url,
-                                parentId: "patterns" + proxy.data.id,
-                                type: "checkbox",
-                                checked: (pattern.data.enabled),
-                                onclick: function() {
-                                    pattern.data.enabled = !pattern.data.enabled;
-                                    self.applys();
-                                }
-                            });
-                        });
-                    }
-
-                });
-
-            } else { // simple menus
-                $.each(this.proxyList, function (i, proxy) {
-                    if (proxy.data.enabled) {
-                        chrome.contextMenus.create({
-                            title: chrome.i18n.getMessage("mode_custom_label", proxy.data.name),
-                            type: "checkbox",
-                            onclick: function () {
-                                self.state = proxy.data.id;
-                            },
-                            checked: (proxy.data.id == state)
-                        });
-                    }
-                });
-
-            }
-            
-            // common menu options (simple and advanced)
-            // everybody gets disable entry
-            chrome.contextMenus.create({
-                title: chrome.i18n.getMessage("mode_disabled_label"),
-                type: "checkbox",
-                onclick: function () {
-                    self.state = 'disabled';
-                },
-                checked: ('disabled' == state)
-            });
-            
-            chrome.contextMenus.create({
-                 type: "separator"
-             });
-            
-            if (useAdvancedMenus) { // make sure 'more' comes last for advanced menus
-
-                 chrome.contextMenus.create({
-                     title: chrome.i18n.getMessage("more"),
-                     id: "context-menu-more"
-                 });
-
-                 chrome.contextMenus.create({
-                     title: chrome.i18n.getMessage("global_settings"),
-                     id: "context-menu-global-settings",
-                     parentId: "context-menu-more",
-                     type: "normal"
-                 });
-            }
-            
-            chrome.contextMenus.create({
-                title: chrome.i18n.getMessage("options"),
-                parentId: useAdvancedMenus ? "context-menu-more" : null,
-                onclick: function () {
-                    self.options("tabProxies");
-                }
-            });
-            
-            if (this.settings.enabledQA && this.state != 'disabled') {
-                chrome.contextMenus.create({
-                    title: chrome.i18n.getMessage("QuickAdd"),
-                    parentId: useAdvancedMenus ? "context-menu-more" : null,
-                    onclick: function (info, tab) {
-                        self.options("addpattern#" + tab.url);
-                    }
-                });
-            }
-            
-            chrome.contextMenus.create({
-                title: chrome.i18n.getMessage("show_context_menu"),
-                type: "checkbox",
-                checked: settings.showContextMenu,
-                parentId: useAdvancedMenus ? "context-menu-global-settings" : null,
-                onclick: function() {
-                    foxyProxy.toggleShowContextMenu();
-                }
-
-            });
-            
-            chrome.contextMenus.create({
-                title: chrome.i18n.getMessage("use_advanced_menus"),
-                type: "checkbox",
-                checked: useAdvancedMenus,
-                parentId: useAdvancedMenus ? "context-menu-global-settings" : null,
-                onclick: function() {
-                    foxyProxy.toggleAdvancedMenus();
-                }
-
-            });
-
-         }
-
-    };
-    
     this.toggleAdvancedMenus = function toggleAdvancedMenus() {
         
         settings.useAdvancedMenus = !settings.useAdvancedMenus;
@@ -420,178 +236,68 @@ function Extension() {
         }
     };
 
-    
-    self.icon = $('#image')[0];
-    self.currentIcon = $("#customImage")[0];
-    var animationFrames = 36,
-    animationSpeed = 10,
-    canvas = document.getElementById('canvas'),
-    canvasContext = canvas.getContext('2d'),
-    rotation = 0,
-    animating = false;
-    this.animateFlip = function (bInAction) {
-    if (rotation === 0 || bInAction) {
-        rotation += 1 / animationFrames;
-        self.drawIconAtRotation();
-        if (rotation <= 1) {
-        setTimeout(function () {
-            self.animateFlip(1);
-        }, animationSpeed);
-        } else {
-        rotation = 0;
-        self.drawIconAtRotation();
-        animating = false;
-        }
-    }
-    };
-    this.drawIconAtRotation = function () {
-    function ease(x) {
-        return (1 - Math.sin(Math.PI / 2 + x * Math.PI)) / 2;
-    }
-    canvasContext.save();
-    canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-    canvasContext.translate(
-        Math.ceil(canvas.width / 2), Math.ceil(canvas.height / 2));
-    canvasContext.rotate(2 * Math.PI * ease(rotation));
-    canvasContext.drawImage(self.currentIcon, -Math.ceil(canvas.width / 2), -Math.ceil(canvas.height / 2));
-    canvasContext.restore();
-    chrome.browserAction.setIcon({
-        imageData: canvasContext.getImageData(0, 0, canvas.width, canvas.height)
-    });
-    };
-    this.animateBlink = function (count, bInAction) {
-    if (!animating || bInAction) {
-        animating = true;
-        if (count % 2 === 0) {
-        chrome.browserAction.setIcon({
-            path: 'images/logo.png'
-        });
-        } else {
-        chrome.browserAction.setIcon({
-            imageData: self.currentImageData
-        });
-        }
-        if (count) {
-        setTimeout(function () {
-            self.animateBlink(count - 1, 1);
-        }, 500);
-        } else {
-        animating = false;
-        }
-    }
-    };
-    
+
     /***** quickAdd / logging *****/
-    chrome.extension.onRequest.addListener(function (request, sender, callback) {
-
-    var tab = sender.tab;
-    if (state == 'disabled') return;
-
-    if (request.action == 'addpattern') {
-            if (self.settings.enabledQA) {
-          self.options('addpattern#' + request.url);
-            }
-    } 
-        else if (request.action == 'proxylist') {
-        self.options('tabProxies');
-    } 
-        else if (request.action == 'log') {
-
-        self.getProxyForUrl(request.url, function (url, proxy, pattern) {
-
-        console.log(proxy, IconCreator.paintIcon(self.icon, proxy.data.color));
-        if (proxy) {
-            self.currentImageData = IconCreator.paintIcon(self.icon, proxy.data.color);
-            chrome.browserAction.setIcon({
-            imageData: self.currentImageData
-            });
-            self.log.addLog(url, proxy, pattern);
-            if (self.state == 'auto') {
-            self.animateBlink(6);
-            } else {
-            self.animateFlip();
-            }
-        } else {
-            self.currentIcon = self.icon;
-            chrome.browserAction.setIcon({
-            path: 'images/logo.png'
-            });
-        }
-        });
-    }
-    });
+    //FIXME: onRequest is deprecated!
+    // chrome.extension.onRequest.addListener(function (request, sender, callback) {
+    // 
+    // var tab = sender.tab;
+    // if (state == 'disabled') return;
+    // 
+    // if (request.action == 'addpattern') {
+    //         if (self.settings.enabledQA) {
+    //       self.options('addpattern#' + request.url);
+    //         }
+    // } 
+    //     else if (request.action == 'proxylist') {
+    //     self.options('tabProxies');
+    // } 
+    //     else if (request.action == 'log') {
+    // 
+    //     self.getProxyForUrl(request.url, function (url, proxy, pattern) {
+    // 
+    //     console.log(proxy, IconCreator.paintIcon(self.icon, proxy.data.color));
+    //     if (proxy) {
+    //         self.currentImageData = IconCreator.paintIcon(self.icon, proxy.data.color);
+    //         chrome.browserAction.setIcon({
+    //         imageData: self.currentImageData
+    //         });
+    //         self.log.addLog(url, proxy, pattern);
+    //         if (self.state == 'auto') {
+    //         self.animateBlink(6);
+    //         } else {
+    //         self.animateFlip();
+    //         }
+    //     } else {
+    //         self.currentIcon = self.icon;
+    //         chrome.browserAction.setIcon({
+    //         path: 'images/logo.png'
+    //         });
+    //     }
+    //     });
+    // }
+    // });
     
-    /***** settings export *****/
-    self.settingsToXml = function () {
-    var xmlDoc = document.implementation.createDocument("", "foxyproxy", null);
-    var rootNode = xmlDoc.documentElement;
-    rootNode.setAttribute('contextMenu', self.settings.showContextMenu.toString());
-    var mode = self.state;
-    if (self.state == 'auto') mode = 'patterns';
-    rootNode.setAttribute('mode', mode);
-    proxiesNode = xmlDoc.createElement('proxies');
-    $.map(proxyList, function (proxy) {
-        var proxyNode = xmlDoc.createElement('proxy');
-        proxyNode.setAttribute('id', proxy.data.id);
-        proxyNode.setAttribute('name', proxy.data.name);
-        proxyNode.setAttribute('name', proxy.data.name);
-        proxyNode.setAttribute('notes', proxy.data.notes);
-        proxyNode.setAttribute('enabled', proxy.data.enabled);
-        proxyNode.setAttribute('mode', proxy.data.mode);
-        proxyNode.setAttribute('lastresort', proxy.data.readonly);
-        proxyNode.setAttribute('color', proxy.data.color);
-        var matchesNode = xmlDoc.createElement('matches');
-        $.map(proxy.data.patterns, function (pattern) {
-        var matchNode = xmlDoc.createElement('match');
-        matchNode.setAttribute('enabled', pattern.data.enabled);
-        matchNode.setAttribute('name', pattern.data.name);
-        matchNode.setAttribute('pattern', pattern.data.url);
-        matchNode.setAttribute('isRegEx', (pattern.data.type != 'wildcard'));
-        matchNode.setAttribute('isBlackList', (pattern.data.whitelist != 'Inclusive'));
-        matchNode.setAttribute('temp', pattern.data.temp);
-        matchesNode.appendChild(matchNode);
-        });
-        proxyNode.appendChild(matchesNode);
-        var autoconfNode = xmlDoc.createElement('autoconf');
-        autoconfNode.setAttribute('url', proxy.data.configUrl);
-        autoconfNode.setAttribute('autoReload', proxy.data.reloadPAC);
-        autoconfNode.setAttribute('bypassFPForPAC', proxy.data.bypassFPForPAC);
-        autoconfNode.setAttribute('reloadFreqMins', proxy.data.reloadPACInterval);
-        proxyNode.appendChild(autoconfNode);
-        var manualconfNode = xmlDoc.createElement('manualconf');
-        manualconfNode.setAttribute('host', proxy.data.host);
-        manualconfNode.setAttribute('port', proxy.data.port);
-        manualconfNode.setAttribute('socksversion', proxy.data.socks.indexOf('5') != -1 ? '5' : '4');
-        manualconfNode.setAttribute('isSocks', proxy.data.isSocks);
-        proxyNode.appendChild(manualconfNode);
-        proxiesNode.appendChild(proxyNode);
-    });
-    xmlDoc.documentElement.appendChild(proxiesNode);
-    var quickAddNode = xmlDoc.createElement('quickadd');
-    quickAddNode.setAttribute("enabled", self.settings.enabledQA);
-    quickAddNode.setAttribute("temp", self.settings.patternTemplateQA);
-    if (!self.settings.patternProxyQA || !proxyList[self.settings.patternProxyQA]) quickAddNode.setAttribute("proxy-id", "");
-    else quickAddNode.setAttribute("proxy-id", proxyList[self.settings.patternProxyQA].data.id);
-    var quickAddMatchNode = xmlDoc.createElement('match');
-    quickAddMatchNode.setAttribute('enabled', 'true');
-    quickAddMatchNode.setAttribute('name', 'true');
-    quickAddMatchNode.setAttribute('pattern', self.settings.patternTemplateQA);
-    quickAddMatchNode.setAttribute('name', self.settings.patternNameQA);
-    xmlDoc.documentElement.appendChild(quickAddNode);
-    return (new XMLSerializer()).serializeToString(xmlDoc);
-    };
-    self.saveToFile = function (content) {
-    //plugin.saveToFile(content);
-    };
-
-    function updateLocalIps() {
-    /*if (!plugin.updateLocalIps) {
-     self.localIps = [];
-     return;
-     }
-     plugin.updateLocalIps();
-     self.localIps = eval(plugin.localIps);*/
-    }
-    /*self.updateLocalIps = updateLocalIps;
-     updateLocalIps();*/
+     
+     
+     //this.state = localStorage.getItem('state');
+     
 }
+
+// bootstrap
+foxyProxy = new Extension();
+
+foxyProxy.state = localStorage.getItem('state');
+/*
+foxyProxy.updateSettings({ "settings": null, "proxyList": null }, null, function( response) {
+    console.log("response: " + response);
+    console.log(response);
+    if (response && response.settings) {
+        foxyProxy._settings = response.settings;
+    }
+    
+    if (response && response.proxyList) {
+        foxyProxy._proxyList = response.proxyList;
+    }
+});
+*/
