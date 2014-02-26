@@ -7,7 +7,8 @@ const SOCKS5 = "5";
     
 
     // always store 'state' in localStorage so we don't sync unwanted data.
-    if (!localStorage.getItem('state')) {
+    var state = localStorage.getItem('state');
+    if (state === null) {
         localStorage.setItem('state', 'disabled');
     }
 
@@ -48,7 +49,7 @@ const SOCKS5 = "5";
     }
 
     if (!proxyList) {
-        proxyList = {
+        proxyList = [ {
             "data": {
                 "id": "default",
                 "readonly": true,
@@ -75,8 +76,8 @@ const SOCKS5 = "5";
                 "ipPatterns": [],
                 "login": "",
                 "pass": ""
-            }
-        };
+                } 
+        } ];
     }
     
     
@@ -123,7 +124,7 @@ const SOCKS5 = "5";
                 chrome.tabs.query({"url": queryUrl},
                     function( tabs) {
                         for (var i = 0; i < tabs.length; i++) {
-                            chrome.tabs.sendMessage(tabs[i].id, { "settings": items });
+                            chrome.tabs.sendMessage(tabs[i].id, items);
                         }
                     }
                 );            
@@ -154,8 +155,7 @@ const SOCKS5 = "5";
                     function( tabs) {
                         console.log("sending message to " + tabs.length + " foxyproxy tabs");
                         for (var i = 0; i < tabs.length; i++) {
-                            console.log(tabs[i]);
-                            chrome.tabs.sendMessage(tabs[i].id, { "proxyList": items });
+                            chrome.tabs.sendMessage(tabs[i].id, items);
                         }
                     }
                 );
@@ -195,7 +195,7 @@ const SOCKS5 = "5";
                     chrome.tabs.query({"url": queryUrl},
                         function( tabs) {
                             for (var i = 0; i < tabs.length; i++) {
-                                chrome.tabs.sendMessage(tabs[i].id, { "settings": items });
+                                chrome.tabs.sendMessage(tabs[i].id, items );
                             }
                         }
                     );
@@ -207,13 +207,17 @@ const SOCKS5 = "5";
             console.log(saveObj);
             storageApi.set(saveObj, function() {
                 //TODO: handle errors
+                if (chrome.runtime.lastError) {
+                    console.log("error updating settings: " + runtime.lastError);
+                }
+                
                 if (typeof(sendResponse) == "function") {
-                    sendResponse(items);
+                    sendResponse(saveObj);
                 } else {
                     chrome.tabs.query({"url": queryUrl},
                         function( tabs) {
                             for (var i = 0; i < tabs.length; i++) {
-                                chrome.tabs.sendMessage(tabs[i].id, { "settings": foxyProxy._settings });
+                                chrome.tabs.sendMessage(tabs[i].id, { "settings": foxyProxy._settings, "proxyList": foxyProxy._proxyList });
                             }
                         }
                     );

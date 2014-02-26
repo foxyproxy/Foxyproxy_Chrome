@@ -222,21 +222,25 @@ function Extension() {
     
     this.toggleAdvancedMenus = function toggleAdvancedMenus() {
         
-        _settings.useAdvancedMenus = !_settings.useAdvancedMenus;
+        foxyProxy._settings.useAdvancedMenus = !foxyProxy._settings.useAdvancedMenus;
         foxyProxy.updateContextMenu();
         
         if (self.optionsTabId) {
             chrome.tabs.sendMessage(self.optionsTabId, { setting: "useAdvancedMenus" });
         }
+        
+        foxyProxy.updateSettings({"settings": foxyProxy._settings });
     };
     
     this.toggleShowContextMenu = function toggleShowContextMenu() {
-        _settings.showContextMenu = !_settings.showContextMenu;
+        foxyProxy._settings.showContextMenu = !foxyProxy._settings.showContextMenu;
         foxyProxy.updateContextMenu();
         
         if (self.optionsTabId) {
             chrome.tabs.sendMessage(self.optionsTabId, { setting: "showContextMenu" });
         }
+        
+        foxyProxy.updateSettings({"settings": foxyProxy._settings });
     };
 
 
@@ -291,6 +295,7 @@ function Extension() {
 foxyProxy = new Extension();
 
 foxyProxy.state = localStorage.getItem('state');
+
 /*
 foxyProxy.updateSettings({ "settings": null, "proxyList": null }, null, function( response) {
     console.log("response: " + response);

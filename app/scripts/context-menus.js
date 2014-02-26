@@ -1,30 +1,36 @@
 /***** context menus *****/
 
+/* TODO: use contextMenus.onClicked for handling clicks
 function contextMenuHandler() {
     
 }
 
 chrome.contextMenus.onClicked.addListener(contextMenuHandler);
+*/
 
 
-this.updateContextMenu = function () {
-    var foxyProxy = this,
-        useAdvancedMenus = foxyProxy.settings.useAdvancedMenus;
+foxyProxy.updateContextMenu = function () {
+    console.log("updateContextMenu");
+    var useAdvancedMenus = foxyProxy._settings.useAdvancedMenus;
 
     chrome.contextMenus.removeAll();
     
-    if (this.settings.showContextMenu && this.getFoxyProxyEdition() != 'Basic') {
+    if (foxyProxy._settings.showContextMenu && foxyProxy.getFoxyProxyEdition() != 'Basic') {
+        console.log("creating context menus");
         chrome.contextMenus.create({
             title: chrome.i18n.getMessage("mode_patterns_label"),
             type: "checkbox",
             onclick: function () {
-                self.state = 'auto';
+                foxyProxy.state = 'auto';
             },
-            checked: ('auto' == self.state)
+            checked: ('auto' == foxyProxy.state)
         });
         
         if (useAdvancedMenus) { // create sub-menu options for each proxy
-            $.each(this.proxyList, function (i, proxy) {
+            console.log("using advanced menus...");
+
+            foxyProxy._proxyList.forEach( function ( proxy) {
+                console.log("creating menus for proxy: " + proxy.data.name);
                 chrome.contextMenus.create({
                     title: proxy.data.name,
                     id: proxy.data.id
@@ -37,7 +43,7 @@ this.updateContextMenu = function () {
                     checked: (proxy.data.enabled),
                     onclick: function() {
                         proxy.data.enabled = !proxy.data.enabled;
-                        self.applys();
+                        foxyProxy.applyState();
                     }
                 });
                 
@@ -45,9 +51,9 @@ this.updateContextMenu = function () {
                     title: chrome.i18n.getMessage("mode_custom_label", proxy.data.name),
                     type: "checkbox",
                     onclick: function () {
-                        self.state = proxy.data.id;
+                        foxyProxy.state = proxy.data.id;
                     },
-                    checked: (proxy.data.id == self.state),
+                    checked: (proxy.data.id == foxyProxy.state),
                     parentId: proxy.data.id
                 });
                 
@@ -58,7 +64,7 @@ this.updateContextMenu = function () {
                         parentId: proxy.data.id
                     });
                 
-                    $.each(proxy.data.patterns, function(px, pattern) {
+                    proxy.data.patterns.forEach( function( pattern) {                        
                         chrome.contextMenus.create({
                             title: pattern.data.url,
                             parentId: "patterns" + proxy.data.id,
@@ -66,39 +72,41 @@ this.updateContextMenu = function () {
                             checked: (pattern.data.enabled),
                             onclick: function() {
                                 pattern.data.enabled = !pattern.data.enabled;
-                                self.applys();
+                                foxyProxy.applyState();
                             }
                         });
                     });
                 }
-
             });
 
         } else { // simple menus
-            $.each(this.proxyList, function (i, proxy) {
+            console.log("using simple menus");
+            foxyProxy._proxyList.forEach( function ( proxy) {
+                console.log("proxy: " + proxy.data.name);
                 if (proxy.data.enabled) {
                     chrome.contextMenus.create({
                         title: chrome.i18n.getMessage("mode_custom_label", proxy.data.name),
                         type: "checkbox",
                         onclick: function () {
-                            self.state = proxy.data.id;
+                            foxyProxy.state = proxy.data.id;
                         },
-                        checked: (proxy.data.id == state)
+                        checked: (proxy.data.id == foxyProxy.state)
                     });
                 }
             });
 
         }
         
+        console.log("creating common menus");
         // common menu options (simple and advanced)
         // everybody gets disable entry
         chrome.contextMenus.create({
             title: chrome.i18n.getMessage("mode_disabled_label"),
             type: "checkbox",
             onclick: function () {
-                self.state = 'disabled';
+                foxyProxy.state = 'disabled';
             },
-            checked: ('disabled' == state)
+            checked: ('disabled' == foxyProxy.state)
         });
         
         chrome.contextMenus.create({
@@ -124,16 +132,16 @@ this.updateContextMenu = function () {
             title: chrome.i18n.getMessage("options"),
             parentId: useAdvancedMenus ? "context-menu-more" : null,
             onclick: function () {
-                self.options("tabProxies");
+                foxyProxy.options("tabProxies");
             }
         });
         
-        if (this.settings.enabledQA && this.state != 'disabled') {
+        if (foxyProxy._settings.enabledQA && foxyProxy.state != 'disabled') {
             chrome.contextMenus.create({
                 title: chrome.i18n.getMessage("QuickAdd"),
                 parentId: useAdvancedMenus ? "context-menu-more" : null,
                 onclick: function (info, tab) {
-                    self.options("addpattern#" + tab.url);
+                    foxyProxy.options("addpattern#" + tab.url);
                 }
             });
         }
@@ -141,7 +149,7 @@ this.updateContextMenu = function () {
         chrome.contextMenus.create({
             title: chrome.i18n.getMessage("show_context_menu"),
             type: "checkbox",
-            checked: settings.showContextMenu,
+            checked: foxyProxy._settings.showContextMenu,
             parentId: useAdvancedMenus ? "context-menu-global-settings" : null,
             onclick: function() {
                 foxyProxy.toggleShowContextMenu();
@@ -163,3 +171,5 @@ this.updateContextMenu = function () {
      }
 
 };
+
+foxyProxy.updateContextMenu();
