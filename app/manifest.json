@@ -27,7 +27,8 @@
             "scripts/proxy.js",
             "scripts/proxyManager.js",
             "scripts/extension.js",
-            "scripts/settings.js"
+            "scripts/settings.js",
+            "scripts/context-menus.js"
         ]
     },
     "content_scripts": [

@@ -2,6 +2,7 @@
 
 var foxyProxy;
 var settings;
+var lastTabName;
 
 // listen for settings message from extension
 chrome.runtime.onMessage.addListener(function( request, sender, sendResponse) {
@@ -9,7 +10,41 @@ chrome.runtime.onMessage.addListener(function( request, sender, sendResponse) {
         console.log("got settings message");
         console.log(request.settings);
         
-        settings = request.settings.settings;
+        settings = request.settings;
+        
+        var tabName = lastTabName;
+        // onTabShow
+        if ('pageQuick' == tabName) {
+
+            $("#enabledQA").setChecked(settings.enabledQA);
+            $("#patternTemporaryQA").setChecked(settings.patternTemporaryQA);
+            if(settings.enabledQA)
+                $('#QASettingsContainer *').each(function(){ $(this).prop('disabled', false); });
+            else
+                $('#QASettingsContainer *').each(function(){  $(this).attr('disabled','disabled'); });
+            $("#patternTemplateQA").val(settings.patternTemplateQA);
+            $("#patternUrlQA").val("http://fred:secret@mail.foo.com:8080/inbox/msg102.htm#subject?style=elegant").change();
+            $("#patternNameQA").val(settings.patternNameQA);
+            $("#patternProxyQA *").remove();
+            $.each(list, function(i, proxy){
+                if(!proxy.data.readonly)
+                {
+                $("#patternProxyQA").append( $('<option value="'+i+'">'+proxy.data.name+'</option>'));
+                }
+            });
+
+            $("#patternProxyQA option[value='"+settings.patternProxyQA+"']").attr("selected", "selected");
+            $("#patternProxyQA").change();
+
+            $("input[name='patternWhitelistQA'][value='"+settings.patternWhitelistQA+"']").setChecked(true);
+            $("input[name='patternTypeQA'][value='"+settings.patternTypeQA+"']").setChecked(true);
+        }
+
+        if ('pageGlobal' == tabName) {
+            $("input[name='advancedMenuCheck']").attr('checked', settings.useAdvancedMenus);
+            $("input[name='showContextMenuCheck']").attr('checked', settings.showContextMenu);
+            $("input[name='useChromeSyncCheck']").attr('checked', settings.useSyncStorage);
+        }
     }
 });
 
@@ -57,6 +92,14 @@ function genPattern(url, strTemplate, caseSensitive) {
 function onTabShow(tabName) {
     console.log("tagName is", tabName);
     
+    lastTabName = tabName;
+    
+    chrome.runtime.getBackgroundPage(function( bgPage) {
+        foxyProxy = bgPage.foxyProxy;
+
+        foxyProxy.getSettings();
+    });
+
     /*
     //var proxyModeCombo = $('#proxyModeGlobal');
     //proxyModeCombo.empty();
@@ -76,38 +119,8 @@ function onTabShow(tabName) {
     $('<option value="disabled">Disable FoxyProxy</option>').appendTo(proxyModeCombo);
     $("option[value='"+chrome.extension.getBackgroundPage().foxyProxy.state+"']",proxyModeCombo).attr("selected", "selected");
     */
-    if ('pageQuick' == tabName) {
-    
-        $("#enabledQA").setChecked(settings.enabledQA);
-        $("#patternTemporaryQA").setChecked(settings.patternTemporaryQA);
-        if(settings.enabledQA)
-            $('#QASettingsContainer *').each(function(){ $(this).prop('disabled', false); });
-        else
-            $('#QASettingsContainer *').each(function(){  $(this).attr('disabled','disabled'); });
-        $("#patternTemplateQA").val(settings.patternTemplateQA);
-        $("#patternUrlQA").val("http://fred:secret@mail.foo.com:8080/inbox/msg102.htm#subject?style=elegant").change();
-        $("#patternNameQA").val(settings.patternNameQA);
-        $("#patternProxyQA *").remove();
-        $.each(list, function(i, proxy){
-            if(!proxy.data.readonly)
-            {
-            $("#patternProxyQA").append( $('<option value="'+i+'">'+proxy.data.name+'</option>'));
-            }
-        });
-    
-        $("#patternProxyQA option[value='"+settings.patternProxyQA+"']").attr("selected", "selected");
-        $("#patternProxyQA").change();
-    
-        $("input[name='patternWhitelistQA'][value='"+settings.patternWhitelistQA+"']").setChecked(true);
-        $("input[name='patternTypeQA'][value='"+settings.patternTypeQA+"']").setChecked(true);
-    }
-    
-    if ('pageGlobal' == tabName) {
-        $("input[name='advancedMenuCheck']").attr('checked', settings.useAdvancedMenus);
-        $("input[name='showContextMenuCheck']").attr('checked', settings.showContextMenu);
-        $("input[name='useChromeSyncCheck']").attr('checked', settings.useSyncStorage);
-    }
-    
+
+    /*
     chrome.runtime.onMessage.addListener(function( request) {
         if (request.setting) {
             if ("useAdvancedMenus" == request.setting) {
@@ -119,6 +132,7 @@ function onTabShow(tabName) {
             }
         }
     });
+    */
 }
 
 $(document).ready(function() {

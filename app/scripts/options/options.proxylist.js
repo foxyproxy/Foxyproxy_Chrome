@@ -6,10 +6,10 @@ var bg = null;
 
 // listen for proxyList message from extension
 chrome.runtime.onMessage.addListener(function( request, sender, sendResponse) {
-    if (request.proxyList && request.proxyList.proxyList && request.proxyList.proxyList.length > 0) {
+    if (request.proxyList && request.proxyList.length > 0) {
 
         //
-        list = request.proxyList.proxyList.map( function (p){ console.log("returning new proxy"); return new Proxy(p);} );
+        list = request.proxyList.map( function (p){ return new Proxy(p);} );
                 
         var proxyModeCombo = $('#proxyModeGlobal');
         proxyModeCombo.empty();
@@ -119,7 +119,7 @@ function toggleselectedProxy(){
         $("#proxylistDelete, #proxylistCopy, #proxylistEdit").button( "option", "disabled", "disabled");
     }
     else {
-        $("#proxylistMoveUp").button( "option", "disabled", (selectedProxy==0) || (selectedProxy==list.length-1));
+        $("#proxylistMoveUp").button( "option", "disabled", (selectedProxy===0) || (selectedProxy==list.length-1));
         $("#proxylistMoveDown").button( "option", "disabled",  (selectedProxy==list.length-2) || (selectedProxy==list.length-1));
         $("#proxylistDelete, #proxylistCopy").button( "option", "disabled",  (selectedProxy==list.length-1));
         $('#proxylistEdit').button( "option", "disabled", "");
