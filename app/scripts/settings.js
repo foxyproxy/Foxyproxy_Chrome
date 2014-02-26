@@ -2,20 +2,14 @@ const SOCKS5 = "5";
 
 (function() {
     var settings, proxyList;
+    
+    var queryUrl = "chrome-extension://" + chrome.i18n.getMessage("@@extension_id") + "/*";
+    
 
-    // always store 'state' and 'useChromeSync' in localStorage so we don't sync unwanted data.
+    // always store 'state' in localStorage so we don't sync unwanted data.
     if (!localStorage.getItem('state')) {
         localStorage.setItem('state', 'disabled');
     }
-
-    var useSyncStorage = localStorage.getItem("useSyncStorage");
-    if (!useSyncStorage) {
-        localStorage.setItem("useSyncStorage", false);
-        useSyncStorage = false;
-    }
-
-    //TODO: make this togglable in settings    
-    var storageApi = useSyncStorage ? chrome.storage.sync : chrome.storage.local;
 
     //// migration code - move old settings from localStorage?
     var localSettings = localStorage.getItem("settings");
@@ -84,7 +78,30 @@ const SOCKS5 = "5";
             }
         };
     }
-
+    
+    
+    foxyProxy._settings = settings;
+    foxyProxy._proxyList = proxyList;
+    
+    
+    ///// FP Settings API /////
+    
+    var useSyncStorage, storageApi;
+    
+    foxyProxy.setSync = function setSync( isSync ) {
+        console.log("foxyProxy setSync: " + isSync);
+        useSyncStorage = !!isSync;
+        localStorage.setItem("useSyncStorage", useSyncStorage);
+        storageApi = isSync ? chrome.storage.sync : chrome.storage.local;
+        foxyProxy._settings.useSyncStorage = useSyncStorage;
+        if (foxyProxy.updateSettings) {
+            foxyProxy.updateSettings({"settings": foxyProxy._settings, "proxyList": foxyProxy._proxyList });
+        }
+    };
+    
+    // -- bootstrap storage
+    foxyProxy.setSync(JSON.parse(localStorage.getItem("useSyncStorage")));
+    
     storageApi.set({ "settings": settings }, function() {
         if (chrome.runtime.lastError) {
             console.log("error saving settings: " + runtime.lastError);
@@ -96,29 +113,24 @@ const SOCKS5 = "5";
             console.log("error saving proxyList: " + runtime.lastError);
         }
     });
-
-
-    /////
-    
-    foxyProxy._settings = settings;
+    // --
     
     foxyProxy.getSettings = function getSettings( callback) {
         storageApi.get("settings", function( items) {
             if (callback) {
                 callback(items);
             } else {
-                chrome.tabs.query({"url": "chrome-extension://" + chrome.i18n.getMessage("@@extension_id") + "/*"},
+                chrome.tabs.query({"url": queryUrl},
                     function( tabs) {
                         for (var i = 0; i < tabs.length; i++) {
                             chrome.tabs.sendMessage(tabs[i].id, { "settings": items });
                         }
                     }
-                );            }
+                );            
+            }
         });
     };
-    
-    foxyProxy._proxyList = proxyList;
-    
+        
     foxyProxy.getProxyList = function getProxyList( callback) {
         var queryUrl;
         console.log("getProxyList");
@@ -133,16 +145,9 @@ const SOCKS5 = "5";
                 var tabs = chrome.extension.getViews();
                 console.log("sending message to " + tabs.length + " foxyproxy tabs");
                 for (var i = 0; i < tabs.length; i++) {
-                    console.log(tabs[i]);
-                    console.log(tabs[i].id);
-                    console.log(tabs[i].tabs);
                     chrome.tabs.sendMessage(tabs[i].id, { "proxyList": items });
                 }
                 */
-                
-                queryUrl = "chrome-extension://" + chrome.i18n.getMessage("@@extension_id") + "/*";
-                //queryUrl = "*://*/popup.html";
-                console.log(queryUrl);
                 
 
                 chrome.tabs.query({"url": queryUrl },
@@ -184,20 +189,39 @@ const SOCKS5 = "5";
         if (keys.length > 0) {
             console.log("getting keys: " + keys);
             storageApi.get(keys, function( items) {
-                sendResponse(items);
+                if (typeof(sendResponse) == "function") {
+                    sendResponse(items);
+                } else {
+                    chrome.tabs.query({"url": queryUrl},
+                        function( tabs) {
+                            for (var i = 0; i < tabs.length; i++) {
+                                chrome.tabs.sendMessage(tabs[i].id, { "settings": items });
+                            }
+                        }
+                    );
+                }
             } );
         } else {
+            console.log("saving to ");
+            console.log(storageApi);
+            console.log(saveObj);
             storageApi.set(saveObj, function() {
                 //TODO: handle errors
-                sendResponse(saveObj);
+                if (typeof(sendResponse) == "function") {
+                    sendResponse(items);
+                } else {
+                    chrome.tabs.query({"url": queryUrl},
+                        function( tabs) {
+                            for (var i = 0; i < tabs.length; i++) {
+                                chrome.tabs.sendMessage(tabs[i].id, { "settings": foxyProxy._settings });
+                            }
+                        }
+                    );
+                }
             });
         }
     
     };
-
-    //console.log("registering settings message listener...");
-    //chrome.runtime.onMessage.addListener( updateSettings);
-
 
 
     //FIXME

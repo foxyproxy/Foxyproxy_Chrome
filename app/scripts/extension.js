@@ -214,12 +214,15 @@ function Extension() {
     };
     
     this.toggleSyncStorage = function() {
-        settings.useSyncStorage = !settings.useSyncStorage;
+        var useSyncStorage = JSON.parse(localStorage.getItem("useSyncStorage"));
+        console.log("toggling sync storage from " + useSyncStorage + " to " + !useSyncStorage);
+        
+        foxyProxy.setSync(!useSyncStorage);
     };
     
     this.toggleAdvancedMenus = function toggleAdvancedMenus() {
         
-        settings.useAdvancedMenus = !settings.useAdvancedMenus;
+        _settings.useAdvancedMenus = !_settings.useAdvancedMenus;
         foxyProxy.updateContextMenu();
         
         if (self.optionsTabId) {
@@ -228,7 +231,7 @@ function Extension() {
     };
     
     this.toggleShowContextMenu = function toggleShowContextMenu() {
-        settings.showContextMenu = !settings.showContextMenu;
+        _settings.showContextMenu = !_settings.showContextMenu;
         foxyProxy.updateContextMenu();
         
         if (self.optionsTabId) {
