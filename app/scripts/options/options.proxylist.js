@@ -6,16 +6,11 @@ var bg = null;
 
 // listen for proxyList message from extension
 chrome.runtime.onMessage.addListener(function( request, sender, sendResponse) {
-    console.log("options.proxyList got message: " + request);
-    if (request.proxyList) {
-        console.log("booyah!");
-        console.log(request.proxyList.proxyList);
-        
-        list = request.proxyList.proxyList;
-        list.map( function (p){ console.log("returning new proxy"); return new Proxy(p);} );
-        
-        console.log(list);
-        
+    if (request.proxyList && request.proxyList.proxyList && request.proxyList.proxyList.length > 0) {
+
+        //
+        list = request.proxyList.proxyList.map( function (p){ console.log("returning new proxy"); return new Proxy(p);} );
+                
         var proxyModeCombo = $('#proxyModeGlobal');
         proxyModeCombo.empty();
         
@@ -66,7 +61,7 @@ function saveProxies(){
 
 var initProxyList = function initProxyList() {
     console.log("initProxyList");
-    
+        
     $(".listManupualtionButtons > button").css('width', '150px');
     $("button").button().css({"text-align": "left"});
     oTable = $('#proxyList').dataTable( {

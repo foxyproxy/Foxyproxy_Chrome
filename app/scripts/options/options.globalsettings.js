@@ -1,8 +1,30 @@
-var foxyProxy = chrome.extension.getBackgroundPage().foxyProxy;
+//var foxyProxy = chrome.extension.getBackgroundPage().foxyProxy;
 
-var settings = foxyProxy.settings;
+var foxyProxy;
+var settings;
+
+// listen for settings message from extension
+chrome.runtime.onMessage.addListener(function( request, sender, sendResponse) {
+    if (request.settings) {
+        console.log("got settings message");
+        console.log(request.settings);
+        
+        settings = request.settings.settings;
+    }
+});
+
+chrome.runtime.getBackgroundPage(function( bgPage) {
+    foxyProxy = bgPage.foxyProxy;
+    
+    foxyProxy.getSettings();
+    
+    if (foxyProxy.getFoxyProxyEdition() != 'Basic') {
+        $("#tabQuick").show();
+    }
+});
+
 function saveSettings(){
-    foxyProxy.settings = settings;
+    foxyProxy.updateSettings({ "settings": settings});
 }
 
 
@@ -83,7 +105,7 @@ function onTabShow(tabName) {
     if ('pageGlobal' == tabName) {
         $("input[name='advancedMenuCheck']").attr('checked', settings.useAdvancedMenus);
         $("input[name='showContextMenuCheck']").attr('checked', settings.showContextMenu);
-        $("input[name='useChromeSyncCheck']").attr('checked', settings.useChromeSync);
+        $("input[name='useChromeSyncCheck']").attr('checked', settings.useSyncStorage);
     }
     
     chrome.runtime.onMessage.addListener(function( request) {
@@ -100,10 +122,6 @@ function onTabShow(tabName) {
 }
 
 $(document).ready(function() {
-
-    if (foxyProxy.getFoxyProxyEdition() != 'Basic') {
-        $("#tabQuick").show();
-    }
     
     $("#enabledQA").click(function(){
         if(list.length<=1) {
@@ -113,7 +131,8 @@ $(document).ready(function() {
 
         settings.enabledQA = $(this).is(":checked");
     
-        foxyProxy.settings = settings;
+        saveSettings();
+        
         if (settings.enabledQA)
             $('#QASettingsContainer *').each(function(){ $(this).prop('disabled', false); });
         else
@@ -122,7 +141,7 @@ $(document).ready(function() {
 
     $("#patternTemporaryQA").click(function(){
         settings.patternTemporaryQA = $(this).is(":checked");
-        foxyProxy.settings = settings;
+        saveSettings();
     });
     
     $("#patternTemplateQA").keyup(function(){
@@ -138,22 +157,22 @@ $(document).ready(function() {
     
     $("#patternNameQA").change(function(){
         settings.patternNameQA=$(this).val();
-        foxyProxy.settings = settings;
+        saveSettings();
     });
     
     $("input[name='patternWhitelistQA']").click(function(){
         settings.patternWhitelistQA = $(this).val();
-        foxyProxy.settings = settings;
+        saveSettings();
     });
     
     $("input[name='patternTypeQA']").click(function(){
         settings.patternTypeQA = $(this).val();
-        foxyProxy.settings = settings;
+        saveSettings();
     });
     
     $("#patternProxyQA, #dialogPatternProxyQA").change(function(){
         settings.patternProxyQA = $(this).val();
-        foxyProxy.settings = settings;
+        saveSettings();
     });
 
 
@@ -227,7 +246,7 @@ $(document).ready(function() {
     });
     
     $("input[name='useChromeSyncCheck']").click(function() {
-        foxyProxy.toggleChromeSync();
+        foxyProxy.toggleSyncStorage();
     });
     
     onTabShow('');
