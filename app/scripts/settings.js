@@ -1,94 +1,120 @@
 const SOCKS5 = "5";
 
 (function() {
-    var settings, proxyList;
+    var settings,
+        proxyList,
+        useSyncStorage,
+        storageApi,
+        state = localStorage.getItem('state'),
+        queryUrl = "chrome-extension://" + chrome.i18n.getMessage("@@extension_id") + "/options.html";
     
-    var queryUrl = "chrome-extension://" + chrome.i18n.getMessage("@@extension_id") + "/*";
-    
-
     // always store 'state' in localStorage so we don't sync unwanted data.
-    var state = localStorage.getItem('state');
     if (state === null) {
         localStorage.setItem('state', 'disabled');
     }
+    
+    useSyncStorage = JSON.parse(localStorage.getItem("useSyncStorage"));
+    storageApi = useSyncStorage ? chrome.storage.sync : chrome.storage.local;
 
-    //// migration code - move old settings from localStorage?
-    var localSettings = localStorage.getItem("settings");
-    if (localSettings) {
-        console.log("migrating settings from localStorage");
-        settings = JSON.parse(localSettings);
-    }
+    //// migration code - move old settings from localStorage
+    if (useSyncStorage === null) {
+        localStorage.setItem("useSyncStorage", false);
+        
+        var localSettings = localStorage.getItem("settings");
+        if (localSettings) {
+            console.log("migrating settings from localStorage");
+            settings = JSON.parse(localSettings);
+            localStorage.removeItem("settings");
+        }
 
-    if (!settings) {
-        settings = {
-            showContextMenu: true,
-            enabledQA: false,
-            patternTemplateQA: "*://${3}${6}/*",
-            patternNameQA: "Dynamic QuickAdd Pattern",
-            patternTemporaryQA: false,
-            patternWhitelistQA:"Inclusive",
-            patternTypeQA:"wildcard",
-            useAdvancedMenus: false
-        };
-    }
+        var localProxyList = localStorage.getItem("proxyList");
+        if (localProxyList) {
+            console.log("migrating proxyList from localStorage");
+            var proxyJSON = JSON.parse(localProxyList);
+            proxyList = proxyJSON.map( function (p) {
+                var t = new Proxy(p); // depends on proxy.js
+                var i = 0;
+                while (i < t.data.patterns.length) {
+                    if (t.data.patterns[i].data.temp) t.data.patterns.splice(i, 1);
+                    else i++;
+                }
 
-    var localProxyList = localStorage.getItem("proxyList");
-    if (localProxyList) {
-        console.log("migrating proxyList from localStorage");
-        var proxyJSON = JSON.parse(localProxyList);
-        proxyList = proxyJSON.map( function (p) {
-            var t = new Proxy(p); // depends on proxy.js
-            var i = 0;
-            while (i < t.data.patterns.length) {
-                if (t.data.patterns[i].data.temp) t.data.patterns.splice(i, 1);
-                else i++;
+                return t;
+            });
+        
+            localStorage.removeItem("proxyList");
+        }
+
+    } ///// end migration code
+    
+
+    if (!settings && !proxyList) {
+        storageApi.get(["settings", "proxyList"], function( items) {
+            if (items.settings) {
+                settings = items.settings;
+            } else {
+                settings = {
+                    showContextMenu: true,
+                    enabledQA: false,
+                    patternTemplateQA: "*://${3}${6}/*",
+                    patternNameQA: "Dynamic QuickAdd Pattern",
+                    patternTemporaryQA: false,
+                    patternWhitelistQA:"Inclusive",
+                    patternTypeQA:"wildcard",
+                    useAdvancedMenus: false
+                };
             }
-
-            return t;
+            
+            if (items.proxyList) {
+                proxyList = items.proxyList;
+            } else {
+                proxyList = [ {
+                    "data": {
+                        "id": "default",
+                        "readonly": true,
+                        "enabled": true,
+                        "color": "#0000ff",
+                        "name": "Default",
+                        "notes": "These are the settings that are used when no patterns match an URL",
+                        "host": "",
+                        "port": "",
+                        "isSocks": false,
+                        "socks": SOCKS5,
+                        "pac": "",
+                        "dns": "",
+                        "type": "direct", // proxyMode
+                        "cycle": false,
+                        "useDns": true,
+                        "reloadPAC": false,
+                        "bypassFPForPAC": false,
+                        "reloadPACInterval": 60,
+                        "configUrl": "",
+                        "notifOnLoad": false,
+                        "notifOnError": false,
+                        "patterns": [],
+                        "ipPatterns": [],
+                        "login": "",
+                        "pass": ""
+                        } 
+                } ];
+            }
+            
+            
+            foxyProxy._settings = settings;
+            foxyProxy._proxyList = proxyList;
         });
+
     }
 
-    if (!proxyList) {
-        proxyList = [ {
-            "data": {
-                "id": "default",
-                "readonly": true,
-                "enabled": true,
-                "color": "#0000ff",
-                "name": "Default",
-                "notes": "These are the settings that are used when no patterns match an URL",
-                "host": "",
-                "port": "",
-                "isSocks": false,
-                "socks": SOCKS5,
-                "pac": "",
-                "dns": "",
-                "type": "direct", // proxyMode
-                "cycle": false,
-                "useDns": true,
-                "reloadPAC": false,
-                "bypassFPForPAC": false,
-                "reloadPACInterval": 60,
-                "configUrl": "",
-                "notifOnLoad": false,
-                "notifOnError": false,
-                "patterns": [],
-                "ipPatterns": [],
-                "login": "",
-                "pass": ""
-                } 
-        } ];
-    }
     
-    
-    foxyProxy._settings = settings;
-    foxyProxy._proxyList = proxyList;
+    // chrome.storage.onChanged.addListener(function( changes, areaName) {
+    //     console.log("got storage.onChanged for area: " + areaName);
+    //     console.log(changes);
+    // });
     
     
     ///// FP Settings API /////
-    
-    var useSyncStorage, storageApi;
-    
+        
     foxyProxy.setSync = function setSync( isSync ) {
         console.log("foxyProxy setSync: " + isSync);
         useSyncStorage = !!isSync;
@@ -99,22 +125,6 @@ const SOCKS5 = "5";
             foxyProxy.updateSettings({"settings": foxyProxy._settings, "proxyList": foxyProxy._proxyList });
         }
     };
-    
-    // -- bootstrap storage
-    foxyProxy.setSync(JSON.parse(localStorage.getItem("useSyncStorage")));
-    
-    storageApi.set({ "settings": settings }, function() {
-        if (chrome.runtime.lastError) {
-            console.log("error saving settings: " + runtime.lastError);
-        }
-    });
-
-    storageApi.set({ "proxyList": proxyList }, function() {
-        if (chrome.runtime.lastError) {
-            console.log("error saving proxyList: " + runtime.lastError);
-        }
-    });
-    // --
     
     foxyProxy.getSettings = function getSettings( callback) {
         storageApi.get("settings", function( items) {
@@ -133,24 +143,10 @@ const SOCKS5 = "5";
     };
         
     foxyProxy.getProxyList = function getProxyList( callback) {
-        var queryUrl;
-        console.log("getProxyList");
         storageApi.get("proxyList", function( items) {
-            console.log("getProxyList got: " + items);
-            console.log(items);
-            
             if (callback) {
                 callback(items);
             } else {
-                /*
-                var tabs = chrome.extension.getViews();
-                console.log("sending message to " + tabs.length + " foxyproxy tabs");
-                for (var i = 0; i < tabs.length; i++) {
-                    chrome.tabs.sendMessage(tabs[i].id, { "proxyList": items });
-                }
-                */
-                
-
                 chrome.tabs.query({"url": queryUrl },
                     function( tabs) {
                         console.log("sending message to " + tabs.length + " foxyproxy tabs");
@@ -164,10 +160,7 @@ const SOCKS5 = "5";
         });
     };
 
-    //TODO: rename/refactor
     foxyProxy.updateSettings = function updateSettings( message, sender, sendResponse ) {
-        console.log("settings listener received message: " + message);
-        console.log(message);
         var saveObj = {},
             keys = [];
         if (message.settings !== undefined) {        
@@ -185,9 +178,7 @@ const SOCKS5 = "5";
                 keys.push("proxyList");
             }
         }
-        console.log("keys: " + keys);
         if (keys.length > 0) {
-            console.log("getting keys: " + keys);
             storageApi.get(keys, function( items) {
                 if (typeof(sendResponse) == "function") {
                     sendResponse(items);
@@ -202,13 +193,11 @@ const SOCKS5 = "5";
                 }
             } );
         } else {
-            console.log("saving to ");
-            console.log(storageApi);
-            console.log(saveObj);
             storageApi.set(saveObj, function() {
                 //TODO: handle errors
                 if (chrome.runtime.lastError) {
-                    console.log("error updating settings: " + runtime.lastError);
+                    console.log("error updating settings: ");
+                    console.log(chrome.runtime.lastError);
                 }
                 
                 if (typeof(sendResponse) == "function") {
@@ -226,7 +215,6 @@ const SOCKS5 = "5";
         }
     
     };
-
 
     //FIXME
     /***** settings export *****/
