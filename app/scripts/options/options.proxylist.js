@@ -8,12 +8,9 @@ var isProxyTableInitialized = false;
 // listen for proxyList message from extension
 chrome.runtime.onMessage.addListener(function( request, sender, sendResponse) {
     if (request.proxyList && request.proxyList.length > 0) {
-        console.log("got request.proxyList message");
-        //
+
         list = request.proxyList.map( function (p){ return new Proxy(p);} );
-        
-        console.log(list);
-                
+
         var proxyModeCombo = $('#proxyModeGlobal');
         proxyModeCombo.empty();
         
@@ -47,18 +44,9 @@ chrome.runtime.getBackgroundPage(function( bgPage) {
     foxyProxy.getProxyList();
 });
 
-/*
-function resetProxies(){
-    console.log("resetProxies");
-    bg = chrome.extension.getBackgroundPage();
-    console.log(bg.foxyProxy.proxyList);
-    list = $.map(bg.foxyProxy.proxyList, function (p){ return new Proxy(p);} );
-}
-*/
 
 function saveProxies(){
-    console.log("saveProxies");
-    //bg.foxyProxy.proxyList = list;
+
     bg.foxyProxy.updateSettings({ "proxyList": list }, "options", function( items) {
         console.log("saveProxies got callback");
         console.log(items);
@@ -71,8 +59,6 @@ function saveProxies(){
     
     //bg.foxyProxy.state = bg.foxyProxy.state;
 }
-
-//resetProxies();
 
 var initProxyList = function initProxyList() {
     console.log("initProxyList");

@@ -7,8 +7,6 @@ var lastTabName;
 // listen for settings message from extension
 chrome.runtime.onMessage.addListener(function( request, sender, sendResponse) {
     if (request.settings) {
-        console.log("got settings message");
-        console.log(request.settings);
         
         settings = request.settings;
         
@@ -100,39 +98,6 @@ function onTabShow(tabName) {
         foxyProxy.getSettings();
     });
 
-    /*
-    //var proxyModeCombo = $('#proxyModeGlobal');
-    //proxyModeCombo.empty();
-    
-    if ('Basic' !== foxyProxy.getFoxyProxyEdition()) {
-        $('<option value="auto">' + chrome.i18n.getMessage("mode_patterns_label") + '</option>').appendTo(proxyModeCombo);
-    }
-    
-    $.each(list, function(i, proxy){
-        if(proxy.data.enabled ){
-            var option = $("<option value='"+proxy.data.id+"'>"+chrome.i18n.getMessage("mode_custom_label", proxy.data.name )+"</option>")
-                .appendTo(proxyModeCombo);
-        }
-    });
-    
-    
-    $('<option value="disabled">Disable FoxyProxy</option>').appendTo(proxyModeCombo);
-    $("option[value='"+chrome.extension.getBackgroundPage().foxyProxy.state+"']",proxyModeCombo).attr("selected", "selected");
-    */
-
-    /*
-    chrome.runtime.onMessage.addListener(function( request) {
-        if (request.setting) {
-            if ("useAdvancedMenus" == request.setting) {
-                $("input[name='advancedMenuCheck']").attr('checked', settings.useAdvancedMenus);
-            }
-
-            if ("showContextMenu" == request.setting) {
-                $("input[name='showContextMenuCheck']").attr('checked', settings.showContextMenu);
-            }
-        }
-    });
-    */
 }
 
 $(document).ready(function() {
