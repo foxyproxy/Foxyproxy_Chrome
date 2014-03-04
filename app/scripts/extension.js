@@ -71,15 +71,15 @@ function Extension() {
 
             default: // single proxy selected
                 var proxy = null;
-                if (_proxyList) {
-                    for (var i = 0; i < _proxyList.length; i++) {
-                        if (_proxyList[i].data.id == this.state) proxy = _proxyList[i];
+                if (self._proxyList) {
+                    for (var i = 0; i < self._proxyList.length; i++) {
+                        if (self._proxyList[i].data.id == this.state) proxy = self._proxyList[i];
                     }
                     if (proxy && (proxy.data.pac.length === 0 || !proxy.data.pac)) {
                         console.log("manual mode selected and proxy is " + proxy);
-                        chrome.browserAction.setIcon({
-                            imageData: IconCreator.paintIcon(self.icon, proxy.data.color)
-                        });
+                        // chrome.browserAction.setIcon({
+                        //     imageData: IconCreator.paintIcon(self.icon, proxy.data.color)
+                        // });
                         ProxyManager.applyProxy(ProxyManager.profileFromProxy(proxy));
                     } else {
                         console.log("manual mode selected with remote PAC and proxy is " + proxy);
