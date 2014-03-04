@@ -6,64 +6,8 @@ function Extension() {
         state,
         self = this;
         timers = [];
-    
-    //chrome.runtime.sendMessage({ "settings": null, "proxyList": null }, function( response) {
-
 
     //this.log = new FoxyLog();
-
-    /***** getters/setters *****/
-    this.__defineGetter__("settings", function () {
-        return _settings;
-    });
-    
-    this.__defineSetter__("settings", function (oSettings) {
-        console.log("setting settings");
-        _settings = oSettings;
-        
-        chrome.runtime.sendMessage({ "settings": oSettings }, function( response) {
-                        
-            if (response.settings) {
-                _settings = response.settings;
-            }
-
-            if (response.proxyList) {
-                _proxyList = response.proxyList;
-            }
-            
-            self.updateContextMenu();
-            
-        });
-        
-    });
-    
-    this.__defineGetter__("proxyList", function () {
-        console.log("get proxyList");
-        console.log(_proxyList);
-        return _proxyList;
-    });
-    
-    this.__defineSetter__("proxyList", function (aProxy) {
-        //-- handler for property proxyList setting
-        console.log("setting proxyList");
-        _proxyList = aProxy;
-    
-        chrome.runtime.sendMessage({"proxyList": proxyList }, function( response) {
-            if (response.settings) {
-                _settings = response.settings;
-            }
-
-            if (response.proxyList) {
-                _proxyList = response.proxyList;
-            }
-            
-            self.updateContextMenu();
-            
-            self.reloadTimers();
-            
-        });
-
-    });
     
     this.__defineGetter__("state", function () {
         return state;
@@ -75,12 +19,11 @@ function Extension() {
         state = _state;
         reloadTimers();
         this.applyState();
-        //self.updateContextMenu();
+        if (this.updateContextMenu) {
+            this.updateContextMenu();
+        }
         localStorage.setItem("state", _state);
     });
-    
-    // async api
-
 
     /***** util functions *****/
     
@@ -295,17 +238,3 @@ function Extension() {
 foxyProxy = new Extension();
 
 foxyProxy.state = localStorage.getItem('state');
-
-/*
-foxyProxy.updateSettings({ "settings": null, "proxyList": null }, null, function( response) {
-    console.log("response: " + response);
-    console.log(response);
-    if (response && response.settings) {
-        foxyProxy._settings = response.settings;
-    }
-    
-    if (response && response.proxyList) {
-        foxyProxy._proxyList = response.proxyList;
-    }
-});
-*/

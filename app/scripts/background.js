@@ -1,9 +1,5 @@
 'use strict';
 
-// chrome.runtime.onInstalled.addListener(function (details) {
-//     console.log('previousVersion', details.previousVersion);
-// });
-
 /* onInstalled listener opens tab to the appropriate post-install page. */
 chrome.runtime.onInstalled.addListener(function(details) {
     var urlToOpen;
