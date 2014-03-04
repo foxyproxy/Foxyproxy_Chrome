@@ -2,14 +2,17 @@ var selectedProxy =  -1;
 var oTable;
 var list = null;
 var bg = null;
+var isProxyTableInitialized = false;
 
 
 // listen for proxyList message from extension
 chrome.runtime.onMessage.addListener(function( request, sender, sendResponse) {
     if (request.proxyList && request.proxyList.length > 0) {
-
+        console.log("got request.proxyList message");
         //
         list = request.proxyList.map( function (p){ return new Proxy(p);} );
+        
+        console.log(list);
                 
         var proxyModeCombo = $('#proxyModeGlobal');
         proxyModeCombo.empty();
@@ -29,8 +32,11 @@ chrome.runtime.onMessage.addListener(function( request, sender, sendResponse) {
         $('<option value="disabled">Disable FoxyProxy</option>').appendTo(proxyModeCombo);
         $("option[value='"+bg.foxyProxy.state+"']",proxyModeCombo).attr("selected", "selected");
 
-
-        initProxyList();
+        if (isProxyTableInitialized) {
+            updateProxyTable();
+        } else {
+            initProxyList();
+        }
     }
 });
 
@@ -52,9 +58,18 @@ function resetProxies(){
 
 function saveProxies(){
     console.log("saveProxies");
-    bg.foxyProxy.proxyList = list;
-    bg.foxyProxy.state = bg.foxyProxy.state;
-    onTabShow("");
+    //bg.foxyProxy.proxyList = list;
+    bg.foxyProxy.updateSettings({ "proxyList": list }, "options", function( items) {
+        console.log("saveProxies got callback");
+        console.log(items);
+        if (items.proxyList) {
+            list = items.proxyList;
+        }
+        onTabShow("");
+        
+    });
+    
+    //bg.foxyProxy.state = bg.foxyProxy.state;
 }
 
 //resetProxies();
@@ -109,6 +124,8 @@ var initProxyList = function initProxyList() {
         editProxy();
         return false;
     });
+    
+    isProxyTableInitialized = true;
 };
 
 function toggleselectedProxy(){
