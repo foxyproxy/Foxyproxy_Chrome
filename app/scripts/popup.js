@@ -1,8 +1,6 @@
 chrome.runtime.getBackgroundPage(function( bgPage) {
     
     var foxyproxy = bgPage.foxyProxy;
-    
-    foxyproxy.getProxyList();
 
 
     var options = function (data){
@@ -18,34 +16,6 @@ chrome.runtime.getBackgroundPage(function( bgPage) {
     };
 
     $(document).ready(function() {
-    
-        // listen for proxyList message from extension
-        chrome.runtime.onMessage.addListener(function( request, sender, sendResponse) {
-            console.log("got message: " + request);
-            if (request.proxyList) {
-                var list = request.proxyList;
-
-                list.forEach( function( proxy) {
-                    var a;
-                    console.log(proxy.data.type);
-
-                    if (proxy.data.enabled) {
-
-                        a = $("<a href='#'/>").text(chrome.i18n.getMessage("mode_custom_label", proxy.data.name))
-                            .css( { "color": proxy.data.color });
-
-                        $("<li />").attr("id", "state-"+proxy.data.id)
-                            .attr("proxyid", proxy.data.id)
-                            .append(a)
-                            .click( function() {
-                                    toggleRadioButton($(this).attr("proxyid"));
-                            })
-                            .insertBefore("li#state-disabled");
-                        }
-                });
-            }
-        });
-    
 
         $("#navbar").on("click", "li", function (e) {
             e.preventDefault();
@@ -74,43 +44,44 @@ chrome.runtime.getBackgroundPage(function( bgPage) {
 
         });
 
-        $("a").each(function(){
-            if(this.childNodes.length === 0 || (this.childNodes.length == 1 && this.childNodes[0].nodeName == "#text")){
-                this.innerText = this.innerText; //FIXME
+        foxyproxy.getProxyList( function( items) {
+            var list = items.proxyList;
+        
+            $("a").each(function(){
+                if(this.childNodes.length === 0 || (this.childNodes.length == 1 && this.childNodes[0].nodeName == "#text")){
+                    this.innerText = this.innerText; //FIXME
+                }
+            });
+    
+            list.forEach( function( proxy) {
+                var a;
+                console.log(proxy.data.type);
+
+                if (proxy.data.enabled) {
+
+                    a = $("<a href='#'/>").text(chrome.i18n.getMessage("mode_custom_label", proxy.data.name))
+                        .css( { "color": proxy.data.color });
+
+                    $("<li />").attr("id", "state-"+proxy.data.id)
+                        .attr("proxyid", proxy.data.id)
+                        .append(a)
+                        .click( function() {
+                                toggleRadioButton($(this).attr("proxyid"));
+                        })
+                        .insertBefore("li#state-disabled");
+                    }
+            });
+    
+            if ('Basic' == foxyproxy.getFoxyProxyEdition()) {
+                console.log('hiding auto mode for Basic edition');
+                $("#state-auto").hide();
+            }
+
+            $("#state-" + foxyproxy.state).addClass("navbar-checked");
+
+            if (!foxyproxy._settings.enabledQA || foxyproxy.state=='disabled' || 'Basic' == foxyproxy.getFoxyProxyEdition()) {
+                $('#quickAdd').hide();
             }
         });
-    
-        var list = foxyproxy._proxyList;
-
-        list.forEach( function( proxy) {
-            var a;
-            console.log(proxy.data.type);
-
-            if (proxy.data.enabled) {
-
-                a = $("<a href='#'/>").text(chrome.i18n.getMessage("mode_custom_label", proxy.data.name))
-                    .css( { "color": proxy.data.color });
-
-                $("<li />").attr("id", "state-"+proxy.data.id)
-                    .attr("proxyid", proxy.data.id)
-                    .append(a)
-                    .click( function() {
-                            toggleRadioButton($(this).attr("proxyid"));
-                    })
-                    .insertBefore("li#state-disabled");
-                }
-        });
-    
-        if ('Basic' == foxyproxy.getFoxyProxyEdition()) {
-            console.log('hiding auto mode for Basic edition');
-            $("#state-auto").hide();
-        }
-
-        $("#state-" + foxyproxy.state).addClass("navbar-checked");
-
-        if (!foxyproxy._settings.enabledQA || foxyproxy.state=='disabled' || 'Basic' == foxyproxy.getFoxyProxyEdition()) {
-            $('#quickAdd').hide();
-        }
     });
-    
 });

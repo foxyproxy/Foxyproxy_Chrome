@@ -144,12 +144,12 @@ const SOCKS5 = "5";
         
     foxyProxy.getProxyList = function getProxyList( callback) {
         storageApi.get("proxyList", function( items) {
-            if (callback) {
+            if (typeof(callback) == "function") {
                 callback(items);
             } else {
                 chrome.tabs.query({"url": queryUrl },
                     function( tabs) {
-                        console.log("sending message to " + tabs.length + " foxyproxy tabs");
+                        console.log("sending proxyList to " + tabs.length + " foxyproxy tabs");
                         for (var i = 0; i < tabs.length; i++) {
                             chrome.tabs.sendMessage(tabs[i].id, items);
                         }
@@ -190,6 +190,9 @@ const SOCKS5 = "5";
                             }
                         }
                     );
+                    if (foxyProxy.updateContextMenu) {
+                        foxyProxy.updateContextMenu();
+                    }
                 }
             } );
         } else {
@@ -210,6 +213,9 @@ const SOCKS5 = "5";
                             }
                         }
                     );
+                    if (foxyProxy.updateContextMenu) {
+                        foxyProxy.updateContextMenu();
+                    }
                 }
             });
         }
