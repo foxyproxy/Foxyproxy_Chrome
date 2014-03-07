@@ -13,7 +13,6 @@ chrome.runtime.onMessage.addListener(function( request, sender, sendResponse) {
         var tabName = lastTabName;
         // onTabShow
         if ('pageQuick' == tabName) {
-
             $("#enabledQA").setChecked(settings.enabledQA);
             $("#patternTemporaryQA").setChecked(settings.patternTemporaryQA);
             if(settings.enabledQA)
@@ -32,7 +31,7 @@ chrome.runtime.onMessage.addListener(function( request, sender, sendResponse) {
             });
 
             $("#patternProxyQA option[value='"+settings.patternProxyQA+"']").attr("selected", "selected");
-            $("#patternProxyQA").change();
+            //$("#patternProxyQA").change();
 
             $("input[name='patternWhitelistQA'][value='"+settings.patternWhitelistQA+"']").setChecked(true);
             $("input[name='patternTypeQA'][value='"+settings.patternTypeQA+"']").setChecked(true);
