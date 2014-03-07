@@ -128,6 +128,7 @@ const SOCKS5 = "5";
     
     foxyProxy.getSettings = function getSettings( callback) {
         storageApi.get("settings", function( items) {
+            foxyProxy._settings = items.settings;
             if (callback) {
                 callback(items);
             } else {
@@ -144,6 +145,7 @@ const SOCKS5 = "5";
         
     foxyProxy.getProxyList = function getProxyList( callback) {
         storageApi.get("proxyList", function( items) {
+            foxyProxy._proxyList = items.proxyList;
             if (typeof(callback) == "function") {
                 callback(items);
             } else {
@@ -222,17 +224,17 @@ const SOCKS5 = "5";
     
     };
 
-    //FIXME
-    /***** settings export *****/
+    //FIXME: is this used? seems like options.export.js handles this functionality
+    /***** settings export *****
     foxyProxy.settingsToXml = function () {
         var xmlDoc = document.implementation.createDocument("", "foxyproxy", null);
         var rootNode = xmlDoc.documentElement;
-        rootNode.setAttribute('contextMenu', self.settings.showContextMenu.toString());
-        var mode = self.state;
-        if (self.state == 'auto') mode = 'patterns';
+        rootNode.setAttribute('contextMenu', foxyProxy._settings.showContextMenu.toString());
+        var mode = foxyProxy.state;
+        if (foxyProxy.state == 'auto') mode = 'patterns';
         rootNode.setAttribute('mode', mode);
         proxiesNode = xmlDoc.createElement('proxies');
-        $.map(proxyList, function (proxy) {
+        foxyProxy._proxyList.map( function (proxy) {
             var proxyNode = xmlDoc.createElement('proxy');
             proxyNode.setAttribute('id', proxy.data.id);
             proxyNode.setAttribute('name', proxy.data.name);
@@ -243,15 +245,15 @@ const SOCKS5 = "5";
             proxyNode.setAttribute('lastresort', proxy.data.readonly);
             proxyNode.setAttribute('color', proxy.data.color);
             var matchesNode = xmlDoc.createElement('matches');
-            $.map(proxy.data.patterns, function (pattern) {
+            proxy.data.patterns.map( function (pattern) {
             var matchNode = xmlDoc.createElement('match');
-            matchNode.setAttribute('enabled', pattern.data.enabled);
-            matchNode.setAttribute('name', pattern.data.name);
-            matchNode.setAttribute('pattern', pattern.data.url);
-            matchNode.setAttribute('isRegEx', (pattern.data.type != 'wildcard'));
-            matchNode.setAttribute('isBlackList', (pattern.data.whitelist != 'Inclusive'));
-            matchNode.setAttribute('temp', pattern.data.temp);
-            matchesNode.appendChild(matchNode);
+                matchNode.setAttribute('enabled', pattern.data.enabled);
+                matchNode.setAttribute('name', pattern.data.name);
+                matchNode.setAttribute('pattern', pattern.data.url);
+                matchNode.setAttribute('isRegEx', (pattern.data.type != 'wildcard'));
+                matchNode.setAttribute('isBlackList', (pattern.data.whitelist != 'Inclusive'));
+                matchNode.setAttribute('temp', pattern.data.temp);
+                matchesNode.appendChild(matchNode);
             });
             proxyNode.appendChild(matchesNode);
             var autoconfNode = xmlDoc.createElement('autoconf');
@@ -270,17 +272,17 @@ const SOCKS5 = "5";
         });
         xmlDoc.documentElement.appendChild(proxiesNode);
         var quickAddNode = xmlDoc.createElement('quickadd');
-        quickAddNode.setAttribute("enabled", self.settings.enabledQA);
-        quickAddNode.setAttribute("temp", self.settings.patternTemplateQA);
-        if (!self.settings.patternProxyQA || !proxyList[self.settings.patternProxyQA]) quickAddNode.setAttribute("proxy-id", "");
-        else quickAddNode.setAttribute("proxy-id", proxyList[self.settings.patternProxyQA].data.id);
+        quickAddNode.setAttribute("enabled", foxyProxy._settings.enabledQA);
+        quickAddNode.setAttribute("temp", foxyProxy._settings.patternTemplateQA);
+        if (!foxyProxy._settings.patternProxyQA || !foxyProxy._proxyList[foxyProxy._settings.patternProxyQA]) quickAddNode.setAttribute("proxy-id", "");
+        else quickAddNode.setAttribute("proxy-id", foxyProxy._proxyList[foxyProxy._settings.patternProxyQA].data.id);
         var quickAddMatchNode = xmlDoc.createElement('match');
         quickAddMatchNode.setAttribute('enabled', 'true');
         quickAddMatchNode.setAttribute('name', 'true');
-        quickAddMatchNode.setAttribute('pattern', self.settings.patternTemplateQA);
-        quickAddMatchNode.setAttribute('name', self.settings.patternNameQA);
+        quickAddMatchNode.setAttribute('pattern', foxyProxy._settings.patternTemplateQA);
+        quickAddMatchNode.setAttribute('name', foxyProxy._settings.patternNameQA);
         xmlDoc.documentElement.appendChild(quickAddNode);
         return (new XMLSerializer()).serializeToString(xmlDoc);
     };
-    
+    */
 })();
