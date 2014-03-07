@@ -138,7 +138,7 @@ var setDefaultFoxyProxySettings = function (foxyproxy, xmlDoc) {
   var defaultPrefs = xmlDoc.createElement("defaultPrefs");
   defaultPrefs.setAttribute("origPrefetch", 0);  
 
-  var warnings = xmlDoc.createElement("warnings");
+  warnings = xmlDoc.createElement("warnings");
   warnings.setAttribute("white-patterns", true);
 
   foxyproxy.appendChild(random);
@@ -269,7 +269,7 @@ var generateXMLFromStorage = function () {
 
   var proxies = xmlDoc.createElement("proxies");
 
-  var proxyList = JSON.parse(localStorage.getItem("proxyList")),
+  var proxyList = list,//JSON.parse(localStorage.getItem("proxyList")), FIXME: maybe don't rely on global var named 'list'?
       len = proxyList.length, i = 0, curProxy, curProxyNode, 
       attr, manualconf, patterns, patternsNode, autoconf;
   
