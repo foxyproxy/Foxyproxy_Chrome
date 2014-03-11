@@ -23,6 +23,7 @@
             "scripts/background.js",
             "scripts/util.js",
             "vendor/scripts/punycode.js",
+            "vendor/scripts/icon_creator.js",
             "scripts/proxyconfig.js",
             "scripts/proxy.js",
             "scripts/proxyManager.js",
@@ -41,7 +42,7 @@
     },*/
     "options_page": "options.html",
     "permissions": [
-        "background",
+        //"background",
         "tabs",
         "contextMenus",
         "management",
