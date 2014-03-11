@@ -43,6 +43,12 @@ chrome.runtime.getBackgroundPage(function( bgPage) {
             }
 
         });
+        
+        foxyproxy.getSettings(function( items) {
+            if (!foxyproxy._settings.enabledQA || foxyproxy.state=='disabled' || 'Basic' == foxyproxy.getFoxyProxyEdition()) {
+                $('#quickAdd').hide();
+            }
+        });
 
         foxyproxy.getProxyList( function( items) {
             var list = items.proxyList;
@@ -79,9 +85,6 @@ chrome.runtime.getBackgroundPage(function( bgPage) {
 
             $("#state-" + foxyproxy.state).addClass("navbar-checked");
 
-            if (!foxyproxy._settings.enabledQA || foxyproxy.state=='disabled' || 'Basic' == foxyproxy.getFoxyProxyEdition()) {
-                $('#quickAdd').hide();
-            }
         });
     });
 });

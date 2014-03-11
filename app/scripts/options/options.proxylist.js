@@ -10,7 +10,7 @@ chrome.runtime.onMessage.addListener(function( request, sender, sendResponse) {
     if (request.proxyList && request.proxyList.length > 0) {
 
         list = request.proxyList.map( function (p){ return new Proxy(p);} );
-
+        
         var proxyModeCombo = $('#proxyModeGlobal');
         proxyModeCombo.empty();
         
@@ -112,6 +112,7 @@ var initProxyList = function initProxyList() {
     });
     
     isProxyTableInitialized = true;
+    $("#pageProxies").show();
 };
 
 function toggleselectedProxy(){

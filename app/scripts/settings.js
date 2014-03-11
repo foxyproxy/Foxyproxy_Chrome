@@ -1,4 +1,3 @@
-const SOCKS5 = "5";
 
 (function() {
     var settings,
@@ -47,11 +46,11 @@ const SOCKS5 = "5";
 
     } ///// end migration code
     
-
+    // load initial settings or default settings
     if (!settings && !proxyList) {
         storageApi.get(["settings", "proxyList"], function( items) {
             if (items.settings) {
-                settings = items.settings;
+                foxyProxy._settings = items.settings;
             } else {
                 settings = {
                     showContextMenu: true,
@@ -63,12 +62,29 @@ const SOCKS5 = "5";
                     patternTypeQA:"wildcard",
                     useAdvancedMenus: false
                 };
+                storageApi.set({"settings": settings}, function() {
+                    if (chrome.runtime.lastError) {
+                        console.log("failed to set default settings");
+                        console.log(chrome.runtime.lastError);
+                    } else {
+                        console.log("set settings to default");
+                    }
+                });
             }
             
-            if (items.proxyList) {
-                proxyList = items.proxyList;
+            if (items.proxyList && items.proxyList.length) {
+                storageApi.get(items.proxyList, function( proxies) {
+                    var list = [];
+
+                    for (var p in proxies) {
+                        list.push(new Proxy(proxies[p]));
+                    }
+                    
+                    foxyProxy._proxyList = list;
+                });
+                
             } else {
-                proxyList = [ {
+                var defaultProxy = new Proxy({
                     "data": {
                         "id": "default",
                         "readonly": true,
@@ -79,7 +95,7 @@ const SOCKS5 = "5";
                         "host": "",
                         "port": "",
                         "isSocks": false,
-                        "socks": SOCKS5,
+                        "socks": "5",
                         "pac": "",
                         "dns": "",
                         "type": "direct", // proxyMode
@@ -96,16 +112,20 @@ const SOCKS5 = "5";
                         "login": "",
                         "pass": ""
                         } 
-                } ];
+                });
+                
+                foxyProxy._proxyList = [ defaultProxy ];
+                storageApi.set({ "proxyList": [ "default" ], "default": defaultProxy }, function() {
+                    if (chrome.runtime.lastError) {
+                        console.log("failed to set default proxy list");
+                        console.log(chrome.runtime.lastError);
+                    } else {
+                        console.log("set proxyList to default");
+                    }
+                });
             }
-            
-            
-            foxyProxy._settings = settings;
-            foxyProxy._proxyList = proxyList;
         });
-
     }
-
     
     // chrome.storage.onChanged.addListener(function( changes, areaName) {
     //     console.log("got storage.onChanged for area: " + areaName);
@@ -144,26 +164,42 @@ const SOCKS5 = "5";
     };
         
     foxyProxy.getProxyList = function getProxyList( callback) {
+        var list = [];
         storageApi.get("proxyList", function( items) {
-            foxyProxy._proxyList = items.proxyList;
-            if (typeof(callback) == "function") {
-                callback(items);
-            } else {
-                chrome.tabs.query({"url": queryUrl },
-                    function( tabs) {
-                        console.log("sending proxyList to " + tabs.length + " foxyproxy tabs");
-                        for (var i = 0; i < tabs.length; i++) {
-                            chrome.tabs.sendMessage(tabs[i].id, items);
-                        }
+            
+            if (items.proxyList && items.proxyList.length) {
+
+                storageApi.get(items.proxyList, function( proxies) {
+                    for (var p in proxies) {
+                        list.push(new Proxy(proxies[p]));
                     }
-                );
-                
+
+                    foxyProxy._proxyList = list;
+                    
+                    if (typeof(callback) == "function") {
+                        callback({"proxyList": list });
+                    } else {
+                        chrome.tabs.query({"url": queryUrl },
+                            function( tabs) {
+                                console.log("sending proxyList to " + tabs.length + " foxyproxy tabs");
+                                for (var i = 0; i < tabs.length; i++) {
+                                    chrome.tabs.sendMessage(tabs[i].id, { "proxyList": list });
+                                }
+                            }
+                        );
+
+                    }
+                });
             }
         });
     };
 
     foxyProxy.updateSettings = function updateSettings( message, sender, sendResponse ) {
-        var saveObj = {},
+        var i,
+            proxy,
+            proxyId,
+            list = [],
+            saveObj = {},
             keys = [];
         if (message.settings !== undefined) {        
             if (message.settings !== null) {
@@ -175,7 +211,14 @@ const SOCKS5 = "5";
     
         if (message.proxyList !== undefined) {
             if (message.proxyList !== null) {
-                saveObj.proxyList = message.proxyList;
+                // save proxies keyed off of ID to avoid storage quota limit.
+                for (i = 0; i < message.proxyList.length; i++) {
+                    proxy = message.proxyList[i];
+                    id = proxy.data.id;
+                    list.push(id);
+                    saveObj[id] = proxy;
+                }
+                saveObj.proxyList = list;
             } else {
                 keys.push("proxyList");
             }
@@ -223,66 +266,4 @@ const SOCKS5 = "5";
         }
     
     };
-
-    //FIXME: is this used? seems like options.export.js handles this functionality
-    /***** settings export *****
-    foxyProxy.settingsToXml = function () {
-        var xmlDoc = document.implementation.createDocument("", "foxyproxy", null);
-        var rootNode = xmlDoc.documentElement;
-        rootNode.setAttribute('contextMenu', foxyProxy._settings.showContextMenu.toString());
-        var mode = foxyProxy.state;
-        if (foxyProxy.state == 'auto') mode = 'patterns';
-        rootNode.setAttribute('mode', mode);
-        proxiesNode = xmlDoc.createElement('proxies');
-        foxyProxy._proxyList.map( function (proxy) {
-            var proxyNode = xmlDoc.createElement('proxy');
-            proxyNode.setAttribute('id', proxy.data.id);
-            proxyNode.setAttribute('name', proxy.data.name);
-            proxyNode.setAttribute('name', proxy.data.name);
-            proxyNode.setAttribute('notes', proxy.data.notes);
-            proxyNode.setAttribute('enabled', proxy.data.enabled);
-            proxyNode.setAttribute('mode', proxy.data.mode);
-            proxyNode.setAttribute('lastresort', proxy.data.readonly);
-            proxyNode.setAttribute('color', proxy.data.color);
-            var matchesNode = xmlDoc.createElement('matches');
-            proxy.data.patterns.map( function (pattern) {
-            var matchNode = xmlDoc.createElement('match');
-                matchNode.setAttribute('enabled', pattern.data.enabled);
-                matchNode.setAttribute('name', pattern.data.name);
-                matchNode.setAttribute('pattern', pattern.data.url);
-                matchNode.setAttribute('isRegEx', (pattern.data.type != 'wildcard'));
-                matchNode.setAttribute('isBlackList', (pattern.data.whitelist != 'Inclusive'));
-                matchNode.setAttribute('temp', pattern.data.temp);
-                matchesNode.appendChild(matchNode);
-            });
-            proxyNode.appendChild(matchesNode);
-            var autoconfNode = xmlDoc.createElement('autoconf');
-            autoconfNode.setAttribute('url', proxy.data.configUrl);
-            autoconfNode.setAttribute('autoReload', proxy.data.reloadPAC);
-            autoconfNode.setAttribute('bypassFPForPAC', proxy.data.bypassFPForPAC);
-            autoconfNode.setAttribute('reloadFreqMins', proxy.data.reloadPACInterval);
-            proxyNode.appendChild(autoconfNode);
-            var manualconfNode = xmlDoc.createElement('manualconf');
-            manualconfNode.setAttribute('host', proxy.data.host);
-            manualconfNode.setAttribute('port', proxy.data.port);
-            manualconfNode.setAttribute('socksversion', proxy.data.socks.indexOf('5') != -1 ? '5' : '4');
-            manualconfNode.setAttribute('isSocks', proxy.data.isSocks);
-            proxyNode.appendChild(manualconfNode);
-            proxiesNode.appendChild(proxyNode);
-        });
-        xmlDoc.documentElement.appendChild(proxiesNode);
-        var quickAddNode = xmlDoc.createElement('quickadd');
-        quickAddNode.setAttribute("enabled", foxyProxy._settings.enabledQA);
-        quickAddNode.setAttribute("temp", foxyProxy._settings.patternTemplateQA);
-        if (!foxyProxy._settings.patternProxyQA || !foxyProxy._proxyList[foxyProxy._settings.patternProxyQA]) quickAddNode.setAttribute("proxy-id", "");
-        else quickAddNode.setAttribute("proxy-id", foxyProxy._proxyList[foxyProxy._settings.patternProxyQA].data.id);
-        var quickAddMatchNode = xmlDoc.createElement('match');
-        quickAddMatchNode.setAttribute('enabled', 'true');
-        quickAddMatchNode.setAttribute('name', 'true');
-        quickAddMatchNode.setAttribute('pattern', foxyProxy._settings.patternTemplateQA);
-        quickAddMatchNode.setAttribute('name', foxyProxy._settings.patternNameQA);
-        xmlDoc.documentElement.appendChild(quickAddNode);
-        return (new XMLSerializer()).serializeToString(xmlDoc);
-    };
-    */
 })();
