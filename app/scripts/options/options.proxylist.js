@@ -53,6 +53,7 @@ function saveProxies(){
         if (items.proxyList) {
             list = items.proxyList;
         }
+        
         onTabShow("");
         
     });
