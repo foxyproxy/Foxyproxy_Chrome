@@ -77,9 +77,9 @@ function Extension() {
                     }
                     if (proxy && (proxy.data.pac.length === 0 || !proxy.data.pac)) {
                         console.log("manual mode selected and proxy is " + proxy);
-                        // chrome.browserAction.setIcon({
-                        //     imageData: IconCreator.paintIcon(self.icon, proxy.data.color)
-                        // });
+                        chrome.browserAction.setIcon({
+                           imageData: IconCreator.paintIcon(self.icon, proxy.data.color)
+                        });
                         ProxyManager.applyProxy(ProxyManager.profileFromProxy(proxy));
                     } else {
                         console.log("manual mode selected with remote PAC and proxy is " + proxy);
@@ -187,7 +187,6 @@ function Extension() {
     };
 
 
-    /***** quickAdd / logging *****/
     //FIXME: onRequest is deprecated!
     // chrome.extension.onRequest.addListener(function (request, sender, callback) {
     // 
@@ -226,12 +225,7 @@ function Extension() {
     //     }
     //     });
     // }
-    // });
-    
-     
-     
-     //this.state = localStorage.getItem('state');
-     
+    // });     
 }
 
 // bootstrap
