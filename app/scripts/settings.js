@@ -76,11 +76,15 @@
                 storageApi.get(items.proxyList, function( proxies) {
                     var list = [];
 
-                    for (var p in proxies) {
-                        list.push(new Proxy(proxies[p]));
+                    for (var i = 0; i < items.proxyList.length; i++) {
+                        list.push(new Proxy(proxies[items.proxyList[i]]));
                     }
-                    
+                                        
                     foxyProxy._proxyList = list;
+                    
+                    if (foxyProxy.updateContextMenu) {
+                        foxyProxy.updateContextMenu();
+                    }
                 });
                 
             } else {
@@ -170,8 +174,8 @@
             if (items.proxyList && items.proxyList.length) {
 
                 storageApi.get(items.proxyList, function( proxies) {
-                    for (var p in proxies) {
-                        list.push(new Proxy(proxies[p]));
+                    for (var i = 0; i < items.proxyList.length; i++) {
+                        list.push(new Proxy(proxies[items.proxyList[i]]));
                     }
 
                     foxyProxy._proxyList = list;
@@ -231,7 +235,7 @@
                     chrome.tabs.query({"url": queryUrl},
                         function( tabs) {
                             for (var i = 0; i < tabs.length; i++) {
-                                chrome.tabs.sendMessage(tabs[i].id, items );
+                                chrome.tabs.sendMessage(tabs[i].id, { "settings": foxyProxy._settings, "proxyList": foxyProxy._proxyList } );
                             }
                         }
                     );
@@ -246,20 +250,30 @@
                 if (chrome.runtime.lastError) {
                     console.log("error updating settings: ");
                     console.log(chrome.runtime.lastError);
-                }
-                
-                if (typeof(sendResponse) == "function") {
-                    sendResponse(saveObj);
                 } else {
-                    chrome.tabs.query({"url": queryUrl},
-                        function( tabs) {
-                            for (var i = 0; i < tabs.length; i++) {
-                                chrome.tabs.sendMessage(tabs[i].id, { "settings": foxyProxy._settings, "proxyList": foxyProxy._proxyList });
-                            }
+                    if (saveObj.settings) {
+                        foxyProxy._settings = saveObj.settings;
+                    }
+                    if (saveObj.proxyList) {
+                        var pList = [];
+                        for (i = 0; i < saveObj.proxyList.length;i++) {
+                            pList.push(saveObj[saveObj.proxyList[i]]);
                         }
-                    );
-                    if (foxyProxy.updateContextMenu) {
-                        foxyProxy.updateContextMenu();
+                        foxyProxy._proxyList = pList;
+                    }
+                    if (typeof(sendResponse) == "function") {
+                        sendResponse({ "settings": foxyProxy._settings, "proxyList": foxyProxy._proxyList });
+                    } else {
+                        chrome.tabs.query({"url": queryUrl},
+                            function( tabs) {
+                                for (var i = 0; i < tabs.length; i++) {
+                                    chrome.tabs.sendMessage(tabs[i].id, { "settings": foxyProxy._settings, "proxyList": foxyProxy._proxyList });
+                                }
+                            }
+                        );
+                        if (foxyProxy.updateContextMenu) {
+                            foxyProxy.updateContextMenu();
+                        }
                     }
                 }
             });
