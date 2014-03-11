@@ -91,6 +91,10 @@ function onTabShow(tabName) {
     
     lastTabName = tabName;
     
+    if (tabName) {
+        $("#" + tabName).show();
+    }
+    
     chrome.runtime.getBackgroundPage(function( bgPage) {
         foxyProxy = bgPage.foxyProxy;
 
@@ -100,6 +104,8 @@ function onTabShow(tabName) {
 }
 
 $(document).ready(function() {
+    
+    $(".tabPage").hide(); // hide all tabs until we get settings loaded.
     
     $("#enabledQA").click(function(){
         if(list.length<=1) {
