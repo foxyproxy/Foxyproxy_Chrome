@@ -166,7 +166,10 @@ module.exports = function (grunt) {
                     src: [
                         '*.{ico,png,txt}',
                         'images/{,*/}*.{webp,gif}',
-                        '_locales/{,*/}*.json'
+                        '_locales/{,*/}*.json',
+                        'scripts/*.js',
+                        'scripts/options/*.js',
+                        'vendor/scripts/*.js'
                     ]
                 }, {
                     expand: true,
@@ -231,7 +234,6 @@ module.exports = function (grunt) {
                         grunt.log.writeln("Packaging archive as " +pkgName);
                         
                         return 'package/' + pkgName;
-                        //return "mikewashere.zip";
                     }
                 },
                 files: [{
