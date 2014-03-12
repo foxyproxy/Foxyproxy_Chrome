@@ -56,6 +56,7 @@ chrome.runtime.getBackgroundPage(function( bgPage) {
 });
 
 function saveSettings(){
+    console.log("saveSettings");
     foxyProxy.updateSettings({ "settings": settings});
 }
 

@@ -17,7 +17,6 @@
         "default_popup": "popup.html"
     },
     "background": {
-        //"page": "background.html",
         "persistent": false,
         "scripts": [
             "scripts/background.js",
@@ -34,15 +33,14 @@
     },
     "content_scripts": [
 
-    ],/*
+    ],
     "sandbox": {
         "pages": [
             "pac-sandbox.html"
         ]
-    },*/
+    },
     "options_page": "options.html",
     "permissions": [
-        //"background",
         "tabs",
         "contextMenus",
         "management",
