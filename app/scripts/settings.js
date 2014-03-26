@@ -145,7 +145,10 @@
         localStorage.setItem("useSyncStorage", useSyncStorage);
         storageApi = isSync ? chrome.storage.sync : chrome.storage.local;
         foxyProxy._settings.useSyncStorage = useSyncStorage;
-        if (foxyProxy.updateSettings) {
+        if (isSync) {
+            foxyProxy.getSettings();
+            foxyProxy.getProxyList();
+        } else if (foxyProxy.updateSettings) {
             foxyProxy.updateSettings({"settings": foxyProxy._settings, "proxyList": foxyProxy._proxyList });
         }
     };
