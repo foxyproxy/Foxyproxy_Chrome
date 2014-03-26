@@ -77,15 +77,17 @@ function Extension() {
                     }
                     if (proxy && (proxy.data.pac.length === 0 || !proxy.data.pac)) {
                         console.log("manual mode selected and proxy is " + proxy);
-                        // chrome.browserAction.setIcon({
-                        //    imageData: IconCreator.paintIcon(self.icon, proxy.data.color)
-                        // });
+                        console.log("icon is " + foxyProxy.icon);
+                        console.log(foxyProxy.icon);
+                        chrome.browserAction.setIcon({
+                            imageData: IconCreator.paintIcon(foxyProxy.icon, proxy.data.color)
+                        });
                         ProxyManager.applyProxy(ProxyManager.profileFromProxy(proxy));
                     } else {
                         console.log("manual mode selected with remote PAC and proxy is " + proxy);
-                        // chrome.browserAction.setIcon({
-                        //     imageData: IconCreator.paintIcon(self.icon, proxy.data.color)
-                        // });
+                        chrome.browserAction.setIcon({
+                             imageData: IconCreator.paintIcon(foxyProxy.icon, proxy.data.color)
+                        });
                         ProxyManager.applyAutoPac(proxy);
                     }
                 }

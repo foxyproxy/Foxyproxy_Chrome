@@ -70,10 +70,10 @@ var IconCreator = {
     RGBAStrToRGB: function(rgbaStr) {
         var brokenValue = rgbaStr.replace(/rgba\s*\(([\d\s,.]*)\)/i, '$1').split(',');
         var rgbaValue = {
-            r: parseInt($.trim(brokenValue[0]), 10),
-            g: parseInt($.trim(brokenValue[1]), 10),
-            b: parseInt($.trim(brokenValue[2]), 10),
-            a: parseFloat($.trim(brokenValue[3]))
+            r: parseInt(brokenValue[0].trim(), 10),
+            g: parseInt(brokenValue[1].trim(), 10),
+            b: parseInt(brokenValue[2].trim(), 10),
+            a: parseFloat(brokenValue[3].trim())
         };
         return rgbaValue;
     },
@@ -97,7 +97,9 @@ var IconCreator = {
         //var referenceColor = {r: 95, g: 167, b: 220};
         var referenceColor = {r: 231, g: 133, b: 0};
         var img = srcImage;
-	var canvas = $("<canvas width='" + srcImage.width + "' height='" + srcImage.height + "' class='fp-icon'>")[0];
+        //var canvas = $("<canvas width='" + srcImage.width + "' height='" + srcImage.height + "' class='fp-icon'>")[0];
+        var canvas = document.createElement('canvas');
+        
         var ctx = canvas.getContext("2d");
         ctx.globalCompositeOperation = 'copy';
         ctx.drawImage(img, 0, 0);
@@ -119,8 +121,8 @@ var IconCreator = {
                 }
             }
         }
-	ctx.putImageData(imgData,0,0);
-	$("#customImage")[0].src = canvas.toDataURL();
+        ctx.putImageData(imgData,0,0);
+    //$("#customImage")[0].src = canvas.toDataURL();
         return imgData;
     },
 
