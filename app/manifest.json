@@ -28,7 +28,9 @@
             "scripts/proxyManager.js",
             "scripts/extension.js",
             "scripts/settings.js",
-            "scripts/context-menus.js"
+            "scripts/context-menus.js",
+            "scripts/animate-icon.js"
+            
         ]
     },
     "content_scripts": [
