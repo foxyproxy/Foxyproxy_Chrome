@@ -30,7 +30,7 @@ function proxyLoad(proxy, edit){
     
     $("#proxyEnabled").setChecked(proxy.data.enabled).prop('disabled', proxy.data.readonly ? true: false);
     $("#proxyName").val(proxy.data.name).prop('disabled', proxy.data.readonly ? true: false);
-    $("#proxyNotes").val(proxy.data.notes).prop('disabled', proxy.data.readonly ? true: false);
+    $("#proxyNotes").val(proxy.data.notes.replace("<", "&lt;", 'gm').replace(">", "&gt;", 'gm')).prop('disabled', proxy.data.readonly ? true: false);
     $("#proxyCycle").setChecked(proxy.data.cycle);//.attr('disabled', proxy.data.readonly);
     $("#proxyDNS").setChecked(proxy.data.useDns);//.attr('disabled', proxy.data.readonly);		
     
@@ -135,8 +135,8 @@ function proxyLoad(proxy, edit){
 			list[selectedProxy].data.reloadPAC = $("#proxyPACReload").is(":checked");
 			//list[selectedProxy].data.bypassFPForPAC = $("#bypassFPForPAC").is(":checked");
                          
-			list[selectedProxy].data.name = $("#proxyName").val();
-			list[selectedProxy].data.notes = $("#proxyNotes").val();
+			list[selectedProxy].data.name = $("#proxyName").val().replace("<", "&lt;", 'gm').replace(">", "&gt;", 'gm');
+			list[selectedProxy].data.notes = $("#proxyNotes").val().replace("<", "&lt;", 'gm').replace(">", "&gt;", 'gm');
 			list[selectedProxy].data.type = $("input[name='proxyType']:checked").val();
 			list[selectedProxy].data.socks = $("input[name='proxySocks']:checked").val();
 			list[selectedProxy].data.host = $("#proxyHost").val();

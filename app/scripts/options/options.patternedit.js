@@ -3,8 +3,8 @@ function patternLoad(pattern, edit){
 		$(".modeQuickAdd").hide();
 		$("#patternEnabled").setChecked(pattern.data.enabled);
 		$("#patternTemporary").setChecked(pattern.data.temp);
-		$("#patternName").val(pattern.data.name);
-		$("#patternUrl").val(pattern.data.url);
+		$("#patternName").val(pattern.data.name.replace("<", "&lt;", 'gm').replace(">", "&gt;", 'gm'));
+		$("#patternUrl").val(pattern.data.url.replace("<", "&lt;", 'gm').replace(">", "&gt;", 'gm'));
 		$("input[name='patternWhitelist'][value='"+pattern.data.whitelist+"']").setChecked(true);
 		$("input[name='patternType'][value='"+pattern.data.type+"']").setChecked(true);
 		
@@ -24,8 +24,8 @@ function patternLoad(pattern, edit){
 							var patterns = list[selectedProxy].data.patterns;
 							patterns[selectedPattern].data.enabled = $("#patternEnabled").is(":checked");
 							patterns[selectedPattern].data.temp = $("#patternTemporary").is(":checked");
-							patterns[selectedPattern].data.name = $("#patternName").val();
-							patterns[selectedPattern].data.url = $("#patternUrl").val();
+							patterns[selectedPattern].data.name = $("#patternName").val().replace("<", "&lt;", 'gm').replace(">", "&gt;", 'gm');
+							patterns[selectedPattern].data.url = $("#patternUrl").val().replace("<", "&lt;", 'gm').replace(">", "&gt;", 'gm');
 							patterns[selectedPattern].data.whitelist = $("input[name='patternWhitelist']:checked").val();
 							patterns[selectedPattern].data.type = $("input[name='patternType']:checked").val();
 							if(!edit && patternDuplicates(patterns, pattern))
