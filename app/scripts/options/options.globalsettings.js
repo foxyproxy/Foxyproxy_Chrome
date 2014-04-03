@@ -38,8 +38,15 @@ chrome.runtime.onMessage.addListener(function( request, sender, sendResponse) {
         }
 
         if ('pageGlobal' == tabName) {
-            $("input[name='advancedMenuCheck']").attr('checked', settings.useAdvancedMenus);
-            $("input[name='showContextMenuCheck']").attr('checked', settings.showContextMenu);
+            if (foxyProxy.getFoxyProxyEdition && foxyProxy.getFoxyProxyEdition() != 'Basic') {
+                $("input[name='advancedMenuCheck']").attr('checked', settings.useAdvancedMenus);
+                $("input[name='showContextMenuCheck']").attr('checked', settings.showContextMenu);
+            } else {
+                $("input[name='advancedMenuCheck']").hide();
+                $("input[name='showContextMenuCheck']").hide();
+                $("label[for='advancedMenuCheck']").hide();
+                $("label[for='showContextMenuCheck']").hide();
+            }
             $("input[name='useChromeSyncCheck']").attr('checked', settings.useSyncStorage);
         }
     }
