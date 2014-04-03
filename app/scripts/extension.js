@@ -233,4 +233,4 @@ function Extension() {
 // bootstrap
 foxyProxy = new Extension();
 
-foxyProxy.state = localStorage.getItem('state');
+foxyProxy.state = localStorage.getItem('state') || 'disabled';
