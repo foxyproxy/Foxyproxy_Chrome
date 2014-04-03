@@ -45,7 +45,8 @@ chrome.runtime.getBackgroundPage(function( bgPage) {
         });
         
         foxyproxy.getSettings(function( items) {
-            if (!foxyproxy._settings.enabledQA || foxyproxy.state=='disabled' || 'Basic' == foxyproxy.getFoxyProxyEdition()) {
+            var settings = items.settings;
+            if ( (settings && !settings.enabledQA) || foxyproxy.state=='disabled' || 'Basic' == foxyproxy.getFoxyProxyEdition()) {
                 $('#quickAdd').hide();
             }
         });
