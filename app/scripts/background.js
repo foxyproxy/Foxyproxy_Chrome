@@ -6,9 +6,10 @@ chrome.runtime.onInstalled.addListener(function(details) {
     
     if (details.reason ) {
         var target = chrome.i18n.getMessage("FoxyProxy_Target").toLowerCase(),
-            edition = chrome.i18n.getMessage("FoxyProxy_Edition").toLowerCase();
+            edition = chrome.i18n.getMessage("FoxyProxy_Edition").toLowerCase(),
+            version = chrome.i18n.getMessage("FoxyProxy_Version").split('.');
         
-        if ("dev" == edition) {
+        if ("dev" == edition || version.length > 3) {
             return; //short-circuit to avoid opening tabs in dev mode.
         }
         

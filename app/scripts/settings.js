@@ -23,7 +23,9 @@
         if (localSettings) {
             console.log("migrating settings from localStorage");
             settings = JSON.parse(localSettings);
-            localStorage.removeItem("settings");
+            
+            storageApi.set({"settings": settings});
+            //localStorage.removeItem("settings");
         }
 
         var localProxyList = localStorage.getItem("proxyList");
@@ -41,7 +43,8 @@
                 return t;
             });
         
-            localStorage.removeItem("proxyList");
+            storageApi.set({"proxyList": proxyList});
+            //localStorage.removeItem("proxyList");
         }
 
     } ///// end migration code
