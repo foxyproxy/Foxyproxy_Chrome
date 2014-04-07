@@ -4,7 +4,7 @@
             "release": "3",
             "major":   "0",
             "minor":   "1",
-            "build":   "1"
+            "build":   "2"
         },
         "Standard": {
             "release": "3",
@@ -14,8 +14,7 @@
         "Basic": {
             "release": "1",
             "major":   "1",
-            "minor":   "0",
-            "build":   "1"
+            "minor":   "1"
         }
     },
     
