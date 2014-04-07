@@ -137,7 +137,7 @@ ProxyManager.applyProxy = function (a) {
  */
 ProxyManager.generatePacAutoScript = function () {
   var a = [],
-      b = foxyProxy.proxyList;
+      b = foxyProxy._proxyList;
   if (b && b.length) { 
       a.push("function FindProxyForURL(url, host) {");
       for (var c = 0, sz=b.length; c < sz; c++) {
@@ -253,7 +253,7 @@ ProxyManager.getPatternForUrl = function (a) {
     proxy: null,
     pattern: null
   };
-  $.each(foxyProxy.proxyList, function (c, proxy) {
+  $.each(foxyProxy._proxyList, function (c, proxy) {
     proxy.data.enabled && $.each(proxy.data.patterns, function (c, e) {
         console.log("testing pattern against " + a, e);
         console.log("e.test is: ", e.test(a));
@@ -274,7 +274,7 @@ ProxyManager.getPatternForUrl = function (a) {
     return b.proxy == null;
   });
   if (b.proxy == null) {
-    b.proxy = foxyProxy.proxyList[foxyProxy.proxyList.length - 1];
+    b.proxy = foxyProxy._proxyList[foxyProxy._proxyList.length - 1];
   }
   return b;
 };
