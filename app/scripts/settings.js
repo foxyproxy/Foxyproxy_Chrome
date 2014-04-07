@@ -166,14 +166,20 @@
         console.log("foxyProxy setSync: " + isSync);
         var useSyncStorage = !!isSync;
         localStorage.setItem("useSyncStorage", useSyncStorage);
-        storageApi = useSyncStorage ? chrome.storage.sync : chrome.storage.local;
-        if (useSyncStorage) {
-            foxyProxy.getSettings();
-            foxyProxy.getProxyList();
-        } else if (foxyProxy.updateSettings) {
-            foxyProxy._settings.useSyncStorage = useSyncStorage;
-            foxyProxy.updateSettings({"settings": foxyProxy._settings, "proxyList": foxyProxy._proxyList });
-        }
+        
+        foxyProxy._settings.useSyncStorage = useSyncStorage;
+        
+        foxyProxy.updateSettings({"settings": foxyProxy._settings, "proxyList": foxyProxy._proxyList }, 'setSync',
+        function() {
+            storageApi = foxyProxy._settings.useSyncStorage ? chrome.storage.sync : chrome.storage.local;
+            if (foxyProxy._settings.useSyncStorage) {
+                // call getSettings and getProxyList to get sync'd changed and broadcast sync change to UI.
+                console.log("sync'ing settings...");
+                foxyProxy.getSettings();
+                foxyProxy.getProxyList();
+            }
+        });
+
     };
     
     foxyProxy.getSettings = function getSettings( callback) {
