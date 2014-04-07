@@ -64,9 +64,9 @@ function Extension() {
             case "auto": // foxyproxy is set to by pattern proxy - auto
                 console.log("patterns mode is selected");
                 ProxyManager.applyAuto(ProxyManager.profileAuto());
-                chrome.browserAction.setIcon({
-                    path: 'images/logo.png'
-                });
+                    chrome.browserAction.setIcon({
+                        path: 'images/logo.png'
+                    });
                 break;
 
             default: // single proxy selected
