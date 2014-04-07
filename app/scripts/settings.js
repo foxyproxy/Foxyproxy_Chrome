@@ -78,14 +78,15 @@
             }
             
             try {
+                console.log("trying to load proxy list...");
                 foxyProxy.getProxyList(function( items) {
-                    if (!items || !items.settings) {
+                    if (!items || !items.proxyList) {
                         if (localProxyList) {
                             console.log("using localStorage proxyList");
                             foxyProxy._proxyList = localProxyList;
                         } else {
                             console.log("set proxyList to default");
-                            foxyProxy._proxyList = defaults._proxyList;
+                            foxyProxy._proxyList = defaults.proxyList;
                         }
                     }
                 });
@@ -98,7 +99,7 @@
                     foxyProxy._proxyList = localProxyList;
                 } else {
                     console.log("set proxyList to default");
-                    foxyProxy._proxyList = defaults._proxyList;
+                    foxyProxy._proxyList = defaults.proxyList;
                 }
             }
             
@@ -106,11 +107,6 @@
                 console.log("got storage.onChanged for area: " + areaName);
                 console.log(changes);
             });
-
-            // if ('Basic' != foxyProxy.getFoxyProxyEdition() && foxyProxy.updateContextMenu) {
-            //     foxyProxy.updateContextMenu();
-            // }
-
         }
     }
     
@@ -170,7 +166,7 @@
         console.log("foxyProxy setSync: " + isSync);
         var useSyncStorage = !!isSync;
         localStorage.setItem("useSyncStorage", useSyncStorage);
-        storageApi = isSync ? chrome.storage.sync : chrome.storage.local;
+        storageApi = useSyncStorage ? chrome.storage.sync : chrome.storage.local;
         if (useSyncStorage) {
             foxyProxy.getSettings();
             foxyProxy.getProxyList();
@@ -185,19 +181,25 @@
             if (chrome.runtime.lastError) {
                 console.log("failed to get settings from chrome.storage");
                 console.log(chrome.runtime.lastError);
-            } else {            
-                foxyProxy._settings = items.settings;
-                if (callback) {
-                    callback(items);
+            } else {
+                if (items.settings) {
+                    foxyProxy._settings = items.settings;
+                } else {
+                    console.log("no settings found in chrome.storage.");
+                }
+                    
+                if (typeof(callback) == "function") {
+                    callback({ "settings": foxyProxy._settings });
                 } else {
                     chrome.tabs.query({"url": queryUrl},
                         function( tabs) {
                             for (var i = 0; i < tabs.length; i++) {
-                                chrome.tabs.sendMessage(tabs[i].id, items);
+                                chrome.tabs.sendMessage(tabs[i].id, { "settings": foxyProxy._settings });
                             }
                         }
                     );
                 }
+
             }
         });
     };
@@ -232,7 +234,22 @@
 
                         }
                     });
+                } else {
+                    console.log("no proxies found in chrome.storage.");
+                    if (typeof(callback) == "function") {
+                        callback({ "proxyList": foxyProxy._proxyList });
+                    } else {
+                        chrome.tabs.query({"url": queryUrl },
+                            function( tabs) {
+                                console.log("sending proxyList to " + tabs.length + " foxyproxy tabs");
+                                for (var i = 0; i < tabs.length; i++) {
+                                    chrome.tabs.sendMessage(tabs[i].id, { "proxyList": foxyProxy._proxyList });
+                                }
+                            }
+                        );
+                    }
                 }
+                
             }
         });
     };
@@ -267,9 +284,6 @@
                 if (chrome.runtime.lastError) {
                     console.log("error updating settings: ");
                     console.log(chrome.runtime.lastError);
-                    
-                    //TODO: handle errors
-                    
                 } else {
                     if (saveObj.settings) {
                         foxyProxy._settings = saveObj.settings;
