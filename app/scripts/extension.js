@@ -159,10 +159,9 @@ function Extension() {
     };
     
     this.toggleSyncStorage = function() {
-        var useSyncStorage = JSON.parse(localStorage.getItem("useSyncStorage"));
-        console.log("toggling sync storage from " + useSyncStorage + " to " + !useSyncStorage);
+        console.log("toggling sync storage");
         
-        foxyProxy.setSync(!useSyncStorage);
+        foxyProxy.setSync(!foxyProxy._settings.useSyncStorage);
     };
     
     this.toggleAdvancedMenus = function toggleAdvancedMenus() {
