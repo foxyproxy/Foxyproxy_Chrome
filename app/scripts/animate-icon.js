@@ -1,6 +1,4 @@
 (function() {
-    //self.icon = $('#image')[0];
-    //self.currentIcon = $("#customImage")[0];
 
     var icon = document.createElement('img');
     icon.setAttribute('src', 'images/logo.png');
@@ -10,6 +8,9 @@
     var animationFrames = 36;
     var animationSpeed = 10;
     var canvas = document.createElement('canvas');
+    canvas.setAttribute('width', 19);
+    canvas.setAttribute('height', 19);
+    
     var canvasContext = canvas.getContext('2d');
     var rotation = 0;
     var animating = false;
@@ -39,7 +40,7 @@
         canvasContext.translate(
             Math.ceil(canvas.width / 2), Math.ceil(canvas.height / 2));
         canvasContext.rotate(2 * Math.PI * ease(rotation));
-        canvasContext.drawImage(self.currentIcon, -Math.ceil(canvas.width / 2), -Math.ceil(canvas.height / 2));
+        canvasContext.drawImage(foxyProxy.currentIcon, -Math.ceil(canvas.width / 2), -Math.ceil(canvas.height / 2));
         canvasContext.restore();
         chrome.browserAction.setIcon({
             imageData: canvasContext.getImageData(0, 0, canvas.width, canvas.height)
@@ -55,12 +56,12 @@
                 });
             } else {
             chrome.browserAction.setIcon({
-                imageData: self.currentImageData //FIXME
+                imageData: foxyProxy.currentImageData
             });
             }
             if (count) {
                 setTimeout(function () {
-                    self.animateBlink(count - 1, 1);
+                    foxyProxy.animateBlink(count - 1, 1);
                 }, 500);
             } else {
                 animating = false;
