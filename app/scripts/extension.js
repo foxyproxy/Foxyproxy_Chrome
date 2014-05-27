@@ -223,6 +223,38 @@ function Extension() {
     });
     
     /*
+     * quick-add command listener
+     */
+    chrome.commands.onCommand.addListener(function( command) {
+        console.log("got command: " +command);
+        if (command == "quick-add" ) {
+            // get current url
+            chrome.tabs.query(
+                { 
+                    "active": true,
+                    //"currentWindow": true,
+                    "lastFocusedWindow": true,
+                    "windowType": "normal"
+                },
+                function( tabs ) {
+                    if (tabs[0]) {
+                        console.log("url is : " + tabs[0].url);
+                        self.options('addpattern#' + tabs[0].url);
+                    }
+                }
+            );
+            // chrome.tabs.getCurrent(function( tab) {
+            //     if (tab) {
+            //         var url = tab.url;
+            //         console.log("url is : " + url);
+            //         self.options('addpattern#' + url);
+            //         
+            //     }
+            //  });
+        }
+    });
+    
+    /*
      *
      *
     chrome.webNavigation.onCompleted.addListener(function () {
