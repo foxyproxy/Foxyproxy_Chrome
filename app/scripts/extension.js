@@ -151,6 +151,11 @@ function Extension() {
                 });
             }
         });
+        
+        // dispatch data via message api
+        if (data) {
+            chrome.tabs.sendMessage(self.optionsTabId, { "data": data });
+        }
     };
     
     this.toggleSyncStorage = function() {
