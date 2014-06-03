@@ -3,8 +3,8 @@
         "Beta": {
             "release": "3",
             "major":   "0",
-            "minor":   "1",
-            "build":   "2"
+            "minor":   "2",
+            "build":   "0"
         },
         "Standard": {
             "release": "3",
