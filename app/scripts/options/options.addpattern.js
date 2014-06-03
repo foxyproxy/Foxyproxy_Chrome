@@ -1,4 +1,5 @@
 function addPattern(param){
+    //TODO: update for async settings
     if(!settings.enabledQA || !list[settings.patternProxyQA])
     {
 	
