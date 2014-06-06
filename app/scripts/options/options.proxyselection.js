@@ -81,7 +81,7 @@ function proxySelection(param){
 						}
 						list[id].data.host = aUri.domain;
 						list[id].data.port = aUri.port;
-						saveProxies();
+						saveProxies(list);
 						updateProxyTable(id);
 						$(this).dialog("close");
 					} else {
