@@ -153,7 +153,7 @@ window.onload = function () {
           try {
             importProxies(xmlDoc);
             updateProxyTable();
-            saveProxies();
+            saveProxies(list);
           } catch (e) {
             console.log("error importing", e);
           }
@@ -168,7 +168,7 @@ window.onload = function () {
             }
           }
           updateProxyTable();
-          saveProxies();
+          saveProxies(list);
           addProxies();
         };
 
