@@ -56,7 +56,7 @@ function proxySelectionPattern(forAll){
 								list[id].data.patterns.push(pattern);
 						});
 						
-						saveProxies();
+						saveProxies(list);
 						updateProxyTable(id);
 						if(hasDuplicates)alert(chrome.i18n.getMessage("error_duplicate_pattern"));
 						$(this).dialog("close");
