@@ -81,3 +81,12 @@ function addPattern(param){
     });
 
 }
+
+// link to keyboard shortcuts
+$(document).ready(function() {
+    $("a#configureKeyboardLink").click(function() {
+        chrome.tabs.create({
+            "url": "chrome://extensions/configureCommands"
+        });
+    });
+});
