@@ -54,16 +54,9 @@
     "commands": {
         "quick-add": {
             "suggested_key": {
-              "default": "Alt+Shift+A",
-                "mac": "Alt+Shift+A"
+              "default": "Ctrl+Shift+A"
             },
-            "description": "add a url pattern to foxyproxy"
-        },
-        
-        "_execute_browser_action": {
-            "suggested_key": {
-              "default": "Alt+Shift+F"
-            }
+            "description": "Quick Add a URL pattern to FoxyProxy"
         }
     }
 }
