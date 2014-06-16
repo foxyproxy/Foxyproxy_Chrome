@@ -45,14 +45,16 @@ chrome.runtime.getBackgroundPage(function( bgPage) {
 });
 
 
-function saveProxies(){
+function saveProxies(list){
 
     bg.foxyProxy.updateSettings({ "proxyList": list }, "options", function( items) {
-        console.log("saveProxies got callback");
-        console.log(items);
+        //console.log("saveProxies(list got callback");
+        //console.log(items);
         if (items.proxyList) {
             list = items.proxyList;
         }
+        
+        bg.foxyProxy.applyState();
         
         onTabShow("");
         
@@ -188,7 +190,7 @@ function deleteProxy(index, deleteDefault) {
   if(!list[index].data.readonly || 
      (list[index].data.readonly && deleteDefault)) {
     list.splice(index, 1);
-    saveProxies();
+    saveProxies(list);
     updateProxyTable();
     if(list.length<=1) {
       chrome.extension.getBackgroundPage().foxyProxy.settings.enabledQA=false;
@@ -200,7 +202,7 @@ function copySelectedProxy() {
     selectedProxy = oTable.fnGetSelectedPosition();
     if(typeof selectedProxy=='number' && selectedProxy>=0 && !list[selectedProxy].data.readonly){
         list.splice(selectedProxy, 0, new Proxy(list[selectedProxy]));
-        saveProxies();
+        saveProxies(list);
         updateProxyTable(selectedProxy);
     }
 }
@@ -211,7 +213,7 @@ function moveSelectedProxyUp(){
         var buf = list[selectedProxy-1];
         list[selectedProxy-1] = list[selectedProxy];
         list[selectedProxy] = buf;
-        saveProxies();
+        saveProxies(list);
         updateProxyTable(selectedProxy-1);
     }
 }
@@ -222,7 +224,7 @@ function moveSelectedProxyDown(){
         var buf = list[selectedProxy+1];
         list[selectedProxy+1] = list[selectedProxy];
         list[selectedProxy] = buf;
-        saveProxies();
+        saveProxies(list);
         updateProxyTable(selectedProxy+1);
     }
 }

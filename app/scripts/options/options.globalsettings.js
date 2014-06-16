@@ -107,6 +107,7 @@ function onTabShow(tabName) {
         foxyProxy = bgPage.foxyProxy;
 
         foxyProxy.getSettings();
+        foxyProxy.getProxyList();
     });
 
 }

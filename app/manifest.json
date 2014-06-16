@@ -48,6 +48,15 @@
         "management",
         "proxy",
         "storage",
+        "webNavigation",
         "<all_urls>"
-    ]
+    ],
+    "commands": {
+        "quick-add": {
+            "suggested_key": {
+              "default": "Ctrl+Shift+A"
+            },
+            "description": "Quick Add a URL pattern to FoxyProxy"
+        }
+    }
 }
