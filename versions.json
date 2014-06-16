@@ -3,13 +3,13 @@
         "Beta": {
             "release": "3",
             "major":   "0",
-            "minor":   "2",
-            "build":   "4"
+            "minor":   "3",
+            "build":   "0"
         },
         "Standard": {
             "release": "3",
             "major":   "0",
-            "minor":   "1"
+            "minor":   "2"
         },
         "Basic": {
             "release": "1",
