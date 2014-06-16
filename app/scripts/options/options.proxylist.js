@@ -48,11 +48,13 @@ chrome.runtime.getBackgroundPage(function( bgPage) {
 function saveProxies(list){
 
     bg.foxyProxy.updateSettings({ "proxyList": list }, "options", function( items) {
-        console.log("saveProxies(list got callback");
-        console.log(items);
+        //console.log("saveProxies(list got callback");
+        //console.log(items);
         if (items.proxyList) {
             list = items.proxyList;
         }
+        
+        bg.foxyProxy.applyState();
         
         onTabShow("");
         
