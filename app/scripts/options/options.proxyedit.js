@@ -154,7 +154,7 @@ function proxyLoad(proxy, edit){
 			
 			updateProxyTable();
 			//oTable.fnSelectRow(selectedProxy);
-			saveProxies();
+			saveProxies(list);
 
 			$( this ).dialog( "close" );
 		    }

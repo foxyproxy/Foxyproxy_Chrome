@@ -247,26 +247,24 @@ ProxyManager.proxyToScript = function (proxy) {
   return c;
 };
 
-ProxyManager.getPatternForUrl = function (a) {
+ProxyManager.getPatternForUrl = function (url) {
   console.log("Looking for pattern");
   var b = {
     proxy: null,
     pattern: null
   };
-  $.each(foxyProxy._proxyList, function (c, proxy) {
-    proxy.data.enabled && $.each(proxy.data.patterns, function (c, e) {
-        console.log("testing pattern against " + a, e);
-        console.log("e.test is: ", e.test(a));
-        if (e.data.enabled && e.test(a)) {
-          if (e.data.whitelist != 'Inclusive') {
+  foxyProxy._proxyList.every( function (proxy) {
+    proxy.data.enabled && proxy.data.patterns.every( function ( pattern) {
+        console.log("testing pattern against " + url, pattern);
+        if (pattern.data.enabled && pattern.test(url)) {
+          if (pattern.data.whitelist != 'Inclusive') {
               b.proxy = null;
               b.pattern = null;
-              console.log("returning false from $.each");
               return false;
           }
           b.proxy = proxy;
-          b.pattern = e;
-          console.log("found pattern", e);
+          b.pattern = pattern;
+          console.log("found pattern", pattern);
           console.log("proxy for pattern is:", proxy.data.name);
       }
       return true;

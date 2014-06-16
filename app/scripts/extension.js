@@ -14,7 +14,7 @@ function Extension() {
     });
     
     this.__defineSetter__("state", function (_state) {
-    //-- Handler for switching between the extension state (available states is [disabled | auto | <proxy.data.id>])
+    //-- Handler for switching between the extension state (available states are [disabled | auto | <proxy.data.id>])
         console.log("setting state...");
         state = _state;
         reloadTimers();
@@ -52,46 +52,35 @@ function Extension() {
 
     
     this.applyState = function () {
+        var color;
         console.log("State change: " + this.state);
+        
         switch (this.state) {
             case "disabled": // foxyproxy is disabled
                 console.log("disabled");
                 ProxyManager.applyDisable(ProxyManager.directConnectionProfile);
-                chrome.browserAction.setIcon({
-                    path: 'images/logo-disabled.png'
-                });
                 break;
             case "auto": // foxyproxy is set to by pattern proxy - auto
                 console.log("patterns mode is selected");
                 ProxyManager.applyAuto(ProxyManager.profileAuto());
-                    chrome.browserAction.setIcon({
-                        path: 'images/logo.png'
-                    });
                 break;
 
             default: // single proxy selected
-                var proxy = null;
-                if (self._proxyList) {
-                    for (var i = 0; i < self._proxyList.length; i++) {
-                        if (self._proxyList[i].data.id == this.state) proxy = self._proxyList[i];
-                    }
-                    if (proxy && (proxy.data.pac.length === 0 || !proxy.data.pac)) {
+                var proxy = this.getCurrentProxy();
+
+                if (proxy) {
+                    color = proxy.data.color;
+                    if (proxy.data.pac.length === 0 || !proxy.data.pac) {
                         console.log("manual mode selected and proxy is " + proxy);
-                        console.log("icon is " + foxyProxy.icon);
-                        console.log(foxyProxy.icon);
-                        chrome.browserAction.setIcon({
-                            imageData: IconCreator.paintIcon(foxyProxy.icon, proxy.data.color)
-                        });
                         ProxyManager.applyProxy(ProxyManager.profileFromProxy(proxy));
                     } else {
                         console.log("manual mode selected with remote PAC and proxy is " + proxy);
-                        chrome.browserAction.setIcon({
-                             imageData: IconCreator.paintIcon(foxyProxy.icon, proxy.data.color)
-                        });
                         ProxyManager.applyAutoPac(proxy);
                     }
                 }
+                
         }
+        foxyProxy.updateIcon(color);
     };
     
     /**
@@ -108,28 +97,34 @@ function Extension() {
         return edition;
     };
     
+    
+    /*
+     * Returns the current proxy object in use, if a single proxy is selected.
+     */
+    this.getCurrentProxy = function getCurrentProxy() {
+        if (self._proxyList) {
+            for (var i = 0; i < self._proxyList.length; i++) {
+                if (self._proxyList[i].data.id == this.state) {
+                    return self._proxyList[i];
+                }
+            }
+        }
+    };
+    
     // used by quickAdd feature
     this.getProxyForUrl = function (url, callback) {
-        switch (this.state) {
-            case "disabled":
-                break;
-            case "auto":
-                var res = ProxyManager.getPatternForUrl(url);
-                if (res.proxy) {
-                    callback(url, res.proxy, res.pattern);
-                    return;
-                }
-                break;
-            default:
-                var proxy = null;
-                for (var i = 0; i < proxyList.length; i++)
-                    if (proxyList[i].data.id == this.state) proxy = proxyList[i];
-                if (proxy) {
-                    callback(url, proxy);
-                    return;
-                }
+        if (this.state == 'auto') {
+            var res = ProxyManager.getPatternForUrl(url);
+            if (res.proxy) {
+                callback(url, res.proxy, res.pattern);
+                return;
+            }
+        } else {
+            var proxy = this.getCurrentProxy();
+            callback(url, proxy);
+            return;
+            
         }
-        callback(url);
     };
 
 
@@ -156,6 +151,11 @@ function Extension() {
                 });
             }
         });
+        
+        // dispatch data via message api
+        if (data) {
+            chrome.tabs.sendMessage(self.optionsTabId, { "data": data });
+        }
     };
     
     this.toggleSyncStorage = function() {
@@ -186,8 +186,86 @@ function Extension() {
         
         foxyProxy.updateSettings({"settings": foxyProxy._settings });
     };
+    
+    this.updateIcon = function updateIcon( color) {
+        if (foxyProxy.state == 'disabled') {
+            chrome.browserAction.setIcon({
+                path: 'images/logo-disabled.png'
+            });
+        } else if (foxyProxy.state == 'auto') {
+            chrome.browserAction.setIcon({
+                path: 'images/logo.png'
+            });
+        } else if (color) {
+            foxyProxy.currentIcon = foxyProxy.icon;
+            foxyProxy.currentImageData = IconCreator.paintIcon(foxyProxy.icon, color);
+            chrome.browserAction.setIcon({
+                imageData: foxyProxy.currentImageData
+            });
+        }
+    };
 
-
+    /*
+     * Listen for beforeNavigate events and update foxyProxy icon
+     */
+    chrome.webNavigation.onBeforeNavigate.addListener(function( details) {
+        var url = details.url;
+        if (url) {
+            foxyProxy.getProxyForUrl(url, function(url, proxy, pattern) {
+                if (proxy) {
+                    foxyProxy.updateIcon(proxy.data.color);
+                    
+                    if (foxyProxy.state == 'auto') {
+                        foxyProxy.animateBlink(6);
+                    } else {
+                        foxyProxy.animateFlip();
+                    }
+                } else {
+                    foxyProxy.updateIcon();
+                }
+            });
+        }
+    });
+    
+    /*
+     * quick-add command listener
+     */
+    chrome.commands.onCommand.addListener(function( command) {
+        console.log("got command: " +command);
+        if (command == "quick-add" ) {
+            // get current url
+            chrome.tabs.query(
+                { 
+                    "active": true,
+                    //"currentWindow": true,
+                    "lastFocusedWindow": true,
+                    "windowType": "normal"
+                },
+                function( tabs ) {
+                    if (tabs[0]) {
+                        console.log("url is : " + tabs[0].url);
+                        self.options('addpattern#' + tabs[0].url);
+                    }
+                }
+            );
+            // chrome.tabs.getCurrent(function( tab) {
+            //     if (tab) {
+            //         var url = tab.url;
+            //         console.log("url is : " + url);
+            //         self.options('addpattern#' + url);
+            //         
+            //     }
+            //  });
+        }
+    });
+    
+    /*
+     *
+     *
+    chrome.webNavigation.onCompleted.addListener(function () {
+        foxyProxy.updateIcon();
+    }); */
+    
     //FIXME: onRequest is deprecated!
     // chrome.extension.onRequest.addListener(function (request, sender, callback) {
     // 
