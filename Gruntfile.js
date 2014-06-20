@@ -296,11 +296,6 @@ module.exports = function (grunt) {
             
         grunt.log.writeln("Edition: " + edition);
         
-        if (edition != 'Standard' || edition != 'Basic') {
-            grunt.fail.fatal("Invalid edition specified. Only 'Basic' and 'Standard' are supported.");
-            return false;
-        }
-        
         // reset options in case we used defaults
         grunt.option('target', target);
         grunt.option('edition', edition);
@@ -411,14 +406,16 @@ module.exports = function (grunt) {
                 return false;
             }
             
-            //grunt.log.writeln('copying dist.crx to ' + pkgName + '.crx');
-            //grunt.file.copy("dist.crx", pkgName + ".crx");
+            grunt.log.writeln('Copying output files...');
+            grunt.file.copy('./packageCrx/' + pkgName + ".crx", 'package/' + pkgName + ".crx");
+            grunt.file.copy('./packageCrx/' + pkgName + ".pem", 'package/' + pkgName + ".pem");
+            
+            grunt.file.delete('./packageCrx');
             
             grunt.log.writeln('done.');
             done();
         });
         
-        grunt.log.writeln('fin.');
     });
     
 
@@ -426,6 +423,12 @@ module.exports = function (grunt) {
         'jshint',
         'test',
         'build'
+    ]);
+    
+    grunt.registerTask('release', [
+        'clean',
+        'build',
+        'package'
     ]);
     
     grunt.loadNpmTasks('grunt-contrib-copy');
