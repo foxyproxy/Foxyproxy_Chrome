@@ -338,6 +338,54 @@ module.exports = function (grunt) {
         
     });
     
+    grunt.registerTask('package', ['build'], function() {
+        // FIXME: defaults to Mac path because mcollins develops on a Mac :-/
+        var chromePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+        
+        var edition = grunt.option('edition') || 'Standard';
+        var keyfile = grunt.option('keyfile') || (yeomanConfig.dist + '/../' + edition + '.pem');
+        
+        
+        var messages = grunt.file.readJSON(yeomanConfig.dist + '/_locales/en/messages.json');
+        
+        var pkgName = 'foxyproxy-' +
+                messages.FoxyProxy_Target.message + '-' +
+                messages.FoxyProxy_Edition.message + '-' +
+                messages.FoxyProxy_Version.message;
+                
+                
+        grunt.log.writeln("Packaging Chrome Extension (.crx) file");
+        
+        grunt.log.writeln("keyfile is: " + keyfile);
+        grunt.log.writeln('ChromePath is: ' + chromePath);
+        
+        
+        grunt.util.spawn({
+            cmd: chromePath,
+            args: [ 
+                "--pack-extension=dist",
+                "--pack-extension-key=" + keyfile
+            ],
+            opts: {
+                cwd: '.',
+                stdio: 'inherit'
+            }
+        },
+        function(error, result, code) {
+            grunt.log.writeln('Finished packaging extension');
+            if (error) {
+                grunt.log.writeln("Failed to sign package file.");
+                grunt.log.writeln("Exit " + code + ":");
+            }
+            grunt.log.writeln(result);
+            
+            grunt.log.writeln('copying dist.crx to ' + pkgName + '.crx');
+            grunt.file.copy("dist.crx", pkgName + ".crx");
+        });
+        
+        grunt.log.writeln('fin.');
+    });
+    
 
     grunt.registerTask('default', [
         'jshint',
