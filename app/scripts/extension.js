@@ -4,8 +4,9 @@ function Extension() {
     var _settings,
         _proxyList,
         state,
-        self = this;
-        timers = [];
+        self = this,
+        timers = [],
+        optionsPageUrl = "chrome-extension://" + chrome.i18n.getMessage("@@extension_id") + "/options.html";
 
     //this.log = new FoxyLog();
     
@@ -127,35 +128,32 @@ function Extension() {
         }
     };
 
-
+    //-- This function opens options page with passed data parametr or update existent tab with opened options page if exists
     this.options = function (data) {
-        //-- This function opens options page with passed data parametr or update existent tab with opened options page if exists
-        var bOptionsPageFound = false;
-        chrome.tabs.getAllInWindow(null, function (tabs) { //FIXME: replace tab.url with chrome.extension.getViews to remove tabs permission
-            tabs.forEach(function ( tab) {
-                if (tab.url.indexOf(chrome.extension.getURL("options.html")) === 0) { 
-                    bOptionsPageFound = true;
-                    chrome.tabs.update(tab.id, {
-                        url: chrome.extension.getURL("options.html") + "#" + data,
-                        selected: true
-                    });
-                    self.optionsTabId = tab.id;
-                }
-            });
-            if (!bOptionsPageFound) {
-                chrome.tabs.create({
-                    url: chrome.extension.getURL("options.html") + "#" + data,
-                    selected: true
-                }, function( tab) {
-                    self.optionsTabId = tab.id;
-                });
+        var callback = function( tab) {
+            // dispatch data via message api
+            if (data) {
+                self.optionsTabId = tab.id;
+                chrome.tabs.sendMessage(self.optionsTabId, { "data": data });
             }
-        });
+        };
         
-        // dispatch data via message api
-        if (data) {
-            chrome.tabs.sendMessage(self.optionsTabId, { "data": data });
-        }
+        chrome.tabs.query({
+            "url": optionsPageUrl
+            }, function (tabs) { 
+                if (tabs.length > 0) { 
+                        chrome.tabs.update(tabs[0].id, {
+                            url: optionsPageUrl + "#" + data,
+                            selected: true
+                        }, callback);
+                } else  {
+                    chrome.tabs.create({
+                        url: optionsPageUrl + "#" + data,
+                        selected: true
+                    }, callback);
+                }
+            }
+        );
     };
     
     this.toggleSyncStorage = function() {
