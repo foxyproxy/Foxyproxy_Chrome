@@ -296,7 +296,6 @@ module.exports = function (grunt) {
             
         grunt.log.writeln("Edition: " + edition);
         
-        // FIXME: would be nice to have error handling, but this always seems to fail the build even with the correct edition specified.
         if (edition != 'Standard' || edition != 'Basic') {
             grunt.fail.fatal("Invalid edition specified. Only 'Basic' and 'Standard' are supported.");
             return false;
