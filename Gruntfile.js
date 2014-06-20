@@ -180,6 +180,12 @@ module.exports = function (grunt) {
                     ]
                 }]
             },
+            packageCrx: {
+                expand: true,
+                cwd: '<%= yeoman.dist %>',
+                src: '**',
+                dest: 'packageCrx/<%= foxyProxy.pkgName %>',
+            }
             // manifest: {
             //     files: [{ 
             //         expand: true,
@@ -339,12 +345,6 @@ module.exports = function (grunt) {
     });
     
     grunt.registerTask('package', ['build'], function() {
-        // FIXME: defaults to Mac path because mcollins develops on a Mac :-/
-        var chromePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
-        
-        var edition = grunt.option('edition') || 'Standard';
-        var keyfile = grunt.option('keyfile') || (yeomanConfig.dist + '/../' + edition + '.pem');
-        
         
         var messages = grunt.file.readJSON(yeomanConfig.dist + '/_locales/en/messages.json');
         
@@ -353,34 +353,69 @@ module.exports = function (grunt) {
                 messages.FoxyProxy_Edition.message + '-' +
                 messages.FoxyProxy_Version.message;
                 
-                
-        grunt.log.writeln("Packaging Chrome Extension (.crx) file");
+        grunt.log.writeln('setting pkgName to: ' + pkgName);
+        grunt.config.set('foxyProxy.pkgName', pkgName);
+        
+        grunt.file.mkdir('packageCrx');
+
+        grunt.task.run('copy:packageCrx', 'signPackage');
+        
+    });
+    
+    grunt.registerTask('signPackage', ['package'], function() {
+        // FIXME: defaults to Mac path because mcollins develops on a Mac :-/
+        var chromePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+        
+        var edition = grunt.option('edition') || 'Standard';
+         
+        var keyfile;
+        if (grunt.option('keyfile')) {
+            keyfile = grunt.file.expand(grunt.option('keyfile')); 
+        } else {
+            keyfile = grunt.file.expand({
+                    cwd: '/'
+                },
+                yeomanConfig.dist + '/../../' + edition + '.pem'
+            );
+        }
+        
         
         grunt.log.writeln("keyfile is: " + keyfile);
         grunt.log.writeln('ChromePath is: ' + chromePath);
+
+        var pkgName = grunt.config('foxyProxy.pkgName');
         
+        grunt.log.writeln("Packaging Chrome Extension (.crx) file from " + pkgName);
+        
+        var done = this.async();
         
         grunt.util.spawn({
             cmd: chromePath,
             args: [ 
-                "--pack-extension=dist",
+                "--pack-extension=" + pkgName,
                 "--pack-extension-key=" + keyfile
             ],
             opts: {
-                cwd: '.',
+                cwd: './packageCrx',
                 stdio: 'inherit'
             }
         },
         function(error, result, code) {
             grunt.log.writeln('Finished packaging extension');
+            grunt.log.writeln(result);
+            
             if (error) {
                 grunt.log.writeln("Failed to sign package file.");
                 grunt.log.writeln("Exit " + code + ":");
+                
+                return false;
             }
-            grunt.log.writeln(result);
             
-            grunt.log.writeln('copying dist.crx to ' + pkgName + '.crx');
-            grunt.file.copy("dist.crx", pkgName + ".crx");
+            //grunt.log.writeln('copying dist.crx to ' + pkgName + '.crx');
+            //grunt.file.copy("dist.crx", pkgName + ".crx");
+            
+            grunt.log.writeln('done.');
+            done();
         });
         
         grunt.log.writeln('fin.');
@@ -392,4 +427,6 @@ module.exports = function (grunt) {
         'test',
         'build'
     ]);
+    
+    grunt.loadNpmTasks('grunt-contrib-copy');
 };
