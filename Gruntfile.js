@@ -29,14 +29,6 @@ module.exports = function (grunt) {
         //     options: {
         //         spawn: false
         //     },
-        //     coffee: {
-        //         files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
-        //         tasks: ['coffee:dist']
-        //     },
-        //     coffeeTest: {
-        //         files: ['test/spec/{,*/}*.coffee'],
-        //         tasks: ['coffee:test']
-        //     },
         //     compass: {
         //         files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
         //         tasks: ['compass:server']
@@ -49,11 +41,11 @@ module.exports = function (grunt) {
                     src: [
                         '.tmp',
                         '<%= yeoman.dist %>/*',
-                        '!<%= yeoman.dist %>/.git*'
+                        '!<%= yeoman.dist %>/.git*',
+                        '.packageCrx'
                     ]
                 }]
             },
-            server: '.tmp'
         },
         jshint: {
             options: {
@@ -198,15 +190,12 @@ module.exports = function (grunt) {
         },
         concurrent: {
             //server: [
-            //    'coffee:dist',
             //    'compass:server'
             //],
             // test: [
-            //     'coffee',
             //     'compass'
             // ],
             dist: [
-                //'coffee',
                 //'compass:dist',
                 'imagemin',
                 'svgmin',
@@ -253,8 +242,8 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('test', [
-        'clean:server',
-        'concurrent:test',
+        'clean',
+        //'concurrent:test',
         'jasmine'
     ]);
 
