@@ -20,9 +20,17 @@ chrome.runtime.onInstalled.addListener(function(details) {
         }
 
         if (urlToOpen) {
-            chrome.tabs.create({
-                url: urlToOpen,
-                selected: true
+            chrome.runtime.getBackgroundPage(function( bgPage) {
+                var foxyProxy = bgPage.foxyProxy;
+
+                foxyProxy.getSettings(function( resp) {
+                    if (resp.settings && resp.settings.showUpdates) {
+                        chrome.tabs.create({
+                            url: urlToOpen,
+                            selected: true
+                        });
+                    }
+                });
             });
         }
     }
