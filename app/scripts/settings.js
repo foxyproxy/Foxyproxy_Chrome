@@ -123,7 +123,9 @@
             patternWhitelistQA:"Inclusive",
             patternTypeQA:"wildcard",
             useAdvancedMenus: false,
-            useSyncStorage: false
+            useSyncStorage: false,
+            animateIcon: true,
+            showUpdates: true
         };
         
         var defaultProxy = new Proxy({
