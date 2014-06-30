@@ -48,6 +48,8 @@ chrome.runtime.onMessage.addListener(function( request, sender, sendResponse) {
                 $("label[for='showContextMenuCheck']").hide();
             }
             $("input[name='useChromeSyncCheck']").attr('checked', settings.useSyncStorage);
+            $("input[name='animateIconCheck']").attr('checked', settings.animateIcon);
+            $("input[name='showUpdatesCheck']").attr('checked', settings.showUpdates);
         }
     }
 });
