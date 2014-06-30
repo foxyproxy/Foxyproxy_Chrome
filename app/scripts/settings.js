@@ -57,6 +57,12 @@
                     if (!items || !items.settings) {
                         if (localSettings) {
                             console.log("using localStorage settings");
+                            // merge default settings
+                            for (var p in defaults.settings) {
+                                if (defaults.settings.hasOwnProperty(p) && typeof(localSettings[p]) == "undefined") {
+                                    localSettings[p] = defaults.settings[p];
+                                }
+                            }
                             foxyProxy._settings = localSettings;
                         } else {
                             console.log("set settings to default");
@@ -103,10 +109,10 @@
                 }
             }
             
-            chrome.storage.onChanged.addListener(function( changes, areaName) {
-                console.log("got storage.onChanged for area: " + areaName);
-                console.log(changes);
-            });
+            // chrome.storage.onChanged.addListener(function( changes, areaName) {
+            //     console.log("got storage.onChanged for area: " + areaName);
+            //     console.log(changes);
+            // });
         }
     }
     
