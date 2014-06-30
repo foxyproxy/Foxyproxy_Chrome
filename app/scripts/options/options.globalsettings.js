@@ -242,6 +242,16 @@ $(document).ready(function() {
         foxyProxy.toggleSyncStorage();
     });
     
+    
+    $("input[name='animateIconCheck']").click(function() {
+        foxyProxy.toggleAnimateIcon();
+    });
+    
+    
+    $("input[name='showUpdatesCheck']").click(function() {
+        foxyProxy.toggleShowUpdates();
+    });
+    
     onTabShow('');
 });
 
