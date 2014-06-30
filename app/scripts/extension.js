@@ -185,6 +185,26 @@ function Extension() {
         foxyProxy.updateSettings({"settings": foxyProxy._settings });
     };
     
+    this.toggleAnimateIcon = function toggleAnimateIcon() {
+        foxyProxy._settings.animateIcon = !foxyProxy._settings.animateIcon;
+        
+        if (self.optionsTabId) {
+            chrome.tabs.sendMessage(self.optionsTabId, { setting: "animateIcon" });
+        }
+        
+        foxyProxy.updateSettings({"settings": foxyProxy._settings });
+    };
+    
+    this.toggleShowUpdates = function toggleShowUpdates() {
+        foxyProxy._settings.showUpdates = !foxyProxy._settings.showUpdates;
+        
+        if (self.optionsTabId) {
+            chrome.tabs.sendMessage(self.optionsTabId, { setting: "showUpdates" });
+        }
+        
+        foxyProxy.updateSettings({"settings": foxyProxy._settings });
+    };
+    
     this.updateIcon = function updateIcon( color) {
         if (foxyProxy.state == 'disabled') {
             chrome.browserAction.setIcon({
@@ -213,9 +233,9 @@ function Extension() {
                 if (proxy) {
                     foxyProxy.updateIcon(proxy.data.color);
                     
-                    if (foxyProxy.state == 'auto') {
+                    if (foxyProxy._settings && foxyProxy._settings.animateIcon && foxyProxy.state == 'auto') {
                         foxyProxy.animateBlink(6);
-                    } else {
+                    } else if (foxyProxy._settings && foxyProxy._settings.animateIcon) {
                         foxyProxy.animateFlip();
                     }
                 } else {
