@@ -21,4 +21,8 @@ How to build FoxyProxy for Chrome with Grunt.
 6. To build a different edition, use --target and --edition command-line options, e.g.
     grunt build --target=Chrome --edition=Basic
     
+7. The 'release' target will run the 'build' target, and then attempt to create a signed .crx file in the package/ directory.
+
+    This assumes that you have the correct keyfile in the project's parent directory, or you can specify the path with the --keyfile argument.
+    
 
