@@ -148,12 +148,11 @@ function proxyLoad(proxy, edit){
 			list[selectedProxy].data.color = sProxyColor;
 			
 
-            // TODO: confirm password
             if ( $("input[name='password']").val() == $("input[name='passwordConfirm']").val() ) {
                 list[selectedProxy].data.username = $("input[name='username']").val();
                 list[selectedProxy].data.password = $("input[name='password']").val();
             } else {
-                alert('Passwords do not match.'); //FIXME
+                alert('Passwords do not match.'); //FIXME - i18n
                 return false;
             }
 			
