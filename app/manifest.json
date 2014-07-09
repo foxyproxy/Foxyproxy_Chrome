@@ -17,7 +17,7 @@
         "default_popup": "popup.html"
     },
     "background": {
-        "persistent": false,
+        "persistent": true,
         "scripts": [
             "scripts/background.js",
             "scripts/util.js",
@@ -49,6 +49,8 @@
         "proxy",
         "storage",
         "webNavigation",
+        "webRequest",
+        "webRequestBlocking",
         "<all_urls>"
     ],
     "commands": {
