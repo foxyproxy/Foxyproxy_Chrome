@@ -154,6 +154,7 @@ function proxyLoad(proxy, edit){
                 list[selectedProxy].data.password = $("input[name='password']").val();
             } else {
                 alert('Passwords do not match.'); //FIXME
+                return false;
             }
 			
 			 if($("input[name='proxyType']:checked").val()=="auto")
