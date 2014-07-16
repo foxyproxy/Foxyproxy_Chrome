@@ -277,33 +277,40 @@ function Extension() {
         }
     });
     
+    var lastRequestId;
     /*
      * 'AuthRequired' listener
      * check for stored username/password for proxy
      */
     chrome.webRequest.onAuthRequired.addListener(function( details, callback) {
-        console.log("got authRequired event");
 
-        if (details && details.url) {
-            console.log("got authRequired event for url: " + details.url, details);
+        console.log("onAuthRequired requestId: " + details.requestId);
+        if (details.requestId == lastRequestId) {
+            console.log("Auth Failed?");
+            callback();
+        }
+
+        lastRequestId = details.requestId;
+        
+        if (details && details.isProxy && details.url) {
+            console.log("got isProxy authRequired event for url: " + details.url, details);
+
+
 
             foxyProxy.getProxyForUrl(details.url, function(url, proxy) {
                 console.log("got proxy for url: " + url, proxy);
                 if (proxy && proxy.data.username) {
-                    //TODO: implement stored credentials for proxies
                     console.log("sending credentials for proxy: " + proxy.data.name);
                     
-                    if (callback) {
-                        callback( { authCredentials: {
-                                username:  proxy.data.username,
-                                password: proxy.data.password
-                            }
-                        });
-                    } else {
-                        console.log("uh oh, no callback!");
-                    }
+                    callback( { authCredentials: {
+                            username:  proxy.data.username,
+                            password: proxy.data.password
+                        }
+                    });
                 }
             });
+        } else {
+            callback();
         }
         
     }, 
