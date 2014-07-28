@@ -70,6 +70,14 @@ function proxyLoad(proxy, edit){
         $("#proxyPatternsLink").hide();
     }
     
+    if (proxy.data.credentials) {
+        console.log("options page getting credentials for proxy: " + proxy.data.name);
+        var crds = foxyProxy.getCredentials(proxy);
+        $("input[name='username']").val(crds.username);
+        $("input[name='password']").val(crds.password);
+        $("input[name='passwordConfirm']").val(crds.password);
+    }
+    
     $("#proxyEditDlg").dialog({
 	title: chrome.i18n.getMessage("FoxyProxy") + " - " + chrome.i18n.getMessage("proxy_settings"),
 	modal: true,
@@ -149,8 +157,7 @@ function proxyLoad(proxy, edit){
 			
 
             if ( $("input[name='password']").val() == $("input[name='passwordConfirm']").val() ) {
-                list[selectedProxy].data.username = $("input[name='username']").val();
-                list[selectedProxy].data.password = $("input[name='password']").val();
+                foxyProxy.setCredentials(list[selectedProxy], $("input[name='username']").val(), $("input[name='password']").val())
             } else {
                 alert('Passwords do not match.'); //FIXME - i18n
                 return false;
