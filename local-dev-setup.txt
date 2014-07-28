@@ -1,0 +1,12 @@
+
+1. Install NodeJS and NPM (the Node Package Manager):
+    http://nodejs.org/
+    
+2. Find a command-line, and run:
+    $ npm install -g grunt-cli
+    
+4. In this directory (the top-level of foxyproxy-chrome source, where you found this file), run:
+    $ npm install
+
+5. Build JQuery:
+    $ grunt jquery:dev
