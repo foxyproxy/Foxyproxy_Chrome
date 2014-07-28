@@ -29,7 +29,8 @@
             "scripts/extension.js",
             "scripts/settings.js",
             "scripts/context-menus.js",
-            "scripts/animate-icon.js"
+            "scripts/animate-icon.js",
+            "scripts/stored-credentials-bundle.js"
             
         ]
     },

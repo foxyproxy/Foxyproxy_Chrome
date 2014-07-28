@@ -1,4 +1,5 @@
 
+
 /* Extension object - main entry point for FoxyProxy extension */
 function Extension() {
     var _settings,
@@ -9,6 +10,7 @@ function Extension() {
         optionsPageUrl = "chrome-extension://" + chrome.i18n.getMessage("@@extension_id") + "/options.html";
 
     //this.log = new FoxyLog();
+    
     
     this.__defineGetter__("state", function () {
         return state;
@@ -295,18 +297,21 @@ function Extension() {
         if (details && details.isProxy && details.url) {
             console.log("got isProxy authRequired event for url: " + details.url, details);
 
-
-
             foxyProxy.getProxyForUrl(details.url, function(url, proxy) {
                 console.log("got proxy for url: " + url, proxy);
-                if (proxy && proxy.data.username) {
+                if (proxy && proxy.data.credentials) {
                     console.log("sending credentials for proxy: " + proxy.data.name);
+
+                    var credentials = foxyProxy.getCredentials(proxy);
                     
                     callback( { authCredentials: {
-                            username:  proxy.data.username,
-                            password: proxy.data.password
+                            username: credentials.username,
+                            password: credentials.password
                         }
                     });
+                } else {
+                    //
+                    callback();
                 }
             });
         } else {
