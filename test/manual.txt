@@ -1,0 +1,53 @@
+1. Perform a new install of the packaged extension.
+    Expect: A FoxyProxy icon next to the URL bar in the browser.
+    Expect: to see a new tab opened to the correct after-install page on getfoxyproxy.org
+    
+2. Click on FoxyProxy toolbar icon.
+    Expect: Drop-down menu appears.
+    
+=== Options ===
+
+3. Click on 'Options' in FP drop-down menu.
+    Expect: New tab opens with FP Options page
+    Expect: Options page shows proxy list with at least 'Default' proxy.
+    
+4. Click 'Add new proxy' button.
+    Expect: Add new proxy dialog appears.
+    
+    
+=== Context Menu ===
+
+5. Right-click in page area of browser.
+    Expect: FoxyProxy entry appears in browser context-menu.
+    
+6. Select/Hover FoxyProxy context-menu.
+    Expect: FoxyProxy context menu appears with same items as toolbar drop-down, and a 'More' option at the bottom.
+    
+7. Select / Hover 'More' option
+    Expect: a sub-context-menu with the following options:
+        * Global Settings
+        * Options
+        * Help Contents
+    
+8. Select / Hover one of the proxy servers in the context-menu.
+    Expect: a sub-context-menu with the following options:
+        * Enabled
+        * Animate icons when this proxy is in use
+        * Use proxy '<proxy_name>' for all URLs
+        * Patterns
+        
+9. Select / Hover 'Patterns' 
+    Expect: A sub-menu with a list of patterns and check mark indicating enabled/disabled status.
+    
+=== Proxies ===
+
+10. Add patterns to one or more proxies in the Options page, then select 'Patterns' mode.
+    Expect:
+        Proxy with matching pattern is used based on URL.
+        
+
+=== QuickAdd ===
+
+11. Press Ctrl+Shift+A on the keyboard.
+    Expect:
+        FoxyProxy options page opens, with a dialog to add a pattern based on the URL that was active when the shortcut was pressed.
