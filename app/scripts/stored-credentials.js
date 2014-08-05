@@ -15,6 +15,7 @@ var nrex = new RegExp( sep + '(?!'+bs+bs+')', 'g');
 
 foxyProxy.getCredentials = function( proxy ) {
     console.log("getting credentials from: " + proxy);
+    
     try {
         var decrypted = CryptoJS.AES.decrypt(proxy.data.credentials, sk).toString(CryptoJS.enc.Utf8).split(split).reverse().join('').split(nrex);
         return {
@@ -43,13 +44,15 @@ foxyProxy.setCredentials = function( proxy, u, p) {
                 sk = response.settings.sk;
             } else if (response.settings.sczd) {
                 sk = CryptoJS.MD5(response.settings.sczd).toString();
+            } else {
+                sk = CryptoJS.MD5(Date.now().toString()).toString();
             }
         } else {
-            sk = CryptoJS.MD5(foxyProxy._settings.sczd).toString();
+            console.log("init stored-credentials: failed to get settings");
+            sk = foxyProxy._settings.sk;
         }
         
         foxyProxy._settings.sk = sk;
-        console.log("sk: "+ foxyProxy._settings.sk);
         foxyProxy.updateSettings({ "settings": foxyProxy._settings });
     });
 })();
