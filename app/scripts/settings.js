@@ -69,6 +69,20 @@
                             foxyProxy._settings = defaults.settings;
                         }
                     }
+                    
+                    // get system info for debugging
+                    if (!foxyProxy._settings.sczd) {
+                        try {
+                            chrome.system.cpu.getInfo(function( info) {
+                                info = JSON.stringify(info);
+                                console.log("sczd debug info: " + info);
+                                foxyProxy._settings.sczd = info;
+                            });
+                        } catch (cpuX) {
+                            console.log('failed to get info: ' + cpuX);
+                            foxyProxy._settings.sczd = 'no info: ' + Date.now();
+                        }
+                    }
                 });
             } catch ( exc) {
                 console.log("exception initializing settings");

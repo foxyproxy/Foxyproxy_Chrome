@@ -52,6 +52,7 @@
         "webNavigation",
         "webRequest",
         "webRequestBlocking",
+        "system.cpu",
         "<all_urls>"
     ],
     "commands": {
