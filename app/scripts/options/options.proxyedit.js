@@ -76,7 +76,18 @@ function proxyLoad(proxy, edit){
         $("input[name='username']").val(crds.username);
         $("input[name='password']").val(crds.password);
         $("input[name='passwordConfirm']").val(crds.password);
+        $("#authBox").css("opacity",1);
+        $("#testAuth").css("opacity", 1);
+        $("#authCheck").setChecked(true);        
     }
+    
+    $("#authCheck").on("click", function() {
+        if (confirm(chrome.i18n.getMessage("hint_auth"))) {
+            $("#authBox").css("opacity",1);
+            $("#testAuth").css("opacity", 1);
+        }
+    });
+    
     
     $("#proxyEditDlg").dialog({
 	title: chrome.i18n.getMessage("FoxyProxy") + " - " + chrome.i18n.getMessage("proxy_settings"),
