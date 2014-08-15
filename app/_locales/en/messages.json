@@ -298,6 +298,11 @@
       "message":  "You can use http://, https://, and any other supported scheme.",
       "description": ""
     },
+    
+    "hint_auth" : {
+        "message": "* Usernames/Passwords are stored along with FoxyProxy's other settings, not with Chrome's password manager.* Usernames/Passwords are stored encrypted, not in clear text, however anyone with access to your computer or google account could potentially gain access to any information FoxyProxy stores.* If you have enabled Google Sync storage within FoxyProxy for Chrome, usernames and passwords will be sync'ed to Google's servers along with your other FoxyProxy settings.",
+        "description": "tooltip hint for stored auth credentials"
+    },
 
     "hint_pattern_temp" : {
       "message":  "Temporary patterns allow you to create patterns for URLs that you don't visit often without cluttering the pattern list for a proxy. Temporary patterns are not saved to disk. They are kept in-memory and used for this Firefox session only.",
