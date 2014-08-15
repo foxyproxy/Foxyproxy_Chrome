@@ -440,14 +440,23 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                <div style="border:1px solid #666;background-color: #eee; border-radius:5px;margin:10px;padding:0px 10px 10px;">
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr class="proxyTypeManualGroup">
+                            <td class="marged">
+                                <input id="authCheck" type="checkbox" />
+                                <label>Save Login Credentials</label>
+                                <a id="hint_auth" class="help">&nbsp;</a>
+                                <div id="authBox" style="opacity:0.3;border:1px solid #666;background-color: #eee; border-radius:5px;margin:10px;padding:0px 10px 10px;">
                                     <p><b>Authentication</b></p>
                                     <label>Username</label><input name="username" type-="text"></input>
                                     <label>Password</label><input name="password" type="password"></input>
                                     <label>Password - again</label><input name="passwordConfirm" type="password"></input>
                                     
                                 </div>
+                            </td>
+                            <td valign="bottom" style="padding-bottom:16px;">
+                                <button style="opacity:0.3;" id="testAuth">Test</button>
                             </td>
                         </tr>
                     </table>                

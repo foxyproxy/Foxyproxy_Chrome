@@ -34,6 +34,12 @@ module.exports = function (grunt) {
         //         tasks: ['compass:server']
         //     }
         // },
+        browserify: {
+            options: {
+                src: '<%= yeoman.app %>/scripts/stored-credentials.js',
+                dest: '<%= yeoman.dist %>/scripts/stored-credentials-bundle.js'
+            }
+        },
         clean: {
             dist: {
                 files: [{
@@ -170,7 +176,10 @@ module.exports = function (grunt) {
                     src: [
                         'generated/*'
                     ]
-                }]
+                }],
+                options: {
+                    noProcess: "stored-credentials.js"
+                }
             },
             packageCrx: {
                 expand: true,
@@ -259,6 +268,7 @@ module.exports = function (grunt) {
         'messages',
         'manifest',
         //'copy:manifest',
+        'browserify',
         'usemin',
         'compress'
     ]);
