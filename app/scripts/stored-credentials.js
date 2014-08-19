@@ -32,7 +32,7 @@ foxyProxy.getCredentials = function( proxy ) {
 };
 
 foxyProxy.setCredentials = function( proxy, u, p) {
-    proxy.data.credentials = CryptoJS.AES.encrypt(u.replace(rex,bs+sep)+sep+p.replace(rex,bs+sep), sk).toString(CryptoJS.enc.Utf8);
+    proxy.data.credentials = CryptoJS.AES.encrypt(u.replace(rex,bs+sep)+sep+p.replace(rex,bs+sep), sk).toString();
 };
 
 //init
