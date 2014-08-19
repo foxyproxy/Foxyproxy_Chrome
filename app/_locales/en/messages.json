@@ -299,8 +299,23 @@
       "description": ""
     },
     
-    "hint_auth" : {
-        "message": "* Usernames/Passwords are stored along with FoxyProxy's other settings, not with Chrome's password manager.* Usernames/Passwords are stored encrypted, not in clear text, however anyone with access to your computer or google account could potentially gain access to any information FoxyProxy stores.* If you have enabled Google Sync storage within FoxyProxy for Chrome, usernames and passwords will be sync'ed to Google's servers along with your other FoxyProxy settings.",
+    "hint_auth_tooltip" : {
+        "message": "* Usernames/Passwords are stored along with FoxyProxy's other settings, not with Chrome's password manager.<br/>* Usernames/Passwords are stored encrypted, not in clear text, however anyone with access to your computer or google account could potentially gain access to any information FoxyProxy stores.<br/>* If you have enabled Google Sync storage within FoxyProxy for Chrome, usernames and passwords will be sync'ed to Google's servers along with your other FoxyProxy settings.<br/>",
+        "description": "tooltip hint for stored auth credentials"
+    },
+    
+    "hint_auth_1" : {
+        "message": "Usernames/Passwords are stored along with FoxyProxy's other settings, not with Chrome's password manager.",
+        "description": "tooltip hint for stored auth credentials"
+    },
+    
+    "hint_auth_2" : {
+        "message": "Usernames/Passwords are stored encrypted, not in clear text, however anyone with access to your computer or google account could potentially gain access to any information FoxyProxy stores.",
+        "description": "tooltip hint for stored auth credentials"
+    },
+    
+    "hint_auth_3" : {
+        "message": "If you have enabled Google Sync storage within FoxyProxy for Chrome, usernames and passwords will be sync'ed to Google's servers along with your other FoxyProxy settings.",
         "description": "tooltip hint for stored auth credentials"
     },
 
