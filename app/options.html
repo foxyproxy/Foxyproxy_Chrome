@@ -368,6 +368,21 @@
 <!-------------------------------------------------------------------------------------------------------------------->
 
     <div id="dialog"></div>
+    
+    <div id="authWarningDlg" title="Warning" style="display:none;min-height:500px;">
+        <div>
+            <ul>
+                <li><span id="hint_auth_1"></span></li>
+                <li><span id="hint_auth_2"></span></li>
+                <li><span id="hint_auth_3"></span></li>
+            </ul>
+        </div>
+        <div>
+            <input name="noAuthWarn" type="checkbox" value="false"></input>
+            <label>Do not show this warning again.</label>
+        </div>
+    </div>
+    
         <div id="import-dialog" title="Import FoxyProxy Settings" style="display:none"><p>This file may overwrite your existing proxies. You can add these proxies to the existing list or replace your existing list.</p></div>
 <!-- proxy edit dialog ---------------------------------------------------------------------------------------------------->    
     <div id="proxyEditDlg" style="display:none;min-height: 460px;">
@@ -446,7 +461,7 @@
                             <td class="marged">
                                 <input id="authCheck" type="checkbox" />
                                 <label>Save Login Credentials</label>
-                                <a id="hint_auth" class="help">&nbsp;</a>
+                                <a id="hint_auth_tooltip" class="help">&nbsp;</a>
                                 <div id="authBox" style="opacity:0.3;border:1px solid #666;background-color: #eee; border-radius:5px;margin:10px;padding:0px 10px 10px;">
                                     <p><b>Authentication</b></p>
                                     <label>Username</label><input name="username" type-="text"></input>
@@ -456,7 +471,7 @@
                                 </div>
                             </td>
                             <td valign="bottom" style="padding-bottom:16px;">
-                                <button style="opacity:0.3;" id="testAuth">Test</button>
+                                <!-- button style="opacity:0.3;" id="testAuth">Test</button -->
                             </td>
                         </tr>
                     </table>                

@@ -69,23 +69,72 @@ function proxyLoad(proxy, edit){
         // we are basic edition, hide URL patterns tab
         $("#proxyPatternsLink").hide();
     }
-    
+        
     if (proxy.data.credentials) {
-        console.log("options page getting credentials for proxy: " + proxy.data.name);
+        console.log("proxyLoad getting credentials for proxy: " + proxy.data.name);
         var crds = foxyProxy.getCredentials(proxy);
         $("input[name='username']").val(crds.username);
         $("input[name='password']").val(crds.password);
         $("input[name='passwordConfirm']").val(crds.password);
         $("#authBox").css("opacity",1);
-        $("#testAuth").css("opacity", 1);
+        //$("#testAuth").css("opacity", 1);
         $("#authCheck").setChecked(true);        
+    } else {
+        $("input[name='username']").val("");
+        $("input[name='password']").val("");
+        $("input[name='passwordConfirm']").val("");
+        $("#authBox").css("opacity",0.3);
+        //$("#testAuth").css("opacity", 0.3);
+        $("#authCheck").setChecked(false);
     }
     
-    $("#authCheck").on("click", function() {
-        if (confirm(chrome.i18n.getMessage("hint_auth"))) {
+    $("#authCheck").on("change", function() {
+        if (!foxyProxy._settings.noAuthWarn) {
+            $("#hint_auth_1").text(chrome.i18n.getMessage("hint_auth_1"));
+            $("#hint_auth_2").text(chrome.i18n.getMessage("hint_auth_2"));
+            $("#hint_auth_3").text(chrome.i18n.getMessage("hint_auth_3"));
+            
+            $("#authWarningDlg").dialog({
+                modal: true,
+                width: "500px",
+                resizable: false,
+                buttons: [
+                    {
+                        text: "OK",
+                        click: function() {
+                            if ($("input[name='noAuthWarn']").is(":checked")) {
+                                foxyProxy._settings.noAuthWarn = true;
+                                foxyProxy.updateSettings({ "settings": foxyProxy._settings });
+                            }
+                            
+                            $("#authBox").css("opacity",1);
+                            //$("#testAuth").css("opacity", 1);
+                            
+                            $("#authCheck").setChecked(true);
+                            
+                            $( this ).dialog( "close" );
+                        }
+                    },
+                    {
+                        text: "Cancel",
+                        click: function() {
+                            $( this ).dialog( "close" );
+                        }
+                    }
+                ]
+            });
+        } else if ($(this).is(":checked")) {
             $("#authBox").css("opacity",1);
-            $("#testAuth").css("opacity", 1);
+            //$("#testAuth").css("opacity", 1);
+            
+            $("#authCheck").setChecked(true);
+            
+            $( this ).dialog( "close" );
+        } else {
+            $("#authBox").css("opacity",0.3);
+            //$("#testAuth").css("opacity", 0.3);
         }
+
     });
     
     
