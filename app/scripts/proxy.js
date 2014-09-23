@@ -2,29 +2,28 @@
 function Proxy(_data){
     this.className = "Proxy";
     this.data = {
-	id: this.randomId(),
-	readonly: false,
-	enabled: true,
-	color: "#0055E5", 
-	name: "", 
-	notes: "",
-	host: "" , 
-	port: 0, 
-	isSocks: false, 
-	socks: "", 
-	pac: "", 
-	//dns: "",
-	type: "manual", // direct, manual, or "auto" for pac (TODO: change that)
-	cycle: false,
-	useDns: true,
-	reloadPAC: false,
-	bypassFPForPAC: true,
-	reloadPACInterval: 60,
-	configUrl: "",
-	notifOnLoad: true,
-	notifOnError: true,
-	patterns: [],
-	ipPatterns : []
+        readonly: false,
+        enabled: true,
+        color: "#0055E5", 
+        name: "", 
+        notes: "",
+        host: "" , 
+        port: 0, 
+        isSocks: false, 
+        socks: "", 
+        pac: "", 
+        //dns: "",
+        type: "manual", // direct, manual, or "auto" for pac (TODO: change that)
+        cycle: false,
+        useDns: true,
+        reloadPAC: false,
+        bypassFPForPAC: true,
+        reloadPACInterval: 60,
+        configUrl: "",
+        notifOnLoad: true,
+        notifOnError: true,
+        patterns: [],
+        ipPatterns : []
     };
 
     if(_data && _data.data){
@@ -32,6 +31,8 @@ function Proxy(_data){
     } else {
         FPUtil.extend(this.data, _data);
     }
+    
+    this.data.id = this.randomId();
 
     if (this.data.patterns && this.data.patterns.length){
         this.data.patterns = this.data.patterns.map( function(obj){
