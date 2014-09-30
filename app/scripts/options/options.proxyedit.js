@@ -5,12 +5,12 @@ var selectedPattern = -1;
 
 (function($)  {
     $.fn.extend({
-	setChecked : function(state)  {
-	    if (state)
-		return this.filter(":radio, :checkbox").attr("checked", true);
-	    else 
-		return this.filter(":radio, :checkbox").removeAttr("checked");
-	}
+    setChecked : function(state)  {
+        if (state)
+        return this.filter(":radio, :checkbox").attr("checked", true);
+        else 
+        return this.filter(":radio, :checkbox").removeAttr("checked");
+    }
     });
     
 }(jQuery));
@@ -32,7 +32,7 @@ function proxyLoad(proxy, edit){
     $("#proxyName").val(proxy.data.name).prop('disabled', proxy.data.readonly ? true: false);
     $("#proxyNotes").val(proxy.data.notes.replace("<", "&lt;", 'gm').replace(">", "&gt;", 'gm')).prop('disabled', proxy.data.readonly ? true: false);
     $("#proxyCycle").setChecked(proxy.data.cycle);//.attr('disabled', proxy.data.readonly);
-    $("#proxyDNS").setChecked(proxy.data.useDns);//.attr('disabled', proxy.data.readonly);		
+    $("#proxyDNS").setChecked(proxy.data.useDns);//.attr('disabled', proxy.data.readonly);      
     
      $("#proxyConfigUrl").val(proxy.data.configUrl).prop('disabled', proxy.data.readonly ? true: false);
      $("#proxyNotifLoad").setChecked(proxy.data.notifOnLoad).prop('disabled', proxy.data.readonly ? true: false);
@@ -256,26 +256,26 @@ $(document).ready(function(){
     $("#tabs").tabs({ selected:1});
     $("input[type='button']").button();
     oPatternTable = $("#patternList").dataTable( {
-	"bPaginate": false,
-	"bLengthChange": false,
-	"bFilter": false,
-	"bSort": false,
-	"bInfo": false,
-	"bAutoWidth": false,
-	"bUseRendered": false,
-	"aaData": [],
-	"oLanguage": {
-	    "sZeroRecords": ""
-	},
-	"aoColumns": [
-	    { "sTitle": chrome.i18n.getMessage("enabled"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='styles/images/bullet_tick.png'>":"";}},
-	    { "sTitle": chrome.i18n.getMessage("pattern_name")},
-	    { "sTitle": chrome.i18n.getMessage("url_pattern")},
-	    { "sTitle": chrome.i18n.getMessage("pattern_type")},
-	    { "sTitle": chrome.i18n.getMessage("Whitelist_or_Blacklist")},
-	    //{ "sTitle": chrome.i18n.getMessage("Case sensitive"},
-	    { "sTitle": chrome.i18n.getMessage("temporary"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='styles/images/bullet_tick.png'>":"";}}
-	]
+    "bPaginate": false,
+    "bLengthChange": false,
+    "bFilter": false,
+    "bSort": false,
+    "bInfo": false,
+    "bAutoWidth": false,
+    "bUseRendered": false,
+    "aaData": [],
+    "oLanguage": {
+        "sZeroRecords": ""
+    },
+    "aoColumns": [
+        { "sTitle": chrome.i18n.getMessage("enabled"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='styles/images/bullet_tick.png'>":"";}},
+        { "sTitle": chrome.i18n.getMessage("pattern_name")},
+        { "sTitle": chrome.i18n.getMessage("url_pattern")},
+        { "sTitle": chrome.i18n.getMessage("pattern_type")},
+        { "sTitle": chrome.i18n.getMessage("Whitelist_or_Blacklist")},
+        //{ "sTitle": chrome.i18n.getMessage("Case sensitive"},
+        { "sTitle": chrome.i18n.getMessage("temporary"), "bUseRendered":false, "fnRender": function(obj) { return (obj.aData[ obj.iDataColumn ])?"<img src='styles/images/bullet_tick.png'>":"";}}
+    ]
     } );
     /*oIpPatternTable = $("#ipPatternList").dataTable( {
      "bPaginate": false,
@@ -300,7 +300,7 @@ $(document).ready(function(){
      } );*/
     
     $("#patternList tbody tr").live('click', function () {
-	oPatternTable.fnSelect(this);
+    oPatternTable.fnSelect(this);
     } );
     $("#patternList tbody tr").live('dblclick', function (e) {
         e.preventDefault();
@@ -313,20 +313,20 @@ $(document).ready(function(){
      oIpPatternTable.fnSelect(this);
      } );*/
     $('#proxyColor').ColorPicker({
-	color: "#000",
-	onShow: function (colpkr) {
-	    $(colpkr).fadeIn(500);
-	    return false;
-	},
-	onHide: function (colpkr) {
-	    $(colpkr).fadeOut(500);
-	    return false;
-	},
-	onChange: function (hsb, hex, rgb) {
-	    sProxyColor = '#' + hex;
-	    $('#proxyColor div').css('backgroundColor',sProxyColor);
-	}
-    }).children("div").css({'background-color':'#000'});			
+    color: "#000",
+    onShow: function (colpkr) {
+        $(colpkr).fadeIn(500);
+        return false;
+    },
+    onHide: function (colpkr) {
+        $(colpkr).fadeOut(500);
+        return false;
+    },
+    onChange: function (hsb, hex, rgb) {
+        sProxyColor = '#' + hex;
+        $('#proxyColor div').css('backgroundColor',sProxyColor);
+    }
+    }).children("div").css({'background-color':'#000'});            
 });
 
 function addNewPattern(){
@@ -343,9 +343,9 @@ function editPattern(){
 function updatePatternTable(selected){
     oPatternTable.fnClearTable();
     if(list[selectedProxy].data.patterns && list[selectedProxy].data.patterns.length)
-	oPatternTable.fnAddData(list[selectedProxy].data.patterns);
+    oPatternTable.fnAddData(list[selectedProxy].data.patterns);
     if(typeof selected != 'undefined')
-	oPatternTable.fnSelectRow(selected);		
+    oPatternTable.fnSelectRow(selected);        
 }
 
 function deleteSelectedPattern(){
@@ -353,56 +353,56 @@ function deleteSelectedPattern(){
     if(selectedPattern === null)return;
     list[selectedProxy].data.patterns.splice(selectedPattern, 1);
     updatePatternTable();
-}		
+}       
 function copySelectedPattern(){
     console.log(selectedPattern);
     selectedPattern = oPatternTable.fnGetSelectedPosition();
     console.log(selectedPattern);
     if(typeof selectedPattern=='number' && selectedPattern>=0){
-	list[selectedProxy].data.patterns.splice(selectedPattern, 0, new ProxyPattern(list[selectedProxy].data.patterns[selectedPattern]));
-	updatePatternTable(selectedPattern);
+    list[selectedProxy].data.patterns.splice(selectedPattern, 0, new ProxyPattern(list[selectedProxy].data.patterns[selectedPattern]));
+    updatePatternTable(selectedPattern);
     }
 }
 
 function openPacViewDlg(){
     if($("#proxyConfigUrl").val()){
-	$.ajax({
-	    url: $("#proxyConfigUrl").val(),
+    $.ajax({
+        url: $("#proxyConfigUrl").val(),
             cache: false,
             error: function(xhr, textStatus, httpError) {
-		alert(chrome.i18n.getMessage("PAC_file_error") + ": " + textStatus + " " + (httpError ? httpError : "")); // httpError can be null
+        alert(chrome.i18n.getMessage("PAC_file_error") + ": " + textStatus + " " + (httpError ? httpError : "")); // httpError can be null
             },
-	    success: function(data){
-		console.log(data);
-		$("#pacViewDlgText").val(data);
-		$("#pacViewDlg").dialog({
-		    width: '520px',
-		    title: chrome.i18n.getMessage("appName") + " - " + chrome.i18n.getMessage("PAC_View"),
-		    modal: true
-		});
-	    }
-	});
+        success: function(data){
+        console.log(data);
+        $("#pacViewDlgText").val(data);
+        $("#pacViewDlg").dialog({
+            width: '520px',
+            title: chrome.i18n.getMessage("appName") + " - " + chrome.i18n.getMessage("PAC_View"),
+            modal: true
+        });
+        }
+    });
     }
 
 }
 
 function testPac() {
     if($("#proxyConfigUrl").val()){
-	$.ajax({
-	    url: $("#proxyConfigUrl").val() + "?rnd=" + Math.random(),
-	    cache: false,
-	    error: function(xhr, textStatus, httpError) {
-		alert(chrome.i18n.getMessage("PAC_file_error") + ": " + textStatus + " " + (httpError ? httpError : "")); // httpError can be null
-	    },
-	    success: function(data){
+    $.ajax({
+        url: $("#proxyConfigUrl").val() + "?rnd=" + Math.random(),
+        cache: false,
+        error: function(xhr, textStatus, httpError) {
+        alert(chrome.i18n.getMessage("PAC_file_error") + ": " + textStatus + " " + (httpError ? httpError : "")); // httpError can be null
+        },
+        success: function(data){
                 var iframe = document.getElementById("testPacFrame");
                 var message = {
                     command: 'test',
                     script: data
                 };
                 iframe.contentWindow.postMessage(message, '*');
-	    }
-	});
+        }
+    });
 
     }
 
@@ -415,7 +415,7 @@ window.addEventListener('message', function (event) {
     }
 });
 
-/*		
+/*      
  function addNewIpPattern() {
  list[selectedProxy].data.ipPatterns.push(new ProxyPattern());
  selectedIpPattern = list[selectedProxy].data.ipPatterns.length - 1;
@@ -429,11 +429,11 @@ window.addEventListener('message', function (event) {
  }
  
  function updateIpPatternTable(selected){
- oIpPatternTable.fnClearTable();				
+ oIpPatternTable.fnClearTable();                
  if(list[selectedProxy].data.ipPatterns && list[selectedProxy].data.ipPatterns.length)
  oIpPatternTable.fnAddData(list[selectedProxy].data.ipPatterns);
  if(typeof selected != 'undefined')
- oIpPatternTable.fnSelectRow(selected);	
+ oIpPatternTable.fnSelectRow(selected); 
  }
  
  function deleteSelectedIpPattern(){
@@ -449,5 +449,5 @@ window.addEventListener('message', function (event) {
  list[selectedProxy].data.ipPatterns.splice(selectedIpPattern, 0, new ProxyPattern(list[selectedProxy].data.ipPatterns[selectedIpPattern]));
  updateIpPatternTable(selectedIpPattern);
  }
- }		
+ }      
  */
