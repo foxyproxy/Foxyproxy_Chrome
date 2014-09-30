@@ -139,114 +139,116 @@ function proxyLoad(proxy, edit){
     
     
     $("#proxyEditDlg").dialog({
-	title: chrome.i18n.getMessage("FoxyProxy") + " - " + chrome.i18n.getMessage("proxy_settings"),
-	modal: true,
-	width:"800px",
-	//		height: 460,
-	resizable: false,
-	buttons: [
-	    {
-		text: chrome.i18n.getMessage("Save"),
-		click: function(){
+        title: chrome.i18n.getMessage("FoxyProxy") + " - " + chrome.i18n.getMessage("proxy_settings"),
+        modal: true,
+        width:"800px",
+        //      height: 460,
+        resizable: false,
+        close: function( evt) {
+            if(!edit)
+                deleteProxy(selectedProxy);
+            else
+                updateProxyTable();
+        },
+        buttons: [
+            {
+                text: chrome.i18n.getMessage("Save"),
+                click: function() {
                     var regexp, mode, index, found, name;
-		    if($("input[name='proxyType']:checked").val() == 'manual' && ($("#proxyHost").val()=='' || $("#proxyPort").val()=='')){
-			alert(chrome.i18n.getMessage("error_no_hostname_or_ip"));
-			return;
-		    }
-		    if($("input[name='proxyType']:checked").val() == 'auto' && !RegExp('^\\d*$').test($("#proxyPACInterval").val())){
-			alert(chrome.i18n.getMessage("error_non_integer_interval"));
-			return;
-		    }
-		    if($("input[name='proxyType']:checked").val()=="auto") {
-			regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-			if(!regexp.test($("#proxyConfigUrl").val())){
-			    alert(chrome.i18n.getMessage("error_invalid_proxy_config_url"));
-			    return;
-			}
-			
-		    }
-		    
-		    {
-			
-			if($("#proxyName").val() == ''){
-			    mode = $("input[name='proxyType']:checked").val();
-			    if(mode == 'manual') {
-				$("#proxyName").val($("#proxyHost").val() +":"+$("#proxyPort").val());
+                    if ($("input[name='proxyType']:checked").val() == 'manual' && ($("#proxyHost").val()=='' || $("#proxyPort").val()=='')) {
+                        alert(chrome.i18n.getMessage("error_no_hostname_or_ip"));
+                        return;
+                    }
+                    if ($("input[name='proxyType']:checked").val() == 'auto' && !RegExp('^\\d*$').test($("#proxyPACInterval").val())) {
+                        alert(chrome.i18n.getMessage("error_non_integer_interval"));
+                        return;
+                    }
+                    if ($("input[name='proxyType']:checked").val()=="auto") {
+                        regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+                
+                        if (!regexp.test($("#proxyConfigUrl").val())){
+                            alert(chrome.i18n.getMessage("error_invalid_proxy_config_url"));
+                            return;
+                        }
+            
+                    }
+            
+                    if($("#proxyName").val() == ''){
+                        mode = $("input[name='proxyType']:checked").val();
+                        if(mode == 'manual') {
+                            $("#proxyName").val($("#proxyHost").val() +":"+$("#proxyPort").val());
+                        }
+                        else {
+                
+                            index = 0;
+                            found = true;
+                            while(found) {
+                                index++;
+                                name = "New Proxy";
+                                if(index>1)name+=" ("+index+")";
+                                found = false;
+                                for( var i in list) {
+                                    if(list[i].data.name == name) {
+                                        found = true;
+                                        break;                                              
+                                    }
+                                }
+                                if(!found)$("#proxyName").val(name);
+                    
                             }
-			    else {
-				
-				index = 0;
-				found = true;
-				while(found) {
-				    index++;
-				    name = "New Proxy";
-				    if(index>1)name+=" ("+index+")";
-				    found = false;
-				    for(i in list) {
-					if(list[i].data.name == name) {
-					    found = true;
-					    break;												
-					}
-				    }
-				    if(!found)$("#proxyName").val(name);
-				    
-				}
-			    }
-			}
-			list[selectedProxy].data.enabled = $("#proxyEnabled").is(":checked");
-			list[selectedProxy].data.cycle = $("#proxyCycle").is(":checked");
-			list[selectedProxy].data.useDns = $("#proxyDNS").is(":checked");
-			list[selectedProxy].data.isSocks = $("#proxyIsSocks").is(":checked");
-			
-                        list[selectedProxy].data.notifOnLoad = $("#proxyNotifLoad").is(":checked");
-			list[selectedProxy].data.notifOnError = $("#proxyNotifError").is(":checked");
-			list[selectedProxy].data.reloadPAC = $("#proxyPACReload").is(":checked");
-			//list[selectedProxy].data.bypassFPForPAC = $("#bypassFPForPAC").is(":checked");
+                        }
+                    }
+                
+                    list[selectedProxy].data.enabled = $("#proxyEnabled").is(":checked");
+                    list[selectedProxy].data.cycle = $("#proxyCycle").is(":checked");
+                    list[selectedProxy].data.useDns = $("#proxyDNS").is(":checked");
+                    list[selectedProxy].data.isSocks = $("#proxyIsSocks").is(":checked");
+            
+                    list[selectedProxy].data.notifOnLoad = $("#proxyNotifLoad").is(":checked");
+                    list[selectedProxy].data.notifOnError = $("#proxyNotifError").is(":checked");
+                    list[selectedProxy].data.reloadPAC = $("#proxyPACReload").is(":checked");
+                    //list[selectedProxy].data.bypassFPForPAC = $("#bypassFPForPAC").is(":checked");
                          
-			list[selectedProxy].data.name = $("#proxyName").val().replace("<", "&lt;", 'gm').replace(">", "&gt;", 'gm');
-			list[selectedProxy].data.notes = $("#proxyNotes").val().replace("<", "&lt;", 'gm').replace(">", "&gt;", 'gm');
-			list[selectedProxy].data.type = $("input[name='proxyType']:checked").val();
-			list[selectedProxy].data.socks = $("input[name='proxySocks']:checked").val();
-			list[selectedProxy].data.host = $("#proxyHost").val();
-			list[selectedProxy].data.port = $("#proxyPort").val();
+                    list[selectedProxy].data.name = $("#proxyName").val().replace("<", "&lt;", 'gm').replace(">", "&gt;", 'gm');
+                    list[selectedProxy].data.notes = $("#proxyNotes").val().replace("<", "&lt;", 'gm').replace(">", "&gt;", 'gm');
+                    list[selectedProxy].data.type = $("input[name='proxyType']:checked").val();
+                    list[selectedProxy].data.socks = $("input[name='proxySocks']:checked").val();
+                    list[selectedProxy].data.host = $("#proxyHost").val();
+                    list[selectedProxy].data.port = $("#proxyPort").val();
                         
-			 list[selectedProxy].data.configUrl = $("#proxyConfigUrl").val();
-			 list[selectedProxy].data.reloadPACInterval = $("#proxyPACInterval").val();
+                    list[selectedProxy].data.configUrl = $("#proxyConfigUrl").val();
+                    list[selectedProxy].data.reloadPACInterval = $("#proxyPACInterval").val();
                          
-			list[selectedProxy].data.color = sProxyColor;
-			
+                    list[selectedProxy].data.color = sProxyColor;
+            
 
-            if ( $("input[name='password']").val() == $("input[name='passwordConfirm']").val() ) {
-                foxyProxy.setCredentials(list[selectedProxy], $("input[name='username']").val(), $("input[name='password']").val())
-            } else {
-                alert('Passwords do not match.'); //FIXME - i18n
-                return false;
+                    if ( $("input[name='password']").val() == $("input[name='passwordConfirm']").val() ) {
+                        foxyProxy.setCredentials(list[selectedProxy], $("input[name='username']").val(), $("input[name='password']").val());
+                    } else {
+                        alert('Passwords do not match.'); //FIXME - i18n
+                        return false;
+                    }
+            
+                    if($("input[name='proxyType']:checked").val()=="auto")
+                    {
+                        list[selectedProxy].updatePAC();
+                    }
+            
+                    //updateProxyTable();
+                    //oTable.fnSelectRow(selectedProxy);
+                    saveProxies(list);
+                    edit = true; // set edit flag so that close event handler doesn't delete new proxy
+
+                    $( this ).dialog( "close" );
+                }
+            },
+            {
+                text: chrome.i18n.getMessage("Cancel"),
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
             }
-			
-			 if($("input[name='proxyType']:checked").val()=="auto")
-			 {
-			 list[selectedProxy].updatePAC();
-			 }
-			
-			updateProxyTable();
-			//oTable.fnSelectRow(selectedProxy);
-			saveProxies(list);
-
-			$( this ).dialog( "close" );
-		    }
-		}
-	    },{
-		text: chrome.i18n.getMessage("Cancel"),
-		click: function(){
-		    if(!edit)
-			deleteProxy(selectedProxy);
-		    else
-			updateProxyTable();
-		    
-		    $( this ).dialog( "close" );
-		}
-	    }
-	]
+        ]
     });
 }
 
