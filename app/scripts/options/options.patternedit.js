@@ -15,6 +15,10 @@ function patternLoad(pattern, edit){
 				modal: true,
 				width:500,
 				resizable: false,
+				close: function() {
+				    if(!edit)list[selectedProxy].data.patterns.splice(selectedPattern, 1);
+					
+				},
 				buttons: [{ 
 					text:chrome.i18n.getMessage("Save"),
 					click: function(){
@@ -35,14 +39,13 @@ function patternLoad(pattern, edit){
 							}
 							updatePatternTable();
 							oPatternTable.fnSelectRow(selectedPattern);
+							edit = true;
 							$( this ).dialog( "close" );
 						}
 					}
 				},{
 					text: chrome.i18n.getMessage("Cancel"),
 					click: function(){
-						if(!edit)list[selectedProxy].data.patterns.splice(selectedPattern, 1);
-						updatePatternTable(selectedPattern);
 						$( this ).dialog( "close" );
 					}
 				}]
