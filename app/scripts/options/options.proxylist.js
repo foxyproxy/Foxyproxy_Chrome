@@ -61,6 +61,11 @@ function saveProxies(list){
     });
     
     //bg.foxyProxy.state = bg.foxyProxy.state;
+    
+    chrome.runtime.sendMessage({ trackEvent: {
+        "category": "Proxies",
+        "action": "save"
+    }});
 }
 
 var initProxyList = function initProxyList() {
@@ -153,11 +158,21 @@ function addNewProxy(aUri){
     list.splice(list.length-1, 0, proxy);
     selectedProxy = list.length-2;
     proxyLoad(proxy);
+    
+    chrome.runtime.sendMessage({ trackEvent: {
+        "category": "Proxies",
+        "action": "add"
+    }});
 }
 
 function editProxy(){
     selectedProxy = oTable.fnGetSelectedPosition();
     proxyLoad(list[selectedProxy],true);
+    
+    chrome.runtime.sendMessage({ trackEvent: {
+        "category": "Proxies",
+        "action": "edit"
+    }});
 }
 
 function updateProxyTable(selected) {
@@ -172,6 +187,11 @@ function updateProxyTable(selected) {
 function deleteSelectedProxy() {
     selectedProxy = oTable.fnGetSelectedPosition();
     deleteProxy(selectedProxy);
+    
+    chrome.runtime.sendMessage({ trackEvent: {
+        "category": "Proxies",
+        "action": "delete"
+    }});
 }
 
 function deleteDefaultProxy() {
@@ -195,6 +215,12 @@ function deleteProxy(index, deleteDefault) {
     if(list.length<=1) {
       chrome.extension.getBackgroundPage().foxyProxy.settings.enabledQA=false;
     }
+    
+    chrome.runtime.sendMessage({ trackEvent: {
+        "category": "Proxies",
+        "action": "delete",
+        "value": deleteDefault ? "default": ""
+    }});
   }
 }
 
@@ -204,6 +230,11 @@ function copySelectedProxy() {
         list.splice(selectedProxy, 0, new Proxy(list[selectedProxy]));
         saveProxies(list);
         updateProxyTable(selectedProxy);
+        
+        chrome.runtime.sendMessage({ trackEvent: {
+            "category": "Proxies",
+            "action": "copy"
+        }});
     }
 }
 

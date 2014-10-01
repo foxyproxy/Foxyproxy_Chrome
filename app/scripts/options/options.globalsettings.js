@@ -111,6 +111,13 @@ function onTabShow(tabName) {
         foxyProxy.getSettings();
         foxyProxy.getProxyList();
     });
+    
+    chrome.runtime.sendMessage({ trackEvent: {
+        "category": "Options",
+        "action": "tabShow",
+        "label": "tabName",
+        "value": tabName
+    }});
 
 }
 
@@ -261,4 +268,9 @@ function exportConfig()
 {
     var settingsString = chrome.extension.getBackgroundPage().foxyProxy.settingsToXml();
     chrome.extension.getBackgroundPage().foxyProxy.saveToFile(settingsString);  
+    
+    chrome.runtime.sendMessage({ trackEvent: {
+        "category": "Options",
+        "action": "export"
+    }});
 }

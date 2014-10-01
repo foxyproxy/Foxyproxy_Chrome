@@ -1,5 +1,6 @@
 
 
+
 /* Extension object - main entry point for FoxyProxy extension */
 function Extension() {
     var _settings,
@@ -84,6 +85,13 @@ function Extension() {
                 
         }
         foxyProxy.updateIcon(color);
+        
+        chrome.runtime.sendMessage({ trackEvent: {
+            "category": "State",
+            "action": "apply",
+            "label": "state",
+            "value": this.state
+        }});
     };
     
     /**
