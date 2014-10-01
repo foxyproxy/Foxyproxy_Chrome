@@ -19,6 +19,7 @@
     "background": {
         "persistent": true,
         "scripts": [
+            "scripts/usage.js",
             "scripts/background.js",
             "scripts/util.js",
             "vendor/scripts/punycode.js",
@@ -34,9 +35,13 @@
             
         ]
     },
+    
+    "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
+    
     "content_scripts": [
 
     ],
+    
     "sandbox": {
         "pages": [
             "pac-sandbox.html"

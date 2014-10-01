@@ -1,3 +1,4 @@
+
 // if(typeof console == 'undefined'){
 //     window.console = {
 //  log: function(txt){ 
@@ -181,6 +182,11 @@ $(document).ready(function(){
     
     
     console.log('ready');
+    
+    chrome.runtime.sendMessage({ trackEvent: {
+        "category": "Options",
+        "action": "open"
+    }});
 
     $(".navbar-item:not(diabled='true')").click(function(){
 	$(".navbar-item").removeClass("navbar-item-selected");

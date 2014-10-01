@@ -7,7 +7,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
     var urlToOpen;
     
     if (details.reason ) {
-        var target = chrome.i18n.getMessage("FoxyProxy_Target").toLowerCase(),
+        var target  = chrome.i18n.getMessage("FoxyProxy_Target").toLowerCase(),
             edition = chrome.i18n.getMessage("FoxyProxy_Edition").toLowerCase(),
             version = chrome.i18n.getMessage("FoxyProxy_Version").split('.');
         
@@ -32,8 +32,19 @@ chrome.runtime.onInstalled.addListener(function(details) {
                 "focused": true,
                 "type": "normal"
             });
+            
+            chrome.runtime.sendMessage({ trackEvent: {
+                "category": "Install",
+                "action": "new"
+            }});
+            
         } else if (details.reason == "update") {
             urlToOpen = "http://getfoxyproxy.org/" + target + "/" + edition + "/update.html";
+            
+            chrome.runtime.sendMessage({ trackEvent: {
+                "category": "Install",
+                "action": "update"
+            }});
         }
 
         if (urlToOpen) {
