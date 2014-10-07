@@ -1,12 +1,4 @@
 
-// if(typeof console == 'undefined'){
-//     window.console = {
-//  log: function(txt){ 
-//      //alert(txt);
-//  }
-//     };
-// }
-
 var simple_tooltip = function (target_items, name){
 
     $(target_items).each(function(i){
@@ -199,10 +191,8 @@ $(document).ready(function(){
     
     $("#import-link").click(function (e) { e.preventDefault(); $("#tabImport").click();});
 
-    // TODO: replace with chrome message passing
+    
     chrome.runtime.onMessage.addListener(function( request, sender, sendResponse) {
-        //if (request.settings) {
-        //}
         
         if (request.data) {
             console.log("got data: " + request.data);
@@ -218,17 +208,6 @@ $(document).ready(function(){
         }
     });
     
-    //     if(window.location.hash){
-    // console.log(window.location.hash);
-    // if (window.location.hash.indexOf("#tab") == 0){
-    //     $(window.location.hash).click();
-    // } else if(window.location.hash.indexOf("#quickadd#") == 0){
-    //     $("#tabQuick").click();
-    //     //proxySelection(unescape(window.location.hash.replace("#quickadd#", "")));
-    // } else if(window.location.hash.indexOf("#addpattern#") == 0){
-    //     addPattern(unescape(window.location.hash.replace("#addpattern#", "")));
-    // }
-    //     }
     
     var id = chrome.i18n.getMessage("@@extension_id");
     //FIXME: remove management api call, use message strings.
