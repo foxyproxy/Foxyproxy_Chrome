@@ -215,6 +215,18 @@ function Extension() {
         foxyProxy.updateSettings({"settings": foxyProxy._settings });
     };
     
+    this.toggleUsageOptOut = function toggleUsageOptOut() {
+        foxyProxy._settings.usageOptOut = !foxyProxy._settings.usageOptOut;
+        
+        chrome.runtime.sendMessage({ "usageOptOut": foxyProxy._settings.usageOptOut });
+        
+        if (self.optionsTabId) {
+            chrome.tabs.sendMessage(self.optionsTabId, { setting: "usageOptOut" });
+        }
+        
+        foxyProxy.updateSettings({"settings": foxyProxy._settings });
+    };
+    
     this.updateIcon = function updateIcon( color) {
         if (foxyProxy.state == 'disabled') {
             chrome.browserAction.setIcon({

@@ -145,7 +145,8 @@
             useAdvancedMenus: false,
             useSyncStorage: false,
             animateIcon: true,
-            showUpdates: true
+            showUpdates: true,
+            usageOptOut: false
         };
         
         var defaultProxy = new Proxy({
