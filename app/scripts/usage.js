@@ -1,6 +1,7 @@
 (function() {
     var ga_key = chrome.i18n.getMessage("ga_key");
 
+
     // Initialize the Analytics service object with the name of your app.
     var service = analytics.getService('foxyproxy_chrome');
     service.getConfig().addCallback(initAnalyticsConfig);
@@ -11,7 +12,6 @@
 
     // listener for event tracking
     chrome.runtime.onMessage.addListener(function( request, sender, sendResponse)  {
-        console.log("woop!!!", request);
         
         if (request) {
             if (request.trackEvent ) {
