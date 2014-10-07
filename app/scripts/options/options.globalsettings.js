@@ -50,6 +50,7 @@ chrome.runtime.onMessage.addListener(function( request, sender, sendResponse) {
             $("input[name='useChromeSyncCheck']").attr('checked', settings.useSyncStorage);
             $("input[name='animateIconCheck']").attr('checked', settings.animateIcon);
             $("input[name='showUpdatesCheck']").attr('checked', settings.showUpdates);
+            $("input[name='usageOptOutCheck']").attr('checked', !settings.usageOptOut);
         }
     }
 });
@@ -259,6 +260,10 @@ $(document).ready(function() {
     
     $("input[name='showUpdatesCheck']").click(function() {
         foxyProxy.toggleShowUpdates();
+    });
+    
+    $("input[name='usageOptOutCheck']").click(function() {
+        foxyProxy.toggleUsageOptOut();
     });
     
     onTabShow('');
