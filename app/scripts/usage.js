@@ -1,27 +1,43 @@
-var ga_key = chrome.i18n.getMessage("ga_key");
-
-// google analytics boilerplate
-var _gaq = _gaq || [];
-_gaq.push(['fp4chrome._setAccount', ga_key]);
-  
-  
-// inject google analytics script into background page.
 (function() {
-  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-  ga.src = 'https://ssl.google-analytics.com/ga.js';
-  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
+    var ga_key = chrome.i18n.getMessage("ga_key");
 
-// listener for event tracking
-chrome.runtime.onMessage.addListener(function( request, sender, sendResponse)  {
-    if (request && request.trackEvent ) {
-        var trackEvent = request.trackEvent;
-        console.log("receieved tracking event: ", trackEvent);
+    // Initialize the Analytics service object with the name of your app.
+    var service = analytics.getService('foxyproxy_chrome');
+    service.getConfig().addCallback(initAnalyticsConfig);
+
+    // Get a Tracker using your Google Analytics app Tracking ID.
+    var tracker = service.getTracker(ga_key);
+
+
+    // listener for event tracking
+    chrome.runtime.onMessage.addListener(function( request, sender, sendResponse)  {
+        console.log("woop!!!", request);
         
-        if (trackEvent.category && trackEvent.action) {
-            // opt_interaction is always set to true because bounce rate doesn't make sense for an extension.
-            //_gaq.push(['_trackEvent'], category, action, opt_label, opt_value, opt_noninteraction );
-            _gaq.push(['fp4chrome._trackEvent'], trackEvent.category, trackEvent.action, trackEvent.label, trackEvent.value, true);
+        if (request) {
+            if (request.trackEvent ) {
+                var trackEvent = request.trackEvent;
+                console.log("received tracking event: ", trackEvent);
+        
+                if (trackEvent.category && trackEvent.action) {
+                    tracker.sendEvent(trackEvent.category, trackEvent.action, trackEvent.label, trackEvent.value);
+                }
+            } else if (typeof(request.usageOptOut) != 'undefined') {
+                console.log("received usageOptOut change", request.usageOptOut);
+                
+                service.getConfig().addCallback(function( config) {
+                    config.setTrackingPermitted(!request.usageOptOut);
+                });
+            }
+        }
+    });
+    
+    function initAnalyticsConfig( config) {
+        if (foxyProxy && foxyProxy.getSettings) {
+            foxyProxy.getSettings(function( settings) {
+                if (settings && settings.usageOptOut) {
+                    config.setTrackingPermitted(!settings.usageOptOut);
+                }
+            });            
         }
     }
-});
+})();
