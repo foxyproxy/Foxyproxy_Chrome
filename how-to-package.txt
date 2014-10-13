@@ -25,4 +25,5 @@ How to build FoxyProxy for Chrome with Grunt.
 
     This assumes that you have the correct keyfile in the project's parent directory, or you can specify the path with the --keyfile argument.
     
+    The --ga_key parameter should contain the account identifier for the FoxyProxy for Chrome app in the Google Analytics account.
 
