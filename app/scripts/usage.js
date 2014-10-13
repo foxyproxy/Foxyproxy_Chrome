@@ -1,8 +1,5 @@
 (function() {
-    //var ga_key = chrome.i18n.getMessage("ga_key");
-
-    var ga_key = "UA-103103-7"; // removeme
-
+    var ga_key = chrome.i18n.getMessage("ga_key");
 
     // Initialize the Analytics service object with the name of your app.
     var service = analytics.getService('foxyproxy_chrome');
