@@ -23,6 +23,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
         }
         
         if (details.reason == "install") {
+            FOXYPROXY_VERSION = "new-install";
             urlToOpen = "http://getfoxyproxy.org/" + target + "/" + edition + "/install.html";
             
             chrome.windows.create({
@@ -39,6 +40,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
             }});
             
         } else if (details.reason == "update") {
+            FOXYPROXY_VERSION = version;
             urlToOpen = "http://getfoxyproxy.org/" + target + "/" + edition + "/update.html";
             
             chrome.runtime.sendMessage({ trackEvent: {
