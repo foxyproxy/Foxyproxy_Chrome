@@ -192,8 +192,8 @@ window.onload = function () {
     reader.readAsText(file);
   };
   
-  chrome.runtime.sendMessage({ trackEvent: {
-      "category": "Options",
-      "action": "import"
-  }});
+  // chrome.runtime.sendMessage({ trackEvent: {
+  //     "category": "Options",
+  //     "action": "import"
+  // }});
 };

@@ -1,5 +1,7 @@
 (function() {
-    var ga_key = chrome.i18n.getMessage("ga_key");
+    //var ga_key = chrome.i18n.getMessage("ga_key");
+
+    var ga_key = "UA-103103-7"; // removeme
 
 
     // Initialize the Analytics service object with the name of your app.
@@ -15,11 +17,16 @@
         
         if (request) {
             if (request.trackEvent ) {
-                var trackEvent = request.trackEvent;
+                var label, value,
+                    trackEvent = request.trackEvent;
+                    
                 console.log("received tracking event: ", trackEvent);
         
                 if (trackEvent.category && trackEvent.action) {
-                    tracker.sendEvent(trackEvent.category, trackEvent.action, trackEvent.label, trackEvent.value);
+                    label = trackEvent.label ? trackEvent.label: "Version";
+                    value = typeof(trackEvent.value) != "undefined" ? trackEvent.value: FOXYPROXY_VERSION;
+                    
+                    tracker.sendEvent(trackEvent.category, trackEvent.action, label, value);
                 }
             } else if (typeof(request.usageOptOut) != 'undefined') {
                 console.log("received usageOptOut change", request.usageOptOut);

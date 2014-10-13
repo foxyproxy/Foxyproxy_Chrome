@@ -274,8 +274,8 @@ function exportConfig()
     var settingsString = chrome.extension.getBackgroundPage().foxyProxy.settingsToXml();
     chrome.extension.getBackgroundPage().foxyProxy.saveToFile(settingsString);  
     
-    chrome.runtime.sendMessage({ trackEvent: {
-        "category": "Options",
-        "action": "export"
-    }});
+    // chrome.runtime.sendMessage({ trackEvent: {
+    //     "category": "Options",
+    //     "action": "export"
+    // }});
 }
