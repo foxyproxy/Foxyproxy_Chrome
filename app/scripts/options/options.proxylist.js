@@ -159,20 +159,20 @@ function addNewProxy(aUri){
     selectedProxy = list.length-2;
     proxyLoad(proxy);
     
-    chrome.runtime.sendMessage({ trackEvent: {
-        "category": "Proxies",
-        "action": "add"
-    }});
+    // chrome.runtime.sendMessage({ trackEvent: {
+    //     "category": "Proxies",
+    //     "action": "add"
+    // }});
 }
 
 function editProxy(){
     selectedProxy = oTable.fnGetSelectedPosition();
     proxyLoad(list[selectedProxy],true);
     
-    chrome.runtime.sendMessage({ trackEvent: {
-        "category": "Proxies",
-        "action": "edit"
-    }});
+    // chrome.runtime.sendMessage({ trackEvent: {
+    //     "category": "Proxies",
+    //     "action": "edit"
+    // }});
 }
 
 function updateProxyTable(selected) {
@@ -188,10 +188,10 @@ function deleteSelectedProxy() {
     selectedProxy = oTable.fnGetSelectedPosition();
     deleteProxy(selectedProxy);
     
-    chrome.runtime.sendMessage({ trackEvent: {
-        "category": "Proxies",
-        "action": "delete"
-    }});
+    // chrome.runtime.sendMessage({ trackEvent: {
+    //     "category": "Proxies",
+    //     "action": "delete"
+    // }});
 }
 
 function deleteDefaultProxy() {
@@ -216,11 +216,11 @@ function deleteProxy(index, deleteDefault) {
       chrome.extension.getBackgroundPage().foxyProxy.settings.enabledQA=false;
     }
     
-    chrome.runtime.sendMessage({ trackEvent: {
-        "category": "Proxies",
-        "action": "delete",
-        "value": deleteDefault ? "default": ""
-    }});
+    // chrome.runtime.sendMessage({ trackEvent: {
+    //     "category": "Proxies",
+    //     "action": "delete",
+    //     "value": deleteDefault ? "default": ""
+    // }});
   }
 }
 
@@ -231,10 +231,10 @@ function copySelectedProxy() {
         saveProxies(list);
         updateProxyTable(selectedProxy);
         
-        chrome.runtime.sendMessage({ trackEvent: {
-            "category": "Proxies",
-            "action": "copy"
-        }});
+        // chrome.runtime.sendMessage({ trackEvent: {
+        //     "category": "Proxies",
+        //     "action": "copy"
+        // }});
     }
 }
 
