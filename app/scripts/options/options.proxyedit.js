@@ -334,20 +334,20 @@ function addNewPattern(){
     selectedPattern = list[selectedProxy].data.patterns.length-1;
     patternLoad(list[selectedProxy].data.patterns[selectedPattern]);
     
-    chrome.runtime.sendMessage({ trackEvent: {
-        "category": "Patterns",
-        "action": "add"
-    }});
+    // chrome.runtime.sendMessage({ trackEvent: {
+    //     "category": "Patterns",
+    //     "action": "add"
+    // }});
 }
 
 function editPattern(){
     selectedPattern = oPatternTable.fnGetSelectedPosition();
     patternLoad(list[selectedProxy].data.patterns[selectedPattern], true);
     
-    chrome.runtime.sendMessage({ trackEvent: {
-        "category": "Patterns",
-        "action": "edit"
-    }});
+    // chrome.runtime.sendMessage({ trackEvent: {
+    //     "category": "Patterns",
+    //     "action": "edit"
+    // }});
 }
 
 function updatePatternTable(selected){
@@ -364,10 +364,10 @@ function deleteSelectedPattern(){
     list[selectedProxy].data.patterns.splice(selectedPattern, 1);
     updatePatternTable();
     
-    chrome.runtime.sendMessage({ trackEvent: {
-        "category": "Patterns",
-        "action": "delete"
-    }});
+    // chrome.runtime.sendMessage({ trackEvent: {
+    //     "category": "Patterns",
+    //     "action": "delete"
+    // }});
 }       
 function copySelectedPattern(){
     console.log(selectedPattern);
@@ -378,10 +378,10 @@ function copySelectedPattern(){
     updatePatternTable(selectedPattern);
     }
     
-    chrome.runtime.sendMessage({ trackEvent: {
-        "category": "Patterns",
-        "action": "copy"
-    }});
+    // chrome.runtime.sendMessage({ trackEvent: {
+    //     "category": "Patterns",
+    //     "action": "copy"
+    // }});
 }
 
 function openPacViewDlg(){
