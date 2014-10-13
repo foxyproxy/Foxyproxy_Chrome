@@ -290,6 +290,7 @@ module.exports = function (grunt) {
         var currentVersion,
             versions,
             messages,
+            ga_key = grunt.option('ga-key'),
             target = grunt.option('target') || 'Chrome', // default to Chrome extension if not supplied.
             edition = grunt.option('edition') || 'Standard'; // default to Standard edition if not supplied.
             
@@ -334,13 +335,14 @@ module.exports = function (grunt) {
         };
         
         // pass ga_key on command line so we don't hard-code it into foxyproxy source.
-        if (grunt.option('ga_key')) {
+        if (ga_key) {
+            grunt.log.writeln("Using ga-key: " +ga_key);
             messages.ga_key = {
-                message: grunt.option('ga_key'),
+                message: ga_key,
                 description: "Google Analytics key for usage tracking."
             };
         } else {
-            // TODO: warn about missing GA key.
+             grunt.log.writeln("--ga-key was not passed on command-line. Google Analytics tracking will not work!");
         }
         
         

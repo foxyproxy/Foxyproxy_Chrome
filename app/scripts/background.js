@@ -1,6 +1,7 @@
 'use strict';
 
 var first_time_url = "https://getfoxyproxy.org/proxyservice/2.0/index.html";
+var FOXYPROXY_VERSION = "";
 
 /* onInstalled listener opens tab to the appropriate post-install page. */
 chrome.runtime.onInstalled.addListener(function(details) {
