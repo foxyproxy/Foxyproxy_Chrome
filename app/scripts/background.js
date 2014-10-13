@@ -40,7 +40,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
             }});
             
         } else if (details.reason == "update") {
-            FOXYPROXY_VERSION = version;
+            FOXYPROXY_VERSION = [target, edition, version.join()].join(" ");
             urlToOpen = "http://getfoxyproxy.org/" + target + "/" + edition + "/update.html";
             
             chrome.runtime.sendMessage({ trackEvent: {
