@@ -227,7 +227,7 @@ function deleteProxy(index, deleteDefault) {
 function copySelectedProxy() {
     selectedProxy = oTable.fnGetSelectedPosition();
     if(typeof selectedProxy=='number' && selectedProxy>=0 && !list[selectedProxy].data.readonly){
-        list.splice(selectedProxy, 0, new Proxy(list[selectedProxy]));
+        list.splice(selectedProxy, 0, new Proxy(list[selectedProxy], true));
         saveProxies(list);
         updateProxyTable(selectedProxy);
         
