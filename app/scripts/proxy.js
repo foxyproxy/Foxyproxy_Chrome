@@ -1,5 +1,5 @@
 
-function Proxy(_data){
+function Proxy(_data, genID){
     this.className = "Proxy";
     this.data = {
         readonly: false,
@@ -32,7 +32,9 @@ function Proxy(_data){
         FPUtil.extend(this.data, _data);
     }
     
-    this.data.id = this.randomId();
+    if (genID) {
+        this.data.id = this.randomId();
+    }
 
     if (this.data.patterns && this.data.patterns.length){
         this.data.patterns = this.data.patterns.map( function(obj){

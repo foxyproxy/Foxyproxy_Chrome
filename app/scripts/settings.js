@@ -246,6 +246,16 @@
                         for (var i = 0; i < items.proxyList.length; i++) {
                             list.push(new Proxy(proxies[items.proxyList[i]]));
                         }
+                        
+                        // reset default proxy id to string 'default'
+                        var last = list[list.length-1];
+                        if (last.data && last.data.id !== "default") {
+                            if (last.data.readonly && last.data.name == "Default") {
+                                last.data.id = "default";
+                                list[list.length-1] = last;
+                                console.log("reset default proxy ID.");
+                            }
+                        }
 
                         foxyProxy._proxyList = list;
                     
