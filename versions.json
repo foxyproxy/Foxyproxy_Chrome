@@ -9,7 +9,8 @@
         "Standard": {
             "release": "3",
             "major":   "0",
-            "minor":   "5"
+            "minor":   "5",
+            "build":   "1"
         },
         "Basic": {
             "release": "1",
