@@ -162,10 +162,12 @@ window.onload = function () {
         var replaceProxies = function () {
           // remove all existing proxies!
           var i;
-          for (i = list.length - 1; i >= 0; i--) {
-            if (list[i].data.name != "Default") {
-              deleteProxy(i);
-            }
+          if (list && list.length) {
+              for (i = list.length - 1; i >= 0; i--) {
+                if (list[i].data.name != "Default") {
+                  deleteProxy(i);
+                }
+              }
           }
           updateProxyTable();
           saveProxies(list);
