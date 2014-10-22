@@ -357,6 +357,10 @@
     
     };
     
+    foxyProxy.resetToDefaults = function resetToDefaults() {
+        foxyProxy.updateSettings(getDefaults());
+    };
+    
     // bootstrap settings
     initSettings();
     
