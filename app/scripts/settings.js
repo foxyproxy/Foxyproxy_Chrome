@@ -241,38 +241,59 @@
                 console.log(chrome.runtime.lastError);
             } else {
                 if (items.proxyList && items.proxyList.length) {
+                    try {
+                        storageApi.get(items.proxyList, function( proxies) {
+                            for (var i = 0; i < items.proxyList.length; i++) {
+                                list.push(new Proxy(proxies[items.proxyList[i]]));
+                            }
+                        
+                            // reset default proxy id to string 'default'
+                            var last = list[list.length-1];
+                            if (last.data && last.data.id !== "default") {
+                                if (last.data.readonly && last.data.name == "Default") {
+                                    last.data.id = "default";
+                                    list[list.length-1] = last;
+                                    console.log("reset default proxy ID.");
+                                }
+                            }
 
-                    storageApi.get(items.proxyList, function( proxies) {
-                        for (var i = 0; i < items.proxyList.length; i++) {
-                            list.push(new Proxy(proxies[items.proxyList[i]]));
+                            foxyProxy._proxyList = list;
+                    
+                            if (typeof(callback) == "function") {
+                                callback({"proxyList": list });
+                            } else {
+                                chrome.tabs.query({"url": queryUrl },
+                                    function( tabs) {
+                                        console.log("sending proxyList to " + tabs.length + " foxyproxy tabs");
+                                        for (var i = 0; i < tabs.length; i++) {
+                                            chrome.tabs.sendMessage(tabs[i].id, { "proxyList": list });
+                                        }
+                                    }
+                                );
+
+                            }
+                        });
+                    } catch (exc) {
+                        console.log("Failed to load proxy data for proxyList: " + items.proxyList);
+                        if (chrome.runtime.lastError) {
+                            console.log(chrome.runtime.lastError);
                         }
                         
-                        // reset default proxy id to string 'default'
-                        var last = list[list.length-1];
-                        if (last.data && last.data.id !== "default") {
-                            if (last.data.readonly && last.data.name == "Default") {
-                                last.data.id = "default";
-                                list[list.length-1] = last;
-                                console.log("reset default proxy ID.");
-                            }
-                        }
-
-                        foxyProxy._proxyList = list;
-                    
+                        // return empty list
                         if (typeof(callback) == "function") {
-                            callback({"proxyList": list });
-                        } else {
-                            chrome.tabs.query({"url": queryUrl },
-                                function( tabs) {
-                                    console.log("sending proxyList to " + tabs.length + " foxyproxy tabs");
-                                    for (var i = 0; i < tabs.length; i++) {
-                                        chrome.tabs.sendMessage(tabs[i].id, { "proxyList": list });
-                                    }
-                                }
-                            );
+                             callback({"proxyList": [] });
+                         } else {
+                             chrome.tabs.query({"url": queryUrl },
+                                 function( tabs) {
+                                     console.log("sending proxyList to " + tabs.length + " foxyproxy tabs");
+                                     for (var i = 0; i < tabs.length; i++) {
+                                         chrome.tabs.sendMessage(tabs[i].id, { "proxyList": [] });
+                                     }
+                                 }
+                             );
 
-                        }
-                    });
+                         }
+                    }
                 } else {
                     console.log("no proxies found in chrome.storage.");
                     if (typeof(callback) == "function") {
