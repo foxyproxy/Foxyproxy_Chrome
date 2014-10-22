@@ -210,11 +210,14 @@ function deleteProxy(index, deleteDefault) {
   if(!list[index].data.readonly || 
      (list[index].data.readonly && deleteDefault)) {
     list.splice(index, 1);
+    
+    if(list.length<=1) {
+      chrome.extension.getBackgroundPage().foxyProxy._settings.enabledQA=false;
+    }
+    
     saveProxies(list);
     updateProxyTable();
-    if(list.length<=1) {
-      chrome.extension.getBackgroundPage().foxyProxy.settings.enabledQA=false;
-    }
+
     
     // chrome.runtime.sendMessage({ trackEvent: {
     //     "category": "Proxies",
