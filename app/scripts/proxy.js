@@ -32,7 +32,7 @@ function Proxy(_data, genID){
         FPUtil.extend(this.data, _data);
     }
     
-    if (genID) {
+    if (genID || !this.data.id) {
         this.data.id = this.randomId();
     }
 
