@@ -324,11 +324,11 @@
             list = [],
             saveObj = {};
 
-        if (message.settings) {
+        if (message.settings && message.settings !== null) {
             saveObj.settings = message.settings;
         }
     
-        if (message.proxyList) {
+        if (message.proxyList && message.proxyList !== null && message.proxyList.length) {
             // save proxies keyed off of ID to avoid storage quota limit.
             for (i = 0; i < message.proxyList.length; i++) {
                 proxy = message.proxyList[i];
