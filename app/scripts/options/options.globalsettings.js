@@ -267,6 +267,12 @@ $(document).ready(function() {
     });
     
     $("#resetButton").click(function() {
+        if (confirm("Are you sure you want to reload all settings?")) {
+            foxyProxy.reloadSettings();
+        }
+    });
+    
+    $("#resetDefaultsButton").click(function() {
         if (confirm("This will reset all settings and remove any proxies that were added! Are you sure you want to reset?")) {
             foxyProxy.resetToDefaults();
         }

@@ -40,7 +40,7 @@
     /* 
      * load initial settings or default settings
      */
-    function initSettings() {
+    function initSettings( reload) {
         var defaults = getDefaults(),
         useSyncStorage = JSON.parse(localStorage.getItem("useSyncStorage"));
         
@@ -50,7 +50,7 @@
             localStorage.setItem("useSyncStorage", false);
         }
         
-        if (!foxyProxy._settings && !foxyProxy._proxyList) {
+        if (reload || (!foxyProxy._settings && !foxyProxy._proxyList)) {
             
             try {
                 foxyProxy.getSettings(function( items) {
@@ -380,6 +380,10 @@
     
     foxyProxy.resetToDefaults = function resetToDefaults() {
         foxyProxy.updateSettings(getDefaults());
+    };
+    
+    foxyProxy.reloadSettings = function reloadSettings() {
+        initSettings(true);
     };
     
     // bootstrap settings
