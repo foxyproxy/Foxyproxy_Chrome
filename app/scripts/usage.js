@@ -1,6 +1,6 @@
 (function() {
     var ga_key = chrome.i18n.getMessage("ga_key");
-
+    
     // Initialize the Analytics service object with the name of your app.
     var service = analytics.getService('foxyproxy_chrome');
     service.getConfig().addCallback(initAnalyticsConfig);
@@ -14,16 +14,13 @@
         
         if (request) {
             if (request.trackEvent ) {
-                var label, value,
-                    trackEvent = request.trackEvent;
+                var trackEvent = request.trackEvent;
                     
                 console.log("received tracking event: ", trackEvent);
         
                 if (trackEvent.category && trackEvent.action) {
-                    label = trackEvent.label ? trackEvent.label: "Version";
-                    value = typeof(trackEvent.value) != "undefined" ? trackEvent.value: FOXYPROXY_VERSION;
                     
-                    tracker.sendEvent(trackEvent.category, trackEvent.action, label, value);
+                    tracker.sendEvent(trackEvent.category, trackEvent.action, trackEvent.label, trackEvent.value);
                 }
             } else if (typeof(request.usageOptOut) != 'undefined') {
                 console.log("received usageOptOut change", request.usageOptOut);
