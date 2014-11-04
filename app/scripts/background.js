@@ -1,7 +1,7 @@
 'use strict';
 
 var first_time_url = "https://getfoxyproxy.org/proxyservice/2.0/index.html";
-var FOXYPROXY_VERSION = "";
+//var FOXYPROXY_VERSION = "";
 
 /* onInstalled listener opens tab to the appropriate post-install page. */
 chrome.runtime.onInstalled.addListener(function(details) {
@@ -24,7 +24,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
         }
         
         if (details.reason == "install") {
-            FOXYPROXY_VERSION = "new-install";
+            //FOXYPROXY_VERSION = "new-install";
             urlToOpen = "http://getfoxyproxy.org/" + target + "/" + edition + "/install.html";
             
             chrome.windows.create({
@@ -41,7 +41,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
             }});
             
         } else if (details.reason == "update") {
-            FOXYPROXY_VERSION = [target, edition, version.join()].join(" ");
+            //FOXYPROXY_VERSION = [target, edition, version.join()].join(" ");
             urlToOpen = "http://getfoxyproxy.org/" + target + "/" + edition + "/update.html";
             
             chrome.runtime.sendMessage({ trackEvent: {
