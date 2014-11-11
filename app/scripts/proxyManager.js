@@ -184,7 +184,7 @@ ProxyManager.proxyToScript = function (proxy) {
   case "manual":
     if (!proxy.data.pac || proxy.data.pac.length == 0) {
       console.log("regular proxy manual used");
-      proxyStr = '"' + (proxy.data.isSocks ? "SOCKS " : "PROXY ") + proxy.data.host + ":" + proxy.data.port + '"';
+      proxyStr = '"' + (proxy.data.isSocks ? (proxy.data.socks == 5 ? "SOCKS5 " : "SOCKS ") : "PROXY ") + proxy.data.host + ":" + proxy.data.port + '"';
     } else {
       console.log("Manual mode set and using remote PAC");
       c += " function wrapper(url, host){ " + proxy.data.pac + " return FindProxyForURL(url, host); }", proxyStr = "wrapper(url, host)";
