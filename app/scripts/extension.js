@@ -74,12 +74,12 @@ function Extension() {
 
                 if (proxy) {
                     color = proxy.data.color;
-                    if (proxy.data.pac.length === 0 || !proxy.data.pac) {
-                        console.log("manual mode selected and proxy is " + proxy);
-                        ProxyManager.applyProxy(ProxyManager.profileFromProxy(proxy));
-                    } else {
+                    if (proxy.data.type == 'auto') {
                         console.log("manual mode selected with remote PAC and proxy is " + proxy);
                         ProxyManager.applyAutoPac(proxy);
+                    } else {
+                        console.log("manual mode selected and proxy is " + proxy);
+                        ProxyManager.applyProxy(ProxyManager.profileFromProxy(proxy));
                     }
                 }
                 
