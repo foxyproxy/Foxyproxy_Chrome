@@ -70,11 +70,15 @@ ProxyManager.applyAuto = function (a) {
  * Using remote PAC script.
  */
 ProxyManager.applyAutoPac = function (proxy) {
-  ProxyConfig.pacScript.url = "";
-  ProxyConfig.pacScript.data = proxy.data.pac; 
-  ProxyConfig.mode = "pac_script";
-  chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
-  console.log("Proxy is autoPAC: applyAutoPac");
+    if (proxy.data && proxy.data.configUrl) {
+        ProxyConfig.pacScript.url = proxy.data.configUrl;
+        //ProxyConfig.pacScript.data = proxy.data.pac; 
+        ProxyConfig.mode = "pac_script";
+        chrome.proxy.settings.set({value: ProxyConfig, scope: 'regular'}, function() {});
+        console.log("Proxy is autoPAC: applyAutoPac");
+    } else {
+        console.log("failed to apply AutoPac: no configUrl in proxy.data");
+    }
 };
 
 /**
