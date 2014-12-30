@@ -6,13 +6,13 @@
     "description": "FoxyProxy simplifies configuring browsers to access proxy-servers, offering more features than other proxy-plugins",
     "homepage_url": "http://getfoxyproxy.org/",
     "icons": {
-        "16": "images/16x16.png",
+        "16": "images/16x16.svg",
         "48": "images/logo-48.png",
         "128": "images/logo-128.png"
     },
     "minimum_chrome_version": "21",
     "browser_action": {
-        "default_icon": "images/foxyproxy-nocopy.gif",
+        "default_icon": "images/16x16.svg",
         "default_title": "FoxyProxy",
         "default_popup": "popup.html"
     },
@@ -24,14 +24,13 @@
             "scripts/background.js",
             "scripts/util.js",
             "vendor/scripts/punycode.js",
-            "vendor/scripts/icon_creator.js",
             "scripts/proxyconfig.js",
             "scripts/proxy.js",
             "scripts/proxyManager.js",
             "scripts/extension.js",
             "scripts/settings.js",
             "scripts/context-menus.js",
-            "scripts/animate-icon.js",
+            "scripts/svg-icons.js",
             "scripts/stored-credentials-bundle.js"
             
         ]
