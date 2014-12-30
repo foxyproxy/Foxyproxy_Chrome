@@ -1,3 +1,6 @@
+/*
+ * SVG Icons and Animation algorithm originally created for FoxyProxy for Firefox by Jesper Hansen.
+ */
 (function() {
     
     var icon = document.createElement('img');

@@ -1,4 +1,4 @@
-
+var TEST_URL = "http://getfoxyproxy.org/geoip/whatsmyip.html?raw=1";
 
 
 /* Extension object - main entry point for FoxyProxy extension */
@@ -29,7 +29,6 @@ function Extension() {
         localStorage.setItem("state", _state);
     });
 
-    /***** util functions *****/
     
     function reloadTimers() {
         console.log('reload timers');
@@ -229,43 +228,13 @@ function Extension() {
     
     this.updateIcon = function updateIcon( color) {
         if (foxyProxy.state == 'disabled') {
-            chrome.browserAction.setIcon({
-                path: 'images/logo-disabled.png'
-            });
+            foxyProxy.svgIcons.setDisabled();
         } else if (foxyProxy.state == 'auto') {
-            chrome.browserAction.setIcon({
-                path: 'images/logo.png'
-            });
+            foxyProxy.svgIcons.setDefault();
         } else if (color) {
-            foxyProxy.currentIcon = foxyProxy.icon;
-            foxyProxy.currentImageData = IconCreator.paintIcon(foxyProxy.icon, color);
-            chrome.browserAction.setIcon({
-                imageData: foxyProxy.currentImageData
-            });
+            foxyProxy.svgIcons.color = color;
         }
     };
-
-    /*
-     * Listen for beforeNavigate events and update foxyProxy icon
-     */
-    chrome.webNavigation.onBeforeNavigate.addListener(function( details) {
-        var url = details.url;
-        if (url) {
-            foxyProxy.getProxyForUrl(url, function(url, proxy, pattern) {
-                if (proxy) {
-                    foxyProxy.updateIcon(proxy.data.color);
-                    
-                    if (foxyProxy._settings && foxyProxy._settings.animateIcon && foxyProxy.state == 'auto') {
-                        foxyProxy.animateBlink(6);
-                    } else if (foxyProxy._settings && foxyProxy._settings.animateIcon) {
-                        foxyProxy.animateFlip();
-                    }
-                } else {
-                    foxyProxy.updateIcon();
-                }
-            });
-        }
-    });
     
     /*
      * quick-add command listener
@@ -342,59 +311,6 @@ function Extension() {
     {urls: ["<all_urls>"]},
     ["asyncBlocking"]);
 
-/*    
-     chrome.webRequest.onBeforeRequest.addListener(function( details) {
-         console.log("onBeforeRequest");
-         console.log(details);
-     }, { "urls": "*"});
-     */
-    
-    /*
-     *
-     *
-    chrome.webNavigation.onCompleted.addListener(function () {
-        foxyProxy.updateIcon();
-    }); */
-    
-    //FIXME: onRequest is deprecated!
-    // chrome.extension.onRequest.addListener(function (request, sender, callback) {
-    // 
-    // var tab = sender.tab;
-    // if (state == 'disabled') return;
-    // 
-    // if (request.action == 'addpattern') {
-    //         if (self.settings.enabledQA) {
-    //       self.options('addpattern#' + request.url);
-    //         }
-    // } 
-    //     else if (request.action == 'proxylist') {
-    //     self.options('tabProxies');
-    // } 
-    //     else if (request.action == 'log') {
-    // 
-    //     self.getProxyForUrl(request.url, function (url, proxy, pattern) {
-    // 
-    //     console.log(proxy, IconCreator.paintIcon(self.icon, proxy.data.color));
-    //     if (proxy) {
-    //         self.currentImageData = IconCreator.paintIcon(self.icon, proxy.data.color);
-    //         chrome.browserAction.setIcon({
-    //         imageData: self.currentImageData
-    //         });
-    //         self.log.addLog(url, proxy, pattern);
-    //         if (self.state == 'auto') {
-    //         self.animateBlink(6);
-    //         } else {
-    //         self.animateFlip();
-    //         }
-    //     } else {
-    //         self.currentIcon = self.icon;
-    //         chrome.browserAction.setIcon({
-    //         path: 'images/logo.png'
-    //         });
-    //     }
-    //     });
-    // }
-    // });     
 }
 
 // bootstrap
