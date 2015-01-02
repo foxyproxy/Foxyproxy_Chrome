@@ -49,17 +49,9 @@
                          Math.ceil(canvas.width / 2), Math.ceil(canvas.height / 2));
 
                       for (var i in this.icons) {
-                         if (c) {
-                             this.paintIcon(this.icons[i], c);
-
-                             ///this.icons[i].setAttribute("style", "fill: " + c + ";");
-                          } else {
-                             // this.icons[i].removeAttribute("style");
-                          }
-
-                         //canvasContext.drawImage(this.icons[i], -Math.ceil(canvas.width / 2), -Math.ceil(canvas.height / 2));
-
-                     }
+                          console.log("set color :: color =>" + c);
+                          this.paintIcon(this.icons[i], c);
+                      }
 
                    canvasContext.restore();
 
@@ -101,9 +93,9 @@
                 canvasContext.translate(
                     Math.ceil(canvas.width / 2), Math.ceil(canvas.height / 2));
                    
+               
                canvasContext.rotate((this.angle/2)*Math.PI/180);
                
-               //canvasContext.drawImage(icon, -Math.ceil(canvas.width / 2), -Math.ceil(canvas.height / 2));
                this.paintIcon(icon, color);
 
                canvasContext.restore();
@@ -232,40 +224,48 @@
          ///////////////// 
          
          foxyProxy.svgIcons.paintIcon = function paintIcon(icon, color) {
-             if(color.r || typeof color == 'string') {
-                 color = [color];
-             }
-             for(var i = 0; i < color.length; ++i) {
-                 if(typeof color[i] == 'string') {
-                     color[i] = this.StrToRGB(color[i]);
+             var imgData, pixelData, colorChangeInterval;
+                          
+             if (color) {
+             
+                 if(color.r || typeof color == 'string') {
+                     color = [color];
                  }
-             }
-
-             //var referenceColor = {r: 95, g: 167, b: 220};
-             var referenceColor = {r: 231, g: 133, b: 0};
-             
-             canvasContext.drawImage(icon, -Math.ceil(canvas.width / 2), -Math.ceil(canvas.height / 2));
-             //canvasContext.drawImage(icon,0,0);
-             
-             var imgData = canvasContext.getImageData(0, 0, 19, 19);
-             var pixelData = imgData.data;
-             var colorChangeInterval = (19 * 4) / color.length;
-             for(var x = 0; x < 19; ++x) {
-                 for(var y = 0; y < (19 * 4); y += 4) {
-                     var currentColor = color[parseInt(y / colorChangeInterval, 10)];
-                     var pos = (x * 19 * 4) + y;
-                     var dist = this.colorDistance(referenceColor, {r: pixelData[pos + 0], g: pixelData[pos + 1], b: pixelData[pos + 2]});
-                     if(dist < 27) {
-                         var luminance = 0.3 * pixelData[pos + 0] + 0.59 * pixelData[pos + 1] + 0.11 * pixelData[pos + 2];
-                         pixelData[pos + 0] = currentColor.r * (luminance / 127);
-                         pixelData[pos + 1] = currentColor.g * (luminance / 127);
-                         pixelData[pos + 2] = currentColor.b * (luminance / 127);
-                         pixelData[pos + 3] = currentColor.a * pixelData[pos + 3];
+                 for(var i = 0; i < color.length; ++i) {
+                     if(typeof color[i] == 'string') {
+                         color[i] = this.StrToRGB(color[i]);
                      }
                  }
+
+                 //var referenceColor = {r: 95, g: 167, b: 220};
+                 var referenceColor = {r: 231, g: 133, b: 0};
+             
+                 canvasContext.drawImage(icon, -Math.ceil(canvas.width / 2), -Math.ceil(canvas.height / 2));
+                 //canvasContext.drawImage(icon,0,0);
+             
+                 imgData = canvasContext.getImageData(0, 0, 19, 19);
+                 pixelData = imgData.data;
+                 colorChangeInterval = (19 * 4) / color.length;
+                 for (var x = 0; x < 19; ++x) {
+                     for (var y = 0; y < (19 * 4); y += 4) {
+                         var currentColor = color[parseInt(y / colorChangeInterval, 10)];
+                         var pos = (x * 19 * 4) + y;
+                         var dist = this.colorDistance(referenceColor, {r: pixelData[pos + 0], g: pixelData[pos + 1], b: pixelData[pos + 2]});
+                         if(dist < 27) {
+                             var luminance = 0.3 * pixelData[pos + 0] + 0.59 * pixelData[pos + 1] + 0.11 * pixelData[pos + 2];
+                             pixelData[pos + 0] = currentColor.r * (luminance / 127);
+                             pixelData[pos + 1] = currentColor.g * (luminance / 127);
+                             pixelData[pos + 2] = currentColor.b * (luminance / 127);
+                             pixelData[pos + 3] = currentColor.a * pixelData[pos + 3];
+                         }
+                     }
+                 }
+                 canvasContext.putImageData(imgData,0,0);
+                 
+             } else {
+                 canvasContext.drawImage(icon, -Math.ceil(canvas.width / 2), -Math.ceil(canvas.height / 2));
              }
              
-             canvasContext.putImageData(imgData,0,0);
          };
          
          
