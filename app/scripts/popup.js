@@ -1,17 +1,11 @@
 chrome.runtime.getBackgroundPage(function( bgPage) {
     
-    var foxyproxy = bgPage.foxyProxy;
-
-
-    var options = function (data){
-        foxyproxy.options(data);
-    
-    };
+    var foxyProxy = bgPage.foxyProxy;
 
     var toggleRadioButton = function (id){
         $("li").removeClass("navbar-checked");
         $("#state-"+id).addClass("navbar-checked");
-        foxyproxy.state = id;
+        foxyProxy.state = id;
         window.close();
     };
 
@@ -24,45 +18,38 @@ chrome.runtime.getBackgroundPage(function( bgPage) {
 
             switch (elemId) {
                 case "state-auto":
-                toggleRadioButton('auto');
+                    toggleRadioButton('auto');
                 break;
             
                 case "state-disabled":
-                toggleRadioButton('disabled');
+                    toggleRadioButton('disabled');
                 break;
             
                 case "quickAdd":
-                chrome.tabs.getSelected(null, function(tab) {
-                    options('addpattern#' + tab.url);
-                });
+                    chrome.tabs.getSelected(null, function(tab) {
+                        foxyProxy.options('addpattern#' + tab.url);
+                    });
                 break;
             
                 case "tabProxies":
-                options('tabProxies');
+                    foxyProxy.options('tabProxies');
                 break;
             }
 
         });
         
-        foxyproxy.getSettings(function( items) {
+        foxyProxy.getSettings(function( items) {
             var settings = items.settings;
-            if ( (settings && !settings.enabledQA) || foxyproxy.state=='disabled' || 'Basic' == foxyproxy.getFoxyProxyEdition()) {
+            if ( (settings && !settings.enabledQA) || foxyProxy.state=='disabled' || 'Basic' == foxyProxy.getFoxyProxyEdition()) {
                 $('#quickAdd').hide();
             }
         });
 
-        foxyproxy.getProxyList( function( items) {
+        foxyProxy.getProxyList( function( items) {
             var list = items.proxyList;
-        
-            $("a").each(function(){
-                if(this.childNodes.length === 0 || (this.childNodes.length == 1 && this.childNodes[0].nodeName == "#text")){
-                    this.innerText = this.innerText; //FIXME
-                }
-            });
-    
+
             list.forEach( function( proxy) {
                 var a;
-                console.log(proxy.data.type);
 
                 if (proxy.data.enabled) {
 
@@ -78,14 +65,14 @@ chrome.runtime.getBackgroundPage(function( bgPage) {
                         .insertBefore("li#state-disabled");
                     }
             });
-    
-            if ('Basic' == foxyproxy.getFoxyProxyEdition()) {
-                console.log('hiding auto mode for Basic edition');
+
+            $("#state-" + foxyProxy.state).addClass("navbar-checked");
+
+            if ('Basic' == foxyProxy.getFoxyProxyEdition()) {
                 $("#state-auto").hide();
             }
-
-            $("#state-" + foxyproxy.state).addClass("navbar-checked");
-
         });
     });
+    
+
 });
