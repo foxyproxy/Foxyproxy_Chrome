@@ -145,7 +145,9 @@ ProxyManager.generatePacAutoScript = function () {
   if (b && b.length) { 
       a.push("function FindProxyForURL(url, host) {");
       for (var c = 0, sz=b.length; c < sz; c++) {
-        a.push(ProxyManager.proxyToScript(b[c]));
+          if (b[c].data && b[c].data.enabled) {
+              a.push(ProxyManager.proxyToScript(b[c]));
+          }
       }
       a.push("}");
       return a.join("\r\n");
